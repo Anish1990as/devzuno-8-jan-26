@@ -9,3 +9,4 @@ psycopg2-binary
 whitenoise[brotli]
 dj-database-url
 django-widget-tweaks
+Pillow
