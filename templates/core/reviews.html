@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-3">Client Reviews</h2>
+
+{% if count %}
+  <div class="alert alert-light border rounded-3 d-flex align-items-center mb-4">
+    <div class="me-3 display-6">⭐</div>
+    <div>
+      <div class="fw-semibold mb-0">Average Rating: {{ avg }}/5</div>
+      <small class="text-muted">{{ count }} verified review{{ count|pluralize }}</small>
+    </div>
+  </div>
+{% endif %}
+
+<div class="row g-3">
+  {% for r in reviews %}
+  <div class="col-md-6 col-lg-4">
+    <div class="border rounded-3 p-3 h-100">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="fw-semibold">{{ r.project.name }}</div>
+        <div class="text-warning" aria-label="{{ r.rating }} out of 5">
+          {% for i in "12345" %}
+            {% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% if r.comment %}
+        <p class="mt-2 mb-0 text-secondary">{{ r.comment }}</p>
+      {% endif %}
+      <div class="small text-muted mt-2">— {{ r.user.username }} · {{ r.created_at|date:"M d, Y" }}</div>
+    </div>
+  </div>
+  {% empty %}
+    <div class="col-12"><div class="alert alert-light border">No reviews yet.</div></div>
+  {% endfor %}
+</div>
+
+{% if testimonials %}
+<hr class="my-4">
+<h5 class="mb-3">What clients say</h5>
+<div class="row g-3">
+  {% for t in testimonials %}
+  <div class="col-md-4">
+    <div class="border rounded-3 p-3 h-100">
+      <blockquote class="mb-1">“{{ t.quote }}”</blockquote>
+      <div class="small text-muted">— {{ t.author }}</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

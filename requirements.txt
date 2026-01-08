@@ -1,0 +1,11 @@
+Django>=5.0,<6
+channels>=4.0
+asgiref
+
+# Production dependencies
+daphne
+gunicorn
+psycopg2-binary
+whitenoise[brotli]
+dj-database-url
+django-widget-tweaks

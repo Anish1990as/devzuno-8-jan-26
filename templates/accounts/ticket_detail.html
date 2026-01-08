@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="py-4 dvz-surface">
+  <div class="container">
+
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+      <div>
+        <h3 class="fw-bold text-gradient m-0">Ticket #{{ ticket.id }} · {{ ticket.subject }}</h3>
+        <p class="text-muted m-0">Department: {{ ticket.department|default:"General" }} · Priority: {{ ticket.priority|title }}</p>
+      </div>
+      <a href="{% url 'accounts:tickets' %}" class="btn btn-outline-success rounded-pill">← Back to Tickets</a>
+    </div>
+
+    <!-- Meta -->
+    <div class="dvz-table-wrapper mb-3">
+      <table class="table dvz-table m-0">
+        <tbody>
+          <tr>
+            <th style="width:180px">Status</th>
+            <td>
+              {% if ticket.status == "open" %}
+                <span class="badge bg-success-subtle text-success px-3 py-2">Open</span>
+              {% elif ticket.status == "pending" %}
+                <span class="badge bg-warning-subtle text-warning px-3 py-2">Pending</span>
+              {% elif ticket.status == "answered" %}
+                <span class="badge bg-primary-subtle text-primary px-3 py-2">Answered</span>
+              {% else %}
+                <span class="badge bg-secondary-subtle text-muted px-3 py-2">Closed</span>
+              {% endif %}
+            </td>
+          </tr>
+          <tr><th>Created</th><td>{{ ticket.created_at|date:"M d, Y H:i" }}</td></tr>
+          <tr><th>Last update</th><td>{{ ticket.updated_at|date:"M d, Y H:i" }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Messages -->
+    <div class="mb-4">
+      {% for m in messages_qs %}
+        <div class="dvz-msg {% if m.is_staff %}dvz-msg-staff{% else %}dvz-msg-user{% endif %}">
+          <div class="dvz-msg-head">
+            <strong>{% if m.is_staff %}Support{% else %}You{% endif %}</strong>
+            <span class="text-muted small">{{ m.created_at|date:"M d, Y H:i" }}</span>
+          </div>
+          <div class="dvz-msg-body">
+            <pre class="m-0">{{ m.message }}</pre>
+            {% if m.attachment %}
+              <div class="mt-2">
+                <a href="{{ m.attachment.url }}" target="_blank" class="btn btn-sm btn-outline-primary">View Attachment</a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% empty %}
+        <div class="dvz-empty text-center p-4 rounded-4">No messages yet.</div>
+      {% endfor %}
+    </div>
+
+    <!-- Reply box (hide if closed) -->
+    {% if ticket.status != 'closed' %}
+      <form method="post" enctype="multipart/form-data" class="dvz-table-wrapper p-3">
+        {% csrf_token %}
+        <input type="hidden" name="form_kind" value="reply">
+        <div class="mb-3">
+          <label class="form-label">Your reply</label>
+          <textarea name="message" rows="5" class="form-control dvz-input" placeholder="Type your reply..." required></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Attachment (optional)</label>
+          <input type="file" name="attachment" class="form-control dvz-input" accept=".png,.jpg,.jpeg,.pdf,.zip,.txt,.log">
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn dvz-btn-gradient px-4">Send Reply</button>
+          <a class="btn btn-outline-secondary" href="?action=close">Close Ticket</a>
+        </div>
+      </form>
+    {% else %}
+      <div class="dvz-empty text-center p-4 rounded-4">This ticket is closed.</div>
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+  .dvz-surface{ background:linear-gradient(180deg,#e8fff6 0%, #fafffc 100%); border-radius:16px; }
+  .text-gradient{ background:linear-gradient(90deg,#00b37d,#2dd4bf,#00b37d); background-clip: text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .dvz-input{ height:48px; background:#fff; border:1px solid #e6f5ef; border-radius:12px; }
+  .dvz-input:focus{ border-color:#b6f2dc; box-shadow:0 0 0 .25rem rgba(0,179,125,.18); }
+
+  .dvz-table-wrapper{ background:#fff; border-radius:16px; box-shadow:0 5px 20px rgba(0,0,0,.05); overflow:hidden; }
+  .dvz-table th{ background:#f3fff8; border-bottom:2px solid #d9f7e6; width:180px; }
+  .dvz-table td{ border-color:#e8f9ef !important; }
+
+  .bg-success-subtle{ background:#d9f7e6 !important; }
+  .bg-warning-subtle{ background:#fff4d5 !important; }
+  .bg-primary-subtle{ background:#e6f0ff !important; }
+  .bg-secondary-subtle{ background:#f3f5f7 !important; }
+
+  .dvz-btn-gradient{ background:linear-gradient(90deg,#00c896,#34d399); color:#fff; border:none; border-radius:12px; box-shadow:0 6px 16px rgba(0,200,150,.25); }
+
+  /* Chat style */
+  .dvz-msg{ background:#fff; border:1px solid #e6f5ef; border-radius:14px; padding:12px 14px; margin-bottom:10px; }
+  .dvz-msg-user{ border-left:4px solid #34d399; }
+  .dvz-msg-staff{ border-left:4px solid #60a5fa; }
+  .dvz-msg-head{ display:flex; justify-content:space-between; margin-bottom:6px; }
+  .dvz-msg-body pre{ white-space:pre-wrap; font-family:inherit; background:transparent; }
+</style>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-center mt-5">
+  <div class="card shadow-sm rounded-4 p-4" style="max-width: 400px; width: 100%; background-color: #f3e8ff;">
+    <h2 class="text-center mb-4 fw-bold" style="color: #3a2f5a;">Create Account</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <div class="mb-3">
+          <label for="{{ field.id_for_label }}" class="form-label fw-semibold" style="color: #3a2f5a;">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-unique w-100 fw-semibold text-white py-2 rounded-3">
+        Register
+      </button>
+    </form>
+  </div>
+</div>
+
+<style>
+  form input, form select, form textarea {
+    border-radius: 0.5rem !important;
+    border: 1.5px solid #c6b7ff !important;
+    padding: 0.75rem 1rem !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  form input:focus, form select:focus, form textarea:focus {
+    border-color: #8a4fff !important;
+    box-shadow: 0 0 10px #8a4fff88 !important;
+    outline: none !important;
+  }
+
+  .btn-unique {
+    background: linear-gradient(135deg, #8a4fff, #d63aff);
+    border: none;
+    box-shadow: 0 4px 12px rgba(138, 79, 255, 0.4);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .btn-unique:hover {
+    background: linear-gradient(135deg, #d63aff, #8a4fff);
+    box-shadow: 0 6px 20px rgba(214, 58, 255, 0.6);
+  }
+</style>
+{% endblock %}

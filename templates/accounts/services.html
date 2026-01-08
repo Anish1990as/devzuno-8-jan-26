@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="py-4 dvz-surface">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+      <div>
+        <h3 class="fw-bold text-gradient m-0">Your Services</h3>
+        <p class="text-muted m-0">All your active & past subscriptions in one place.</p>
+      </div>
+      <a href="/pricing/" class="btn dvz-btn-gradient px-4 fw-semibold">+ New Service</a>
+    </div>
+
+    <!-- Table / Cards -->
+    {% if items %}
+      <div class="dvz-table-wrapper">
+        <table class="table align-middle dvz-table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Status</th>
+              <th>Start Date</th>
+              <th>Renewal</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in items %}
+              <tr>
+                <td>
+                  <div class="fw-semibold">{{ s.plan_name|default:"Custom Plan" }}</div>
+                  <div class="small text-muted">{{ s.category|default:"-" }}</div>
+                </td>
+                <td>
+                  {% if s.status == "active" %}
+                    <span class="badge bg-success-subtle text-success px-3 py-2">Active</span>
+                  {% elif s.status == "pending" %}
+                    <span class="badge bg-warning-subtle text-warning px-3 py-2">Pending</span>
+                  {% elif s.status == "expired" %}
+                    <span class="badge bg-danger-subtle text-danger px-3 py-2">Expired</span>
+                  {% else %}
+                    <span class="badge bg-secondary-subtle text-muted px-3 py-2">N/A</span>
+                  {% endif %}
+                </td>
+                <td>{{ s.start_date|date:"M d, Y" }}</td>
+                <td>{{ s.next_renewal|date:"M d, Y" }}</td>
+                <td>₹{{ s.amount|floatformat:2 }}</td>
+                <td>
+                  <a href="{% url 'accounts:change_plan' %}?id={{ s.id }}" class="btn btn-sm btn-outline-primary rounded-pill">Manage</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="dvz-empty text-center p-5 rounded-4 shadow-sm">
+        <div class="fs-1 mb-2">🧩</div>
+        <h5 class="fw-semibold mb-1">No Active Services</h5>
+        <p class="text-muted mb-3">You haven’t purchased any services yet.</p>
+        <a href="/pricing/" class="btn dvz-btn-gradient px-4">Browse Plans</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  /* Surface background (light mint green tone) */
+  .dvz-surface {
+    background: linear-gradient(180deg, #e9fff4 0%, #f6fff9 100%);
+    border-radius: 16px;
+  }
+
+  /* Gradient heading */
+  .text-gradient {
+    background: linear-gradient(90deg, #00b37d, #2dd4bf, #00b37d);
+    background-clip: text; 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Table styling */
+  .dvz-table-wrapper {
+    background: #fff;
+    border-radius: 16px;
+    overflow-x: auto;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .dvz-table th {
+    background: #f9fffc;
+    color: #333;
+    font-weight: 600;
+    border-bottom: 2px solid #e3f9ee;
+  }
+
+  .dvz-table td {
+    border-color: #eaf9f1 !important;
+    vertical-align: middle;
+  }
+
+  /* Buttons */
+  .dvz-btn-gradient {
+    background: linear-gradient(90deg, #00c896, #34d399);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 200, 150, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .dvz-btn-gradient:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(0, 200, 150, 0.3);
+  }
+
+  /* Empty state */
+  .dvz-empty {
+    background: #fff;
+    border: 1px solid #e1f6ec;
+  }
+
+  /* Badges */
+  .bg-success-subtle {
+    background: #d9f7e6 !important;
+  }
+
+  .bg-warning-subtle {
+    background: #fff4d5 !important;
+  }
+
+  .bg-danger-subtle {
+    background: #ffe3e3 !important;
+  }
+
+  .bg-secondary-subtle {
+    background: #f3f5f7 !important;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    .dvz-table th, .dvz-table td {
+      font-size: 14px;
+      padding: 10px;
+    }
+    .dvz-btn-gradient {
+      width: 100%;
+    }
+  }
+</style>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+# Render Blueprint - render.yaml
+# https://render.com/docs/blueprint-spec
+
+databases:
+  - name: devzuno-db
+    plan: free
+    databaseName: devzuno
+    user: devzuno
+
+services:
+  - type: web
+    name: devzuno
+    runtime: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: daphne -b 0.0.0.0 -p $PORT devzuno.asgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: devzuno-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.11.4
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"

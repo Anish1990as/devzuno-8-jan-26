@@ -1,0 +1,63 @@
+[
+  {
+    "model": "siteconfig.sitesettings",
+    "pk": 1,
+    "fields": {
+      "company_name": "Devzuno Technologies",
+      "whatsapp": "+919219317352",
+      "support_email": "support@devzuno.com",
+      "razorpay_mode": "demo",
+      "razorpay_key_id": "",
+      "razorpay_key_secret": "",
+      "logo_text": "Devzuno",
+      "hero_title": "Build, launch & manage your digital business",
+      "hero_subtitle": "Websites, apps, domains, invoices, tickets \u2014 all in one platform."
+    }
+  },
+  {
+    "model": "core.pricingplan",
+    "pk": 1,
+    "fields": {
+      "name": "Starter",
+      "price_text": "\u20b94,999 / one-time",
+      "features": "Landing page + 3 sections\\nBasic contact form\\nClient login links",
+      "highlight": false
+    }
+  },
+  {
+    "model": "core.pricingplan",
+    "pk": 2,
+    "fields": {
+      "name": "Pro",
+      "price_text": "\u20b914,999 / setup",
+      "features": "Full website (5\u20138 pages)\\nOrders & Invoices\\nRazorpay demo integration",
+      "highlight": true
+    }
+  },
+  {
+    "model": "core.pricingplan",
+    "pk": 3,
+    "fields": {
+      "name": "Business",
+      "price_text": "Custom",
+      "features": "Projects + Tickets\\nDomain search API\\nLive payment gateway",
+      "highlight": false
+    }
+  },
+  {
+    "model": "core.portfolioitem",
+    "pk": 1,
+    "fields": {
+      "title": "SaaS Landing",
+      "image_url": "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1200&auto=format&fit=crop"
+    }
+  },
+  {
+    "model": "core.testimonial",
+    "pk": 1,
+    "fields": {
+      "author": "Ankit Sharma",
+      "quote": "Super fast delivery and clean code. Our invoices and payments are organized."
+    }
+  }
+]

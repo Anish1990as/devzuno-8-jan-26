@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ABOUT HERO -->
+<section class="py-5 bg-light text-center">
+  <div class="container">
+    <h1 class="fw-bold display-5 text-gradient mb-3">About Devzuno Technologies</h1>
+    <p class="lead text-muted mx-auto" style="max-width: 700px;">
+      We’re not just another tech company — we’re your digital innovation partner.
+      At Devzuno Technologies, we craft scalable, beautiful, and intelligent solutions
+      that help brands grow, connect, and inspire.
+    </p>
+  </div>
+</section>
+
+<!-- OUR MISSION -->
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-md-6">
+        <img src="{% static 'images/about-mission.jpg' %}" alt="Our Mission" class="img-fluid rounded-4 shadow-sm">
+      </div>
+      <div class="col-md-6">
+        <h2 class="fw-semibold mb-3">Our Mission 🚀</h2>
+        <p class="text-muted">
+          To empower startups and enterprises with high-quality web, mobile, and AI-powered solutions
+          that drive growth, efficiency, and innovation.
+        </p>
+        <ul class="list-unstyled text-muted">
+          <li>✅ Custom Web & App Development</li>
+          <li>✅ AI & Automation Integration</li>
+          <li>✅ Business Branding & Digital Presence</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR VALUES -->
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-4">Our Core Values 💡</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 bg-white shadow-sm h-100">
+          <h5 class="fw-semibold mb-2">Innovation</h5>
+          <p class="text-muted small">We push creative and technical boundaries to deliver unique digital experiences.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 bg-white shadow-sm h-100">
+          <h5 class="fw-semibold mb-2">Integrity</h5>
+          <p class="text-muted small">We believe in transparency, trust, and long-term relationships with our clients.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 bg-white shadow-sm h-100">
+          <h5 class="fw-semibold mb-2">Excellence</h5>
+          <p class="text-muted small">Every project we deliver meets the highest standards of quality and precision.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR TEAM -->
+<section class="py-5">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-4">Meet Our Team 👥</h2>
+    <p class="text-muted mb-5" style="max-width: 700px; margin: 0 auto;">
+      Behind every successful project is a team of passionate developers, designers, and strategists who love building digital magic.
+    </p>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <img src="{% static 'images/team1.jpg' %}" class="card-img-top" alt="Team Member">
+          <div class="card-body">
+            <h6 class="fw-semibold mb-1">Anish Kushwaha</h6>
+            <p class="text-muted small mb-0">Founder & CEO</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <img src="{% static 'images/team2.jpg' %}" class="card-img-top" alt="Team Member">
+          <div class="card-body">
+            <h6 class="fw-semibold mb-1">Priya Sharma</h6>
+            <p class="text-muted small mb-0">Lead Developer</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <img src="{% static 'images/team3.jpg' %}" class="card-img-top" alt="Team Member">
+          <div class="card-body">
+            <h6 class="fw-semibold mb-1">Rohit Verma</h6>
+            <p class="text-muted small mb-0">UI/UX Designer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT CTA -->
+<section class="py-5 text-center bg-gradient text-white" style="background: linear-gradient(135deg,#5b7cfa,#9b5bfa);">
+  <div class="container">
+    <h2 class="fw-bold mb-3">Let’s Build Something Great Together 💫</h2>
+    <p class="text-white-50 mb-4">Got an idea? Let's transform it into reality with Devzuno Technologies.</p>
+    <a href="/contact/" class="btn btn-light btn-lg px-5 rounded-pill">Contact Us</a>
+  </div>
+</section>
+
+{% endblock %}

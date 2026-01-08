@@ -1,0 +1,407 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<!-- HERO -->
+<section class="dvz-hero position-relative overflow-hidden rounded-4 mb-4">
+  <div class="dvz-hero__bg"></div>
+  <div class="dvz-hero__noise"></div>
+
+  <div class="container py-5 py-lg-6 position-relative">
+    <div class="row align-items-center">
+
+      <!-- LEFT CONTENT -->
+      <div class="col-lg-7">
+        <span class="badge dvz-badge-glass px-3 py-2 mb-3 rounded-pill">Devzuno Technologies</span>
+        <h1 class="display-5 fw-bold text-white lh-tight">{{ SITE.hero_title }}</h1>
+        <p class="lead text-white-50 mt-3">{{ SITE.hero_subtitle }}</p>
+
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <a class="btn btn-light btn-lg px-4 rounded-3 shadow-sm" href="/pricing/">View Pricing</a>
+          <a class="btn btn-outline-light btn-lg px-4 rounded-3" href="/contact/">Contact Sales</a>
+        </div>
+
+        <div class="d-flex flex-wrap gap-3 mt-3 small text-white-50">
+          <span>WhatsApp: {{ SITE.whatsapp }}</span><span>•</span><span>Email: {{ SITE.support_email }}</span>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN (Dashboard Preview Box) -->
+      <div class="col-lg-5 d-none d-lg-block">
+
+        {% if request.user.is_authenticated %}
+
+        <!-- LOGGED-IN PREVIEW BOX -->
+        <div class="dvz-glass rounded-4 p-4 p-lg-5 ms-lg-4">
+
+          <!-- PROFILE ROW -->
+          <div class="d-flex align-items-center mb-3">
+
+            <!-- AVATAR -->
+            <div class="dvz-avatar me-3">
+
+              {% if request.user.profile.avatar %}
+                <img src="{{ request.user.profile.avatar.url }}"
+                     class="rounded-circle object-fit-cover">
+              {% else %}
+                {% with initials=request.user.first_name|default:request.user.username|slice:":2" %}
+                  <div class="dvz-initials">{{ initials|upper }}</div>
+                {% endwith %}
+              {% endif %}
+
+            </div>
+
+            <!-- NAME + SUBTEXT -->
+            <div class="flex-grow-1">
+              <h6 class="mb-1 text-white">Client Dashboard Preview</h6>
+
+              <strong class="d-block text-white">
+                {{ request.user.get_full_name|default:request.user.username }}
+              </strong>
+
+              <span class="small text-white-50">
+                Welcome back — manage your services & billing.
+              </span>
+            </div>
+
+            <a href="/client/profile/" class="small text-white-50 text-decoration-none ms-2">Profile</a>
+          </div>
+
+        
+           
+
+          <a href="/dashboard/" class="btn btn-sm btn-outline-light">Open Dashboard</a>
+        </div>
+
+        {% else %}
+
+        <!-- GUEST CTA -->
+        <div class="dvz-glass rounded-4 p-4 p-lg-5 ms-lg-4 text-center">
+          <h6 class="mb-2 text-white">See your Dashboard after login</h6>
+          <p class="small text-white-50 mb-3">Login to access projects, invoices and tickets.</p>
+          <div class="d-flex justify-content-center gap-2">
+            <a href="/client/login/?next=/dashboard/" class="btn btn-light btn-sm">Login</a>
+            <a href="/client/register/" class="btn btn-outline-light btn-sm">Create Account</a>
+          </div>
+        </div>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="dvz-shape-blur"></div>
+</section>
+
+
+
+
+<!-- ===================== FEATURE CARDS ====================== -->
+<section class="mt-4">
+  <div class="row g-4">
+
+    <!-- CARD 1 -->
+    <div class="col-md-4">
+      <a href="{% if user.is_authenticated %}/dashboard/{% else %}/client/login/?next=/dashboard/{% endif %}"
+         class="text-decoration-none card-click">
+
+        <article class="dvz-feature feature-card h-100 p-4 rounded-4 border position-relative">
+          <div class="d-flex align-items-start">
+
+            <span class="dvz-icon-circle me-3 icon-glow">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <path d="M4 13h7V4H4v9zm0 7h7v-5H4v5zm9 0h7V11h-7v9zm0-18v5h7V2h-7z" fill="currentColor"/>
+              </svg>
+            </span>
+
+            <div>
+              <h5 class="mb-1 text-dark">Client Dashboard</h5>
+              <p class="mb-1 text-secondary">Login, services & project tracking.</p>
+
+              {% if user.is_authenticated %}
+                <span class="badge bg-success-soft text-success">Manage your account</span>
+              {% else %}
+                <span class="badge bg-danger-soft text-danger">Login required</span>
+              {% endif %}
+            </div>
+
+          </div>
+
+          <div class="mt-3">
+            {% if user.is_authenticated %}
+              <a href="/dashboard/" class="btn btn-primary-elev btn-sm w-100">Open Dashboard</a>
+            {% else %}
+              <a href="/client/login/?next=/dashboard/" class="btn btn-primary-elev btn-sm w-100">Login to continue</a>
+            {% endif %}
+          </div>
+
+          <span class="feature-glow"></span>
+        </article>
+      </a>
+    </div>
+
+
+
+    <!-- CARD 2 -->
+    <div class="col-md-4">
+      <a href="{% if user.is_authenticated %}/client/invoices/{% else %}/client/login/?next=/client/invoices/{% endif %}"
+         class="text-decoration-none card-click">
+        <article class="dvz-feature feature-card h-100 p-4 rounded-4 border position-relative">
+          <div class="d-flex align-items-start">
+            <span class="dvz-icon-circle me-3 icon-glow">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <path d="M3 6a2 2 0 0 1 2-2h14v16H5a2 2 0 0 1-2-2V6zm4 3h8v2H7V9zm0 4h8v2H7v-2z" fill="currentColor"/>
+              </svg>
+            </span>
+
+            <div>
+              <h5 class="mb-1 text-dark">Orders & Invoices</h5>
+              <p class="mb-1 text-secondary">Payments & billing history.</p>
+
+              {% if user.is_authenticated %}
+                <span class="badge bg-success-soft text-success">View your payments</span>
+              {% else %}
+                <span class="badge bg-danger-soft text-danger">Login required</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mt-3">
+            {% if user.is_authenticated %}
+              <a href="/client/invoices/" class="btn btn-primary-elev btn-sm w-100">View Invoices</a>
+            {% else %}
+              <a href="/client/login/?next=/client/invoices/"
+                 class="btn btn-primary-elev btn-sm w-100">Login to continue</a>
+            {% endif %}
+          </div>
+        </article>
+      </a>
+    </div>
+
+
+
+    <!-- CARD 3 -->
+    <div class="col-md-4">
+      <a href="{% if user.is_authenticated %}/client/domains/{% else %}/client/login/?next=/client/domains/{% endif %}"
+         class="text-decoration-none card-click">
+        <article class="dvz-feature feature-card h-100 p-4 rounded-4 border position-relative">
+
+          <div class="d-flex align-items-start">
+            <span class="dvz-icon-circle me-3 icon-glow">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2z" fill="currentColor"/>
+              </svg>
+            </span>
+
+            <div>
+              <h5 class="mb-1 text-dark">Domains & Support</h5>
+              <p class="mb-1 text-secondary">Domain tools & support tickets.</p>
+
+              {% if user.is_authenticated %}
+                <span class="badge bg-success-soft text-success">Access tools</span>
+              {% else %}
+                <span class="badge bg-danger-soft text-danger">Login required</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mt-3">
+            {% if user.is_authenticated %}
+              <a href="/client/domains/" class="btn btn-primary-elev btn-sm w-100">Open Tools</a>
+            {% else %}
+              <a href="/client/login/?next=/client/domains/"
+                 class="btn btn-primary-elev btn-sm w-100">Login to continue</a>
+            {% endif %}
+          </div>
+
+        </article>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===================== SERVICES (ADMIN) ===================== -->
+<section class="mt-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">Our Services</h2>
+    <p class="text-muted">AI-driven solutions & scalable digital products</p>
+  </div>
+
+  <div class="row g-4">
+    {% for s in services %}
+    <div class="col-md-4">
+      <div class="dvz-feature h-100 p-4 text-center">
+        {% if s.image %}
+          <img src="{{ s.image.url }}" class="img-fluid mb-3 rounded" style="max-height:120px;">
+        {% endif %}
+        <h5>{{ s.title }}</h5>
+        <p class="text-muted small">{{ s.description }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+<!-- ===================== WHY DEVZUNO (ADMIN) ===================== -->
+<section class="mt-5 bg-light rounded-4 p-4 p-lg-5">
+  <div class="row align-items-center">
+    <div class="col-lg-6">
+      <h3 class="fw-bold">Why Devzuno Technologies?</h3>
+      <ul class="text-muted mt-3">
+        {% for w in why_points %}
+          <li class="d-flex align-items-center gap-2">
+            {% if w.image %}
+              <img src="{{ w.image.url }}" width="24" height="24">
+            {% endif %}
+            {{ w.point }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-lg-6 text-center">
+      <strong class="display-6 text-primary">100+</strong>
+      <p class="text-muted">Projects & Experiments Delivered</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== HOW WE WORK (ADMIN) ===================== -->
+<section class="mt-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">How We Work</h2>
+    <p class="text-muted">Simple, transparent & result-driven process</p>
+  </div>
+
+  <div class="row g-4 text-center">
+    {% for step in work_steps %}
+      <div class="col-md-3">
+        {% if step.image %}
+          <img src="{{ step.image.url }}" class="img-fluid mb-2" style="max-height:80px;">
+        {% endif %}
+        <strong>{{ step.step_number }}.</strong>
+        <p>{{ step.title }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+<!-- ===================== OUR WORK (ADMIN) ===================== -->
+<section class="mt-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">Our Work</h2>
+    <p class="text-muted">Some of our recent builds</p>
+  </div>
+
+  <div class="row g-4">
+    {% for p in portfolio_items %}
+      <div class="col-md-4">
+        <div class="dvz-feature p-3 text-center">
+          {% if p.image %}
+            <img src="{{ p.image.url }}" class="img-fluid mb-2 rounded">
+          {% endif %}
+          <h6>{{ p.title }}</h6>
+          <p class="small text-muted">{{ p.description }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+
+<!-- CTA SECTION -->
+<section class="mt-5">
+  <div class="card border-0 shadow-sm rounded-4 p-4 bg-gradient-soft">
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+      <div>
+        <h5 class="mb-1">Ready to start?</h5>
+        <div class="text-muted">Transforming ideas into digital reality — let's build your product together.</div>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="/contact/" class="btn btn-dark btn-lg">Start Your Project</a>
+        <a href="/portfolio/" class="btn btn-outline-primary btn-lg">View Our Work</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- ====================== CSS ====================== -->
+<style>
+
+/* HERO */
+.dvz-hero{
+  background: linear-gradient(135deg, #091026 0%, #11213d 50%, #1b2b4a 100%);
+  color: #fff;
+  padding-bottom: 3rem;
+}
+.dvz-badge-glass{
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #e0edff;
+  backdrop-filter: blur(6px);
+}
+
+/* GLASS BOX */
+.dvz-glass{
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 10px 30px rgba(8,10,20,0.4);
+}
+
+/* AVATAR + INITIALS */
+.dvz-avatar img{
+  width:56px; height:56px; object-fit:cover;
+  border-radius:50%; border:2px solid rgba(255,255,255,0.06);
+}
+.dvz-initials{
+  width:56px; height:56px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,0.07);
+  color:white; font-weight:700; font-size:20px;
+}
+
+/* FEATURE CARDS */
+.dvz-feature{
+  background:white;
+  border-radius:14px;
+  box-shadow:0 8px 28px rgba(12,18,45,0.06);
+  transition:.2s;
+}
+.card-click:hover .dvz-feature{
+  transform:translateY(-8px);
+  box-shadow:0 22px 45px rgba(12,18,45,0.12);
+}
+.feature-glow{
+  position:absolute; right:-20px; top:-20px;
+  width:110px; height:110px;
+  background: radial-gradient(circle, rgba(99,102,241,0.18), transparent);
+  filter:blur(12px);
+}
+
+/* CTA BG */
+.bg-gradient-soft{
+  background: linear-gradient(90deg, rgba(91,124,250,0.08), rgba(155,91,250,0.03));
+}
+.btn-primary-elev{
+  background: linear-gradient(90deg,#5b7cfa,#9b5bfa);
+  color:white; border:none;
+  font-weight:700;
+  border-radius:8px;
+  box-shadow:0 6px 20px rgba(91,124,250,0.2);
+}
+
+
+</style>
+
+{% endblock %}

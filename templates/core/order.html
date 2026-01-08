@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .dz-gradient-bg {
+    background: radial-gradient(circle at top left, #4f46e5, #0f172a);
+  }
+  .dz-card-glass {
+    background: rgba(15, 23, 42, 0.85);
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: 0 22px 45px rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(16px);
+  }
+  .dz-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .dz-pill-badge {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+  .dz-input,
+  .dz-select {
+    background-color: rgba(15, 23, 42, 0.75);
+    border-color: rgba(148, 163, 184, 0.6);
+    color: #e5e7eb;
+  }
+  .dz-input::placeholder {
+    color: #6b7280;
+  }
+  .dz-input:focus,
+  .dz-select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 0.15rem rgba(99, 102, 241, 0.35);
+  }
+  .dz-btn-primary {
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    border: none;
+    box-shadow: 0 14px 30px rgba(79, 70, 229, 0.55);
+  }
+  .dz-btn-primary:hover {
+    background: linear-gradient(135deg, #4f46e5, #9333ea);
+  }
+  .dz-domain-input {
+    background-color: rgba(15, 23, 42, 0.75);
+    border-color: rgba(148, 163, 184, 0.6);
+    color: #e5e7eb;
+  }
+  .dz-domain-input::placeholder {
+    color: #6b7280;
+  }
+  .dz-domain-input:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 0.15rem rgba(34, 197, 94, 0.35);
+  }
+</style>
+
+<div class="dz-gradient-bg min-vh-100 py-5">
+  <div class="container py-3">
+    <div class="row justify-content-center mb-4">
+      <div class="col-lg-8 text-center text-light">
+        <span class="badge bg-dark bg-opacity-75 rounded-pill dz-pill-badge mb-2">
+          DEVZUNO · ORDER DEMO
+        </span>
+        <h2 class="fw-semibold mb-2">Place an Order</h2>
+        <p class="text-secondary mb-0">
+          Simulate a premium ordering experience with invoice generation and Razorpay demo payment.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Order form -->
+      <div class="col-md-6">
+        <div class="dz-card-glass h-100 p-4 text-light">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Project details</h5>
+            <span class="badge bg-success bg-opacity-75 dz-pill-badge">
+              Demo · No real charge
+            </span>
+          </div>
+          <p class="text-secondary small mb-4">
+            Enter basic details and choose a package to experience the flow your clients will see.
+          </p>
+
+          <form>
+            <div class="mb-3">
+              <label class="form-label dz-label text-secondary">Full name</label>
+              <input type="text"
+                     class="form-control dz-input"
+                     placeholder="John Doe">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label dz-label text-secondary">Email address</label>
+              <input type="email"
+                     class="form-control dz-input"
+                     placeholder="you@company.com">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label dz-label text-secondary">Select a package</label>
+              <select class="form-select dz-select">
+                <option selected disabled>Choose a plan</option>
+                <option>Starter Website</option>
+                <option>Pro Website</option>
+                <option>Business Suite</option>
+              </select>
+              <div class="form-text text-secondary mt-1">
+                You can later connect this to your actual pricing and backend order model.
+              </div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <a class="btn dz-btn-primary text-white fw-semibold py-2"
+                 href="https://razorpay.com/payment-button/demo/"
+                 target="_blank"
+                 rel="noopener">
+                Pay via Razorpay (Demo)
+              </a>
+              <div class="form-text text-secondary">
+                This is a sandbox/demo payment link. Replace with your live Razorpay integration before going live.
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Domain search -->
+      <div class="col-md-6">
+        <div class="dz-card-glass h-100 p-4 text-light">
+          <h5 class="mb-1">Check domain availability</h5>
+          <p class="text-secondary small mb-3">
+            Validate your brand name with a quick domain availability check before finalizing the order.
+          </p>
+
+          <label class="form-label dz-label text-secondary mb-1">Preferred domain</label>
+          <div class="input-group mb-2">
+            <input id="domainInput"
+                   type="text"
+                   class="form-control dz-domain-input"
+                   placeholder="yourbrand.com">
+            <button class="btn btn-outline-success"
+                    type="button"
+                    onclick="checkDomain()">
+              Search
+            </button>
+          </div>
+          <div id="domainResult" class="small text-secondary"></div>
+
+          <hr class="border-secondary border-opacity-25 my-4">
+
+          <ul class="small text-secondary mb-0">
+            <li>Use a short, memorable name.</li>
+            <li>Prefer .com or .in for Indian brands.</li>
+            <li>Check spelling carefully before purchase.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

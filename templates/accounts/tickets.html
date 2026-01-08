@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="py-4 dvz-surface">
+  <div class="container">
+
+    <!-- Flash Messages -->
+    {% if messages %}
+      <div class="mb-3">
+        {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} mb-2" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+      <div>
+        <h3 class="fw-bold text-gradient m-0">Support Tickets</h3>
+        <p class="text-muted m-0">Open, track and respond to your support requests.</p>
+      </div>
+      <button
+        type="button"
+        class="btn dvz-btn-gradient px-4 fw-semibold"
+        data-bs-toggle="modal"
+        data-bs-target="#newTicketModal"
+        id="openNewTicketBtn"
+      >
+        + New Ticket
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="d-flex gap-2 flex-wrap mb-3">
+      <input id="tq" type="search" class="form-control dvz-input" style="max-width:280px" placeholder="Search subject/status...">
+      <div class="ms-auto d-flex gap-2">
+        <a href="?status=open"     class="btn btn-sm btn-outline-success  rounded-pill {% if request.GET.status == 'open' %}active{% endif %}">Open</a>
+        <a href="?status=pending"  class="btn btn-sm btn-outline-warning  rounded-pill {% if request.GET.status == 'pending' %}active{% endif %}">Pending</a>
+        <a href="?status=answered" class="btn btn-sm btn-outline-primary  rounded-pill {% if request.GET.status == 'answered' %}active{% endif %}">Answered</a>
+        <a href="?status=closed"   class="btn btn-sm btn-outline-secondary rounded-pill {% if request.GET.status == 'closed' %}active{% endif %}">Closed</a>
+        <a href="{% url 'accounts:tickets' %}" class="btn btn-sm btn-outline-dark rounded-pill {% if not request.GET.status %}active{% endif %}">All</a>
+      </div>
+    </div>
+
+    <!-- Ticket List -->
+    {% if tickets %}
+      <div class="dvz-table-wrapper">
+        <table class="table align-middle dvz-table" id="ticketTable">
+          <thead>
+            <tr>
+              <th>Ticket</th>
+              <th>Department</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Last Update</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in tickets %}
+              <tr>
+                <td>
+                  <div class="fw-semibold">#{{ t.id }} · {{ t.subject }}</div>
+                  <div class="small text-muted">Opened {{ t.created_at|date:"M d, Y H:i" }}</div>
+                </td>
+                <td>{{ t.get_department_display }}</td>
+                <td>
+                  {% if t.priority == "high" %}
+                    <span class="badge bg-danger-subtle text-danger px-3 py-2">High</span>
+                  {% elif t.priority == "medium" %}
+                    <span class="badge bg-warning-subtle text-warning px-3 py-2">Medium</span>
+                  {% else %}
+                    <span class="badge bg-success-subtle text-success px-3 py-2">Low</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if t.status == "open" %}
+                    <span class="badge bg-success-subtle text-success px-3 py-2">Open</span>
+                  {% elif t.status == "pending" %}
+                    <span class="badge bg-warning-subtle text-warning px-3 py-2">Pending</span>
+                  {% elif t.status == "answered" %}
+                    <span class="badge bg-primary-subtle text-primary px-3 py-2">Answered</span>
+                  {% else %}
+                    <span class="badge bg-secondary-subtle text-muted px-3 py-2">Closed</span>
+                  {% endif %}
+                </td>
+                <td>{{ t.updated_at|date:"M d, Y H:i" }}</td>
+                <td class="text-end">
+                  <a href="{% url 'accounts:ticket_detail' t.id %}" class="btn btn-sm btn-outline-primary rounded-pill">View</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="dvz-empty text-center p-5 rounded-4 shadow-sm">
+        <div class="fs-1 mb-2">🛟</div>
+        <h5 class="fw-semibold mb-1">No Tickets Yet</h5>
+        <p class="text-muted mb-3">Need help? Open your first support ticket.</p>
+        <button class="btn dvz-btn-gradient px-4" data-bs-toggle="modal" data-bs-target="#newTicketModal">Create Ticket</button>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- ========== New Ticket Modal ========== -->
+<div class="modal fade" id="newTicketModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <form method="post" enctype="multipart/form-data" class="modal-content" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="form_kind" value="create_ticket">
+      <div class="modal-header">
+        <h5 class="modal-title">New Support Ticket</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body row g-3">
+        <div class="col-md-8">
+          <label class="form-label">Subject</label>
+          <input type="text" name="subject" class="form-control dvz-input" placeholder="Brief summary" required maxlength="150">
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Department</label>
+          <select name="department" class="form-select dvz-input">
+            <!-- must match your model choices keys -->
+            <option value="general">General</option>
+            <option value="billing">Billing</option>
+            <option value="technical">Technical</option>
+            <option value="sales">Sales</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Priority</label>
+          <select name="priority" class="form-select dvz-input">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Message</label>
+          <textarea name="message" class="form-control dvz-input" rows="5" placeholder="Describe your issue..." required></textarea>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Attachment (optional)</label>
+          <input type="file" name="attachment" class="form-control dvz-input" accept=".png,.jpg,.jpeg,.pdf,.zip,.txt,.log">
+          <div class="form-text">Max ~5MB</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn dvz-btn-gradient px-4">Submit Ticket</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========== STYLE ========== -->
+<style>
+  .dvz-surface{ background: linear-gradient(180deg,#e8fff6 0%, #fafffc 100%); border-radius:16px; }
+  .text-gradient{ background: linear-gradient(90deg,#00b37d,#2dd4bf,#00b37d); background-clip: text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+  .dvz-input{ height:48px; background:#fff; border:1px solid #e6f5ef; border-radius:12px; }
+  .dvz-input:focus{ border-color:#b6f2dc; box-shadow:0 0 0 .25rem rgba(0,179,125,.18); }
+
+  .dvz-btn-gradient{
+    background: linear-gradient(90deg,#00c896,#34d399);
+    color:#fff; border:none; border-radius:12px;
+    box-shadow:0 6px 16px rgba(0,200,150,.25);
+  }
+  .dvz-btn-gradient:hover{ filter:brightness(1.05); }
+
+  .dvz-table-wrapper{ background:#fff; border-radius:16px; overflow-x:auto; box-shadow:0 5px 20px rgba(0,0,0,.05); }
+  .dvz-table th{ background:#f3fff8; border-bottom:2px solid #d9f7e6; font-weight:600; }
+  .dvz-table td{ border-color:#e8f9ef !important; }
+
+  .bg-success-subtle{ background:#d9f7e6 !important; }
+  .bg-warning-subtle{ background:#fff4d5 !important; }
+  .bg-danger-subtle{  background:#ffe3e3 !important; }
+  .bg-primary-subtle{ background:#e6f0ff !important; }
+  .bg-secondary-subtle{ background:#f3f5f7 !important; }
+
+  .dvz-empty{ background:#fff; border:1px solid #e1f6ec; }
+
+  @media (max-width: 768px){
+    .dvz-table th, .dvz-table td { font-size:14px; padding:10px; }
+  }
+</style>
+
+<!-- ========== SCRIPT ========== -->
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    // Client-side filter
+    const q = document.getElementById('tq');
+    const table = document.getElementById('ticketTable');
+    const rows = table ? table.querySelectorAll('tbody tr') : [];
+    if(q && rows.length){
+      q.addEventListener('input', function(){
+        const val = this.value.toLowerCase();
+        rows.forEach(r=>{
+          const text = r.innerText.toLowerCase();
+          r.style.display = text.includes(val) ? '' : 'none';
+        });
+      });
+    }
+
+    // Auto open modal if ?open=new or ?open=error
+    const params = new URLSearchParams(window.location.search);
+    const openParam = params.get('open');
+    if (openParam === 'new' || openParam === 'error') {
+      const modalEl = document.getElementById('newTicketModal');
+      if (modalEl) {
+        const m = new bootstrap.Modal(modalEl);
+        m.show();
+      }
+    }
+  });
+</script>
+
+{% endblock %}

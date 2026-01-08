@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="py-5 dvz-surface">
+  <div class="dvz-wrapper">
+
+    {% if messages %}
+      <div class="mb-3">
+        {% for message in messages %}
+          <div class="dvz-alert {% if message.tags %}dvz-alert-{{ message.tags }}{% else %}dvz-alert-info{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <div>
+        {% if profile and profile.avatar %}
+          <img src="{{ profile.avatar.url }}" class="rounded-circle dvz-avatar" alt="Avatar">
+        {% else %}
+          <div class="rounded-circle dvz-avatar dvz-avatar-fallback d-flex align-items-center justify-content-center">
+            <span class="fw-bold">{{ request.user.first_name|default:request.user.username|slice:":1"|upper }}</span>
+          </div>
+        {% endif %}
+      </div>
+      <div>
+        <h3 class="mb-1 dvz-title">Your Profile</h3>
+        <div class="text-muted">Manage your account, contact details and security.</div>
+      </div>
+    </div>
+
+    <div class="dvz-card mb-4">
+      <div class="card-body d-flex align-items-center gap-3 flex-wrap">
+        <div class="flex-grow-1">
+          <div class="fw-semibold fs-5 dvz-text-strong">
+            {{ request.user.get_full_name|default:request.user.username }}
+          </div>
+          <div class="text-muted small">
+            {% if request.user.email %}✉️ {{ request.user.email }}{% endif %}
+            {% if profile %}
+              {% if profile.country_code or profile.phone %}
+                &nbsp;·&nbsp;📞 {% if profile.country_code %}{{ profile.country_code }}{% endif %} {% if profile.phone %}{{ profile.phone }}{% endif %}
+              {% endif %}
+              {% if profile.city or profile.country %}
+                &nbsp;·&nbsp;📍 {% if profile.city %}{{ profile.city }}{% endif %}{% if profile.country %}{% if profile.city %}, {% endif %}{{ profile.country }}{% endif %}
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <a href="#" class="btn dvz-btn-outline dvz-edit-tab" data-tab="#tab-account">Edit Account</a>
+    <!-- <a href="#" class="btn dvz-btn-outline dvz-edit-tab" data-tab="#tab-contact">Edit Contact</a>
+          <a href="#" class="btn dvz-btn-subtle dvz-edit-tab" data-tab="#tab-security">Change Password</a> -->
+        </div>
+      </div>
+    </div>
+
+    <div id="dvz-edit-area" class="d-none">
+      <ul class="nav dvz-pills gap-2 mb-3" id="profileTabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="pill" href="#tab-account">Account</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#tab-contact">Contact & Address</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#tab-security">Security</a></li>
+        <li class="ms-auto"><button type="button" class="btn dvz-btn-subtle" id="dvz-cancel-edit">Close</button></li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- ACCOUNT -->
+        <div class="tab-pane fade show active" id="tab-account">
+          <form method="post" enctype="multipart/form-data" class="dvz-card">
+            {% csrf_token %}
+            <input type="hidden" name="form_kind" value="account">
+            <div class="card-body">
+              <label class="form-label dvz-label">First name</label>
+              <input type="text" name="first_name" class="form-control dvz-input mb-3" value="{{ request.user.first_name }}">
+              <label class="form-label dvz-label">Last name</label>
+              <input type="text" name="last_name" class="form-control dvz-input mb-3" value="{{ request.user.last_name }}">
+              <label class="form-label dvz-label">Email</label>
+              <input type="email" name="email" class="form-control dvz-input mb-3" value="{{ request.user.email }}">
+              <label class="form-label dvz-label">Avatar</label>
+              <input type="file" name="avatar" class="form-control dvz-input">
+              <div class="form-text">JPG/PNG, ~2MB max. (Optional)</div>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+              <button class="btn dvz-btn-gradient px-4">Save Account</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="tab-pane fade" id="tab-contact">
+          <form method="post" class="dvz-card" id="profileContactForm">
+            {% csrf_token %}
+            <input type="hidden" name="form_kind" value="profile">
+            <input type="hidden" name="country_code" id="id_profile_country_code" value="{{ profile.country_code|default:'+91' }}">
+            <div class="card-body">
+              <label class="form-label dvz-label">Phone</label>
+              <input type="tel" name="phone" id="id_profile_phone" class="form-control dvz-input mb-3" value="{{ profile.phone }}">
+              <label class="form-label dvz-label">WhatsApp</label>
+              <input type="tel" name="whatsapp" id="id_profile_whatsapp" class="form-control dvz-input mb-3" value="{{ profile.whatsapp }}">
+              <label class="form-label dvz-label">Address</label>
+              <input type="text" name="address" class="form-control dvz-input mb-3" value="{{ profile.address }}">
+              <label class="form-label dvz-label">City</label>
+              <input type="text" name="city" class="form-control dvz-input mb-3" value="{{ profile.city }}">
+              <label class="form-label dvz-label">State</label>
+              <input type="text" name="state" class="form-control dvz-input mb-3" value="{{ profile.state }}">
+              <label class="form-label dvz-label">Country</label>
+              <input type="text" name="country" class="form-control dvz-input mb-3" value="{{ profile.country }}">
+              <label class="form-label dvz-label">Pincode</label>
+              <input type="text" name="pincode" class="form-control dvz-input mb-3" value="{{ profile.pincode }}">
+              <label class="form-label dvz-label">Company (optional)</label>
+              <input type="text" name="company" class="form-control dvz-input mb-3" value="{{ profile.company }}">
+              <label class="form-label dvz-label">GST/VAT (optional)</label>
+              <input type="text" name="tax_id" class="form-control dvz-input" value="{{ profile.tax_id }}">
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+              <button class="btn dvz-btn-gradient px-4">Save Contact</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- SECURITY -->
+        <div class="tab-pane fade" id="tab-security">
+          <form method="post" class="dvz-card">
+            {% csrf_token %}
+            <input type="hidden" name="form_kind" value="security">
+            <div class="card-body">
+              <h6 class="dvz-text-strong mb-2">Change Password</h6>
+              <p class="text-muted mb-3">Update your password here.</p>
+              <label class="form-label dvz-label">Current password</label>
+              <input type="password" name="old_password" class="form-control dvz-input mb-3" required>
+              <label class="form-label dvz-label">New password</label>
+              <input type="password" name="new_password1" class="form-control dvz-input mb-3" required>
+              <label class="form-label dvz-label">Confirm new password</label>
+              <input type="password" name="new_password2" class="form-control dvz-input" required>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+              <button class="btn dvz-btn-gradient px-4">Update Password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- intl-tel-input -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/css/intlTelInput.css" />
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/intlTelInput.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const editArea = document.getElementById('dvz-edit-area');
+  const cancel = document.getElementById('dvz-cancel-edit');
+  document.querySelectorAll('.dvz-edit-tab').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      editArea.classList.remove('d-none');
+      const target = btn.dataset.tab || '#tab-account';
+      new bootstrap.Tab(document.querySelector(`[href="${target}"]`)).show();
+      window.scrollTo({ top: editArea.offsetTop - 80, behavior: 'smooth' });
+    });
+  });
+  if (cancel) cancel.addEventListener('click', () => editArea.classList.add('d-none'));
+});
+</script>
+
+<style>
+/* ===== Medium-centered layout ===== */
+.dvz-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #f5fff8 0%, #fafffb 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+}
+
+/* Background gradient behind wrapper */
+.dvz-surface {
+  background: linear-gradient(180deg, #ebfff3 0%, #f7fff9 100%);
+  min-height: 100vh;
+}
+
+/* Rest of theme reused */
+.dvz-title { color: #169a5d; font-weight: 700; }
+.dvz-avatar { width: 64px; height: 64px; border: 2px solid #d8fce4; box-shadow: 0 4px 10px rgba(22, 154, 93, 0.15); }
+.dvz-avatar-fallback { background: #eaffef; color: #137748; }
+
+.dvz-card { background: #fff; border: 1px solid #dff8e8; border-radius: 16px; box-shadow: 0 10px 25px rgba(26, 120, 69, 0.05); }
+
+.dvz-input {
+  border-radius: 10px;
+  border: 1px solid #c8f2d6;
+  background: #fcfffd;
+  height: 46px;
+}
+.dvz-input:focus {
+  border-color: #57d691;
+  box-shadow: 0 0 0 .2rem rgba(87,214,145,.2);
+}
+.dvz-label { color: #4d7a5c; font-weight: 500; }
+
+.dvz-btn-gradient {
+  background: linear-gradient(90deg, #2fc978, #6fe8a2);
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(47,201,120,0.25);
+}
+.dvz-btn-gradient:hover { filter: brightness(1.08); }
+
+.dvz-btn-outline {
+  border: 1px solid #6ee2a1;
+  color: #197b4d;
+  background: #fafffb;
+  border-radius: 10px;
+}
+.dvz-btn-outline:hover { background: #e8ffef; }
+
+.dvz-btn-subtle {
+  border: 1px solid #e3f7eb;
+  background: #f8fff9;
+  color: #568967;
+  border-radius: 10px;
+}
+.dvz-btn-subtle:hover { background: #edfff2; }
+
+.dvz-pills .nav-link {
+  border: 1px solid #d3f4df;
+  color: #197b4d;
+  border-radius: 999px;
+  background: #f7fff9;
+}
+.dvz-pills .nav-link.active {
+  background: linear-gradient(90deg, #caffde, #d9fff0);
+  color: #10663f;
+  border: none;
+}
+
+.dvz-alert {
+  border-radius: 10px;
+  padding: .75rem 1rem;
+  background: #f2fff6;
+  border: 1px solid #c8f3d9;
+  color: #146c43;
+}
+</style>
+
+{% endblock %}

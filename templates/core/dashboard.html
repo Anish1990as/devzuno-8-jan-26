@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page-scoped styles -->
+<style>
+  :root{
+    --dvz-primary: #2563eb;   /* blue */
+    --dvz-primary-2:#305186;
+    --dvz-accent:  #34d399;   /* mint */
+    --dvz-ink:     #0f172a;   /* dark text */
+  }
+
+  /* Hero glass band */
+  .dvz-hero{
+    background:
+      linear-gradient(135deg, rgba(139, 36, 8, 0.28), rgba(36, 216, 12, 0.14)) !important;
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(186, 7, 7, 0.22);
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(15,23,42,.18);
+  }
+
+  /* Buttons */
+  .dvz-btn-primary{
+    background: linear-gradient(135deg, var(--dvz-primary), var(--dvz-primary-2));
+    border: none;
+    color: #fff;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .dvz-btn-primary:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(37,99,235,.35);
+  }
+  .dvz-btn-outline{
+    border: 1px solid var(--dvz-primary);
+    color: var(--dvz-primary);
+  }
+  .dvz-btn-outline:hover{
+    background: var(--dvz-primary);
+    color:#b6da5c;
+  }
+
+  /* Quick links tiles */
+  .dvz-quick{
+    display:block;
+    border-radius:16px;
+    border: 1px solid rgba(255,255,255,.22);
+    background: linear-gradient(135deg, rgba(172, 188, 132, 0.75), rgba(229,231,235,.55));
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .dvz-quick:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 12px 22px rgba(15,23,42,.18);
+    background: linear-gradient(135deg, rgba(219,234,254,.85), rgba(191,219,254,.7));
+  }
+  .dvz-quick .fw-semibold{ color: var(--dvz-ink); }
+
+  /* Stat cards */
+  .dvz-stat{
+    border-radius:16px;
+    border: 1px solid rgba(255,255,255,.22);
+    background: linear-gradient(135deg, rgba(243,244,246,.9), rgba(229,231,235,.75));
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .dvz-stat:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(15,23,42,.18);
+  }
+
+  /* Category cards */
+  .dvz-cat{
+    border-radius:16px;
+    border: 1px solid rgba(255,255,255,.28);
+    background: linear-gradient(145deg, #f3f6ff, #e9f2ff);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .dvz-cat:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 12px 22px rgba(59,130,246,.28);
+  }
+  .dvz-cat .fw-semibold{ color: var(--dvz-ink); }
+  .dvz-link{ color: var(--dvz-primary) !important; font-weight:600; }
+</style>
+
+<!-- Hero / Greeting band -->
+<section class="p-4 p-md-5 mb-4 dvz-hero">
+  <div class="row align-items-center">
+    <div class="col-lg-8">
+      <h2 class="fw-bold mb-1 text-dark">Welcome back, {{ request.user.first_name|default:request.user.username }} 👋</h2>
+      <p class="mb-0 text-muted">Manage your profile, services, invoices and tickets from one clean place.</p>
+    </div>
+    <div class="col-lg-4 mt-3 mt-lg-0 text-lg-end">
+      <a href="/pricing/" class="btn dvz-btn-primary btn-lg fw-semibold me-2">Create Order</a>
+      <a href="/client/tickets/" class="btn dvz-btn-outline btn-lg fw-semibold">Open Ticket</a>
+    </div>
+  </div>
+</section>
+
+<!-- Quick links -->
+<section class="mb-4">
+  <div class="row g-3">
+    <div class="col-6 col-md-3">
+      <a class="dvz-quick w-100 p-3 text-start shadow-sm" href="/client/profile/">
+        <div class="fs-4 mb-1">👤</div>
+        <div class="fw-semibold">Profile</div>
+        <div class="small text-muted">Name, contact & address</div>
+      </a>
+    </div>
+    <div class="col-6 col-md-3">
+      <a class="dvz-quick w-100 p-3 text-start shadow-sm" href="/client/services/">
+        <div class="fs-4 mb-1">🧩</div>
+        <div class="fw-semibold">Services</div>
+        <div class="small text-muted">Active subscriptions</div>
+      </a>
+    </div>
+    <div class="col-6 col-md-3">
+      <a class="dvz-quick w-100 p-3 text-start shadow-sm" href="/client/invoices/">
+        <div class="fs-4 mb-1">💳</div>
+        <div class="fw-semibold">Invoices</div>
+        <div class="small text-muted">Bills & payments</div>
+      </a>
+    </div>
+    <div class="col-6 col-md-3">
+      <a class="dvz-quick w-100 p-3 text-start shadow-sm" href="/client/tickets/">
+        <div class="fs-4 mb-1">🛟</div>
+        <div class="fw-semibold">Tickets</div>
+        <div class="small text-muted">Support requests</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Mini-stats -->
+<section class="mb-4">
+  <div class="row g-3">
+    <div class="col-6 col-lg-3">
+      <div class="p-3 dvz-stat text-center">
+        <div class="small text-muted">Active Services</div>
+        <div class="h4 fw-bold text-success">{{ stats.active_services|default:0 }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="p-3 dvz-stat text-center">
+        <div class="small text-muted">Projects</div>
+        <div class="h4 fw-bold text-primary">{{ stats.projects|default:0 }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="p-3 dvz-stat text-center">
+        <div class="small text-muted">Unpaid Invoices</div>
+        <div class="h4 fw-bold text-danger">{{ stats.unpaid_invoices|default:0 }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="p-3 dvz-stat text-center">
+        <div class="small text-muted">Open Tickets</div>
+        <div class="h4 fw-bold text-warning">{{ stats.open_tickets|default:0 }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="mb-2">
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <h4 class="mb-0">What do you want to build?</h4>
+    <a href="/pricing/" class="btn dvz-btn-outline btn-sm">Browse all plans →</a>
+  </div>
+
+  <div class="row g-3">
+    {% for c in categories %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <a class="text-decoration-none" href="/pricing/?cat={{ c.slug }}">
+          <div class="p-3 dvz-cat h-100 d-flex flex-column shadow-sm">
+            <div class="fs-3 mb-2">{{ c.icon }}</div>
+            <div class="fw-semibold mt-2">{{ c.name }}</div>
+            <div class="text-muted small mt-1 flex-grow-1">{{ c.description|default:"" }}</div>
+            <span class="mt-2 small dvz-link">View plans →</span>
+          </div>
+        </a>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="rounded-4 p-4 text-center dvz-cat shadow-sm">
+          <div class="mb-2 fs-2">🙈</div>
+          <div class="fw-semibold">No categories yet</div>
+          <div class="text-muted small mb-3">Ask admin to add categories from dashboard.</div>
+          <a href="/contact/" class="btn dvz-btn-primary btn-sm">Contact Sales</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}
+

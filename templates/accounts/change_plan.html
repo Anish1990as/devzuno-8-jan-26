@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5 dvz-surface">
+  <div class="dvz-wrapper">
+    <h4 class="dvz-title mb-3">Change Plan</h4>
+    <div class="dvz-card">
+      <form method="post">
+        {% csrf_token %}
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Current</label>
+            <div class="form-control" disabled>
+              {{ sub.plan.category.name }} · {{ sub.plan.name }} ({{ sub.get_billing_period_display }})
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Choose new plan (same category)</label>
+            <select name="plan" class="form-select">
+              {% for p in plans %}
+                <option value="{{ p.slug }}" {% if p.id == sub.plan_id %}selected{% endif %}>
+                  {{ p.name }} — ₹{{ p.price_monthly }}/mo · ₹{{ p.price_yearly }}/yr
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Billing period</label>
+            <select name="period" class="form-select">
+              <option value="monthly" {% if sub.billing_period == 'monthly' %}selected{% endif %}>Monthly</option>
+              <option value="yearly" {% if sub.billing_period == 'yearly' %}selected{% endif %}>Yearly</option>
+            </select>
+          </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+          <a href="{% url 'accounts:services' %}" class="btn dvz-btn-subtle">Cancel</a>
+          <button class="btn dvz-btn-gradient">Update Plan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

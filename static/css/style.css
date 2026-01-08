@@ -1,0 +1,175 @@
+ 
+
+/* ==== Modern Portfolio Styles ==== */
+.dvz-portfolio-card {
+  background: #fff;
+  transition: transform .25s ease, box-shadow .25s ease;
+  position: relative;
+}
+.dvz-portfolio-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(16,24,40,.10);
+}
+
+/* subtle gradient edge */
+.dvz-portfolio-accent {
+  position: absolute; inset: 0; border-radius: 1rem; padding: 1px; pointer-events: none;
+  background: linear-gradient(135deg, rgba(91,124,250,.55), rgba(155,91,250,.45));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+
+/* media */
+.dvz-media { overflow: hidden; border-bottom: 1px solid #eef0f4; }
+.dvz-img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.02); transition: transform .4s ease, filter .4s ease;
+  display: block;
+}
+.dvz-portfolio-card:hover .dvz-img { transform: scale(1.06); filter: saturate(1.05); }
+
+/* overlay */
+.dvz-overlay {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  background: linear-gradient(180deg, rgba(17,24,39,0) 40%, rgba(17,24,39,.55));
+  opacity: 0; transition: opacity .25s ease;
+}
+.dvz-portfolio-card:hover .dvz-overlay { opacity: 1; }
+.dvz-overlay-chip {
+  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(0,0,0,.06);
+  padding: .5rem .9rem; border-radius: 999px;
+  font-weight: 600; font-size: .9rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+}
+
+/* chips in body */
+.dvz-chips .badge { margin-right: .35rem; margin-top: .25rem; }
+
+/* small entrance animation */
+@keyframes dvz-fadeUp { from {opacity:0; transform: translateY(6px)} to {opacity:1; transform: none} }
+.dvz-portfolio-card { animation: dvz-fadeUp .45s ease both; }
+
+
+/* ===== Modern Pricing Styles ===== */
+
+/* Category pills: gradient active, soft hover */
+.dvz-cat-pills .nav-link {
+  border: 1px solid #e7e9f2;
+  color: #111827;
+  background: #fff;
+  border-radius: 999px;
+  padding: .5rem 1rem;
+  transition: all .2s ease;
+}
+.dvz-cat-pills .nav-link:hover {
+  border-color: #cdd7ff;
+  box-shadow: 0 6px 16px rgba(59,91,253,.08);
+}
+.dvz-cat-pills .nav-link.active {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #5b7cfa, #9b5bfa);
+  box-shadow: 0 8px 22px rgba(91,124,250,.35);
+}
+
+/* Plan cards: subtle gradient edge + hover lift */
+.dvz-plan-card {
+  background: #fff;
+  border-radius: 1rem;
+  border: 1px solid #eef0f4;
+  overflow: hidden;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  position: relative;
+}
+.dvz-plan-card:hover {
+  transform: translateY(-4px);
+  border-color: #dbe3ff;
+  box-shadow: 0 18px 36px rgba(16,24,40,.10);
+}
+
+/* gradient border effect without heavy outline */
+.dvz-plan-accent {
+  position: absolute; inset: 0; border-radius: 1rem; padding: 1px; pointer-events: none;
+  background: linear-gradient(135deg, rgba(91,124,250,.45), rgba(155,91,250,.45));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+
+/* Highlighted plan: glassy header feel */
+.dvz-plan--pro {
+  background:
+    radial-gradient(600px 200px at 80% -40%, rgba(91,124,250,.15), transparent 60%),
+    radial-gradient(500px 180px at -10% -30%, rgba(155,91,250,.16), transparent 60%),
+    #ffffff;
+  border-color: #cfd8ff;
+  box-shadow: 0 20px 40px rgba(91,124,250,.18);
+}
+
+/* Tiny ribbon badge */
+.dvz-ribbon {
+  position: absolute; top: 12px; right: 12px;
+  font-size: .75rem; font-weight: 700; letter-spacing: .3px;
+  color: #1f2937;
+  background: #e9efff;
+  border: 1px solid #cbd5ff;
+  border-radius: .5rem;
+  padding: .25rem .5rem;
+}
+
+/* Price typography */
+.dvz-price {
+  background: linear-gradient(135deg, #2b2f77, #5b7cfa);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+
+/* Feature list with ticks */
+.dvz-feature-list {
+  list-style: none; margin: 0; padding: 0;
+}
+.dvz-feature-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin:.35rem 0;
+  color: #4b5563;
+}
+.dvz-feature-list li::before {
+  content: "✓";
+  position: absolute; left: 0; top: 0;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #4f7bff;
+}
+
+/* Entry animation */
+@keyframes dvz-rise { from {opacity:0; transform: translateY(8px)} to {opacity:1; transform:none} }
+.dvz-plan-card { animation: dvz-rise .45s ease both; }
+
+/* Buttons polish */
+.btn-outline-primary {
+  border-color: #91a6ff;
+  color: #3b5bfd;
+}
+.btn-outline-primary:hover {
+  background: #3b5bfd; color:#fff; border-color: #3b5bfd;
+}
+
+
+
+/* Abot*/
+
+.text-gradient {
+  background: linear-gradient(90deg, #5b7cfa, #9b5bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gradient {
+  background: linear-gradient(135deg, #5b7cfa, #9b5bfa);
+}
+
+img {
+  object-fit: cover;
+}
