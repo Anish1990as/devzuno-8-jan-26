@@ -27,8 +27,8 @@
       html, body {
         height: 100%;
         margin: 0;
-        overflow: hidden;              /* root par overscroll off */
-        overscroll-behavior: none;     /* pull-to-refresh disable */
+        overflow: auto;              /* root par overscroll off */
+        overscroll-behavior: auto;     /* pull-to-refresh disable */
         background-color: #EBF4DD;     /* root bg */
         color: #4d7e5a;
         font-family: "Inter", system-ui, -apple-system, sans-serif;
@@ -38,7 +38,7 @@
       #scroll-root {
         height: 100vh;
         overflow: auto;
-        overscroll-behavior: none;
+        overscroll-behavior: auto;
         -webkit-overflow-scrolling: touch;
         display: flex;
         flex-direction: column;        /* footer push to bottom */
