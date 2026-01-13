@@ -29,8 +29,8 @@
         margin: 0;
         overflow: hidden;              /* root par overscroll off */
         overscroll-behavior: none;     /* pull-to-refresh disable */
-        background-color: #8a94a9;     /* root bg */
-        color: #111827;
+        background-color: #62a874;     /* root bg */
+        color: #4d7e5a;
         font-family: "Inter", system-ui, -apple-system, sans-serif;
       }
 
@@ -51,30 +51,45 @@
       }
 
       /* ===== NAVBAR ===== */
-      .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1050;
-        backdrop-filter: blur(10px);
-        background: linear-gradient(
+      :root {
+        --dvz-nav-height: 56px;
+        --dvz-logo-height: 150px;
+        --dvz-logo-max-width: 260px;
+        --dvz-nav-bg: linear-gradient(
             145deg,
-            rgba(5, 40, 115, 0.85) 0%,
-            rgb(47, 57, 61) 50%,
+            rgba(49, 166, 88, 0.85) 0%,
+            rgb(80, 178, 98) 50%,
             rgba(158, 185, 198, 0.85) 100%
           ),
           linear-gradient(
             to bottom,
             rgba(255, 255, 255, 0.5) 0%,
-            rgba(255, 255, 255, 0) 60%
+            rgba(21, 161, 63, 0) 60%
           );
+        --dvz-nav-border: rgba(28, 47, 111, 0.4);
+      }
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1050;
+        min-height: var(--dvz-nav-height);
+        padding-top: 0;
+        padding-bottom: 0;
+        backdrop-filter: blur(10px);
+        background: var(--dvz-nav-bg);
         box-shadow: 0 4px 20px rgba(28, 47, 111, 0.6);
-        border: 1px solid rgba(28, 47, 111, 0.4);
+        border: 1px solid var(--dvz-nav-border);
 
         /* Top gap band—rounded corners hata do */
         border-top-left-radius: 0;
         border-top-right-radius: 0;
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
+      }
+
+      .navbar .container {
+        min-height: var(--dvz-nav-height);
       }
 
       .navbar-brand {
@@ -84,6 +99,40 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-shadow: 0 0 6px rgba(78, 180, 189, 0.8);
+        display: flex;
+        align-items: center;
+        height: var(--dvz-nav-height);
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .navbar-brand .dvz-logo {
+        height: var(--dvz-logo-height);
+        width: auto;
+        max-width: var(--dvz-logo-max-width);
+        object-fit: contain;
+        display: block;
+      }
+
+      @media (max-width: 991.98px) {
+        :root {
+          --dvz-nav-height: 52px;
+          --dvz-logo-height: 100px;
+          --dvz-logo-max-width: 240px;
+        }
+
+        .navbar-brand .dvz-logo {
+          transform: scale(1.2);
+          transform-origin: left center;
+        }
+
+        .navbar-collapse {
+          background: var(--dvz-nav-bg);
+          backdrop-filter: blur(10px);
+          border-bottom-left-radius: 12px;
+          border-bottom-right-radius: 12px;
+          padding: 0.5rem 0.75rem 0.75rem;
+        }
       }
 
       .navbar .nav-link {
@@ -211,7 +260,13 @@
       <!-- ===== NAVBAR ===== -->
       <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <a class="navbar-brand" href="/">Devzuno Technologies</a>
+          <a class="navbar-brand" href="/">
+            <img
+              src="{% static 'images/devzuno.png' %}"
+              alt="Devzuno Technologies"
+              class="dvz-logo"
+            />
+          </a>
           <button
             class="navbar-toggler"
             type="button"
