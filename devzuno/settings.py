@@ -18,11 +18,12 @@ DEFAULT_ALLOWED_HOSTS = [
     'devzuno.com',
     'www.devzuno.com',
 ]
-ALLOWED_HOSTS = [
+EXTRA_ALLOWED_HOSTS = [
     host.strip()
-    for host in os.environ.get('ALLOWED_HOSTS', ','.join(DEFAULT_ALLOWED_HOSTS)).split(',')
+    for host in os.environ.get('ALLOWED_HOSTS', '').split(',')
     if host.strip()
 ]
+ALLOWED_HOSTS = list(dict.fromkeys(DEFAULT_ALLOWED_HOSTS + EXTRA_ALLOWED_HOSTS))
 
 # CSRF trusted origins for Render + custom domains
 CSRF_TRUSTED_ORIGINS = [
