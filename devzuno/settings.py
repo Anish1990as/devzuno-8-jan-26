@@ -10,12 +10,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'devzuno-demo-secret-key-change-in-production')
 DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-# Allowed hosts - add your Render domain
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Allowed hosts - include Render + custom domains
+DEFAULT_ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.onrender.com',
+    'devzuno.com',
+    'www.devzuno.com',
+]
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get('ALLOWED_HOSTS', ','.join(DEFAULT_ALLOWED_HOSTS)).split(',')
+    if host.strip()
+]
 
-# CSRF trusted origins for Render
+# CSRF trusted origins for Render + custom domains
 CSRF_TRUSTED_ORIGINS = [
     'https://*.onrender.com',
+    'https://devzuno.com',
+    'https://www.devzuno.com',
 ]
 
 # ============================================================================
