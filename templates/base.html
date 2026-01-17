@@ -1,624 +1,644 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ SITE.company_name|default:'Devzuno Technologies' }}</title>
 
-    <!-- BOOTSTRAP CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ SITE.company_name|default:'Devzuno Technologies' }}</title>
 
-    <!-- BOOTSTRAP ICONS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-    />
+  <!-- BOOTSTRAP CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <!-- CUSTOM CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <link rel="icon" href="{% static 'images/favicon.png' %}" />
+  <!-- BOOTSTRAP ICONS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
-    <style>
-      /* ===== GLOBAL / SCROLL BEHAVIOR FIX ===== */
-      html, body {
-        height: 100%;
-        margin: 0;
-        overflow: auto;              /* root par overscroll off */
-        overscroll-behavior: auto;     /* pull-to-refresh disable */
-        background-color: #EBF4DD;     /* root bg */
-        color: #4d7e5a;
-        font-family: "Inter", system-ui, -apple-system, sans-serif;
-      }
+  <!-- CUSTOM CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="icon" href="{% static 'images/favicon.png' %}" />
 
-      /* Inner scroll container (poori site yahan scroll hogi) */
-      #scroll-root {
-        height: 100vh;
-        overflow: auto;
-        overscroll-behavior: auto;
-        -webkit-overflow-scrolling: touch;
-        display: flex;
-        flex-direction: column;        /* footer push to bottom */
-        min-height: 100%;
-      }
+  <style>
+    /* ===== GLOBAL / SCROLL BEHAVIOR FIX ===== */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow: auto;
+      /* root par overscroll off */
+      overscroll-behavior: auto;
+      /* pull-to-refresh disable */
+      background-color: #EBF4DD;
+      /* root bg */
+      color: #b4c9ba;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+    }
 
-      main {
-        flex-grow: 1;
-        padding-top: 1.5rem;
-      }
+    /* Inner scroll container (poori site yahan scroll hogi) */
+    #scroll-root {
+      height: 100vh;
+      overflow: auto;
+      overscroll-behavior: auto;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+      /* footer push to bottom */
+      min-height: 100%;
+    }
 
-      /* ===== NAVBAR ===== */
+    main {
+      flex-grow: 1;
+      padding-top: 1.5rem;
+    }
+
+    /* ===== NAVBAR ===== */
+    :root {
+      --dvz-nav-height: 56px;
+      --dvz-logo-height: 150px;
+      --dvz-logo-max-width: 260px;
+      --dvz-nav-bg: linear-gradient(145deg,
+          rgba(149, 190, 163, 0.85) 0%,
+          rgb(190, 228, 197) 50%,
+          rgba(158, 185, 198, 0.85) 100%),
+        linear-gradient(to bottom,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(21, 161, 63, 0) 60%);
+      --dvz-nav-border: rgba(28, 47, 111, 0.4);
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1050;
+      min-height: var(--dvz-nav-height);
+      padding-top: 0;
+      padding-bottom: 0;
+      backdrop-filter: blur(10px);
+      background: var(--dvz-nav-bg);
+      box-shadow: 0 4px 20px rgba(28, 47, 111, 0.6);
+      border: 1px solid var(--dvz-nav-border);
+
+      /* Top gap band—rounded corners hata do */
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    .navbar .container {
+      min-height: var(--dvz-nav-height);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      background: linear-gradient(135deg, #f97316, #fb923c, #fed7aa);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 6px rgba(78, 180, 189, 0.8);
+      display: flex;
+      align-items: center;
+      height: var(--dvz-nav-height);
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .navbar-brand .dvz-logo {
+      height: var(--dvz-logo-height);
+      width: auto;
+      max-width: var(--dvz-logo-max-width);
+      object-fit: contain;
+      display: block;
+    }
+
+    @media (max-width: 991.98px) {
       :root {
-        --dvz-nav-height: 56px;
-        --dvz-logo-height: 150px;
-        --dvz-logo-max-width: 260px;
-        --dvz-nav-bg: linear-gradient(
-            145deg,
-            rgba(144, 171, 139, 0.85) 0%,
-            rgb(144, 171, 139) 50%,
-            rgba(144, 171, 139, 0.85) 100%
-            ),
-
-          linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 0.5) 0%,
-            rgba(21, 161, 63, 0) 60%
-          );
-        --dvz-nav-border: rgba(28, 47, 111, 0.4);
-      }
-
-      .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1050;
-        min-height: var(--dvz-nav-height);
-        padding-top: 0;
-        padding-bottom: 0;
-        backdrop-filter: blur(10px);
-        background: var(--dvz-nav-bg);
-        box-shadow: 0 4px 20px rgba(28, 47, 111, 0.6);
-        border: 1px solid var(--dvz-nav-border);
-
-        /* Top gap band—rounded corners hata do */
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 12px;
-      }
-
-      .navbar .container {
-        min-height: var(--dvz-nav-height);
-      }
-
-      .navbar-brand {
-        font-weight: 700;
-        background: linear-gradient(135deg, #f97316, #fb923c, #fed7aa);
-        background-clip: text; 
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 0 0 6px rgba(78, 180, 189, 0.8);
-        display: flex;
-        align-items: center;
-        height: var(--dvz-nav-height);
-        padding-top: 0;
-        padding-bottom: 0;
+        --dvz-nav-height: 52px;
+        --dvz-logo-height: 100px;
+        --dvz-logo-max-width: 240px;
       }
 
       .navbar-brand .dvz-logo {
-        height: var(--dvz-logo-height);
-        width: auto;
-        max-width: var(--dvz-logo-max-width);
-        object-fit: contain;
-        display: block;
+        transform: scale(1.2);
+        transform-origin: left center;
       }
 
-      @media (max-width: 991.98px) {
-        :root {
-          --dvz-nav-height: 52px;
-          --dvz-logo-height: 100px;
-          --dvz-logo-max-width: 240px;
-        }
-
-        .navbar-brand .dvz-logo {
-          transform: scale(1.2);
-          transform-origin: left center;
-        }
-
-        .navbar-collapse {
-          background: var(--dvz-nav-bg);
-          backdrop-filter: blur(10px);
-          border-bottom-left-radius: 12px;
-          border-bottom-right-radius: 12px;
-          padding: 0.5rem 0.75rem 0.75rem;
-        }
+      .navbar-collapse {
+        background: var(--dvz-nav-bg);
+        backdrop-filter: blur(10px);
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        padding: 0.5rem 0.75rem 0.75rem;
       }
+    }
 
-      .navbar .nav-link {
-        color: #111827;
-        font-weight: 500;
-        transition: color 0.2s ease;
-      }
+    .navbar .nav-link {
+      color: #111827;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
 
-      .navbar .nav-link:hover,
-      .navbar .nav-link.active {
-        color: #a1b83c;
-        text-shadow: 0 0 4px rgba(249, 115, 22, 0.7);
-      }
+    .navbar .nav-link:hover,
+    .navbar .nav-link.active {
+      color: #452829;
+      text-shadow: 0 0 4px rgba(249, 115, 22, 0.7);
+    }
 
-      /* ===== FOOTER ===== */
-      footer {
-        background: #111827;
-        color: #d1d5db;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        margin-top: 30px;
-        border-radius: 8px;
-      }
+    /* ===== FOOTER ===== */
+    footer {
+      background: #111827;
+      color: #d1d5db;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      margin-top: 30px;
+      border-radius: 8px;
+    }
 
-      footer h5,
-      footer h6 {
-        color: #34d399;
-        margin-bottom: 8px;
-      }
+    footer h5,
+    footer h6 {
+      color: #34d399;
+      margin-bottom: 8px;
+    }
 
-      footer a {
-        color: #9ca3af;
-        text-decoration: none;
-      }
+    footer a {
+      color: #9ca3af;
+      text-decoration: none;
+    }
 
-      footer a:hover {
-        color: #f97316;
-        text-decoration: underline;
-      }
+    footer a:hover {
+      color: #f97316;
+      text-decoration: underline;
+    }
 
-      footer p {
-        font-size: 14px;
-        margin-bottom: 4px;
-      }
+    footer p {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
 
-      /* ===== EXISTING FLOATING WHATSAPP BUTTON (right) ===== */
-      .chat-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 25px;
-        background: #34d399;
-        color: #fff;
-        border-radius: 50px;
-        padding: 10px 18px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 600;
-        z-index: 2000;
-        transition: all 0.3s ease;
-      }
+    /* ===== EXISTING FLOATING WHATSAPP BUTTON (right) ===== */
+    .chat-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 25px;
+      background: #34d399;
+      color: #fff;
+      border-radius: 50px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      z-index: 2000;
+      transition: all 0.3s ease;
+    }
 
-      .chat-btn:hover {
-        background: #22c55e;
-        color: #fff;
-        transform: translateY(-3px);
-      }
+    .chat-btn:hover {
+      background: #22c55e;
+      color: #fff;
+      transform: translateY(-3px);
+    }
 
-      /* ===== LEFT-CORNER CHAT WIDGET ===== */
-      #dvz-chat-launch {
-        position: fixed;
-        left: 20px;
-        bottom: 20px;
-        z-index: 2000;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: linear-gradient(135deg,#0d6efd,#06b6d4);
-        color: #fff;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        box-shadow:0 8px 30px rgba(13,110,253,0.25);
-        cursor:pointer;
-      }
-      #dvz-chat-widget {
-        position: fixed;
-        left: 20px;
-        bottom: 86px;
-        z-index: 2000;
-        width: 360px;
-        max-width: calc(100% - 40px);
+    /* ===== LEFT-CORNER CHAT WIDGET ===== */
+    #dvz-chat-launch {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      z-index: 2000;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0d6efd, #06b6d4);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 30px rgba(13, 110, 253, 0.25);
+      cursor: pointer;
+    }
+
+    #dvz-chat-widget {
+      position: fixed;
+      left: 20px;
+      bottom: 86px;
+      z-index: 2000;
+      width: 360px;
+      max-width: calc(100% - 40px);
+      display: none;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      background: #fff;
+      border: 1px solid rgba(13, 110, 253, 0.12);
+    }
+
+    #dvz-chat-widget header {
+      padding: 12px;
+      background: linear-gradient(90deg, #0d6efd, #06b6d4);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #dvz-chat-widget .body {
+      padding: 10px;
+      height: 320px;
+      overflow: auto;
+      background: #f8f9fa;
+    }
+
+    #dvz-chat-widget .footer {
+      padding: 10px;
+      border-top: 1px solid #eee;
+      background: #fff;
+    }
+
+    .dvz-msg {
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+
+    .dvz-msg.guest {
+      background: #e6f4ff;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .dvz-msg.agent {
+      background: #fff4e6;
+      margin-right: auto;
+      text-align: left;
+    }
+
+    @media (max-width: 768px) {
+      .chat-text {
         display: none;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-        background: #fff;
-        border: 1px solid rgba(13,110,253,0.12);
-      }
-      #dvz-chat-widget header { padding:12px; background:linear-gradient(90deg,#0d6efd,#06b6d4); color:#fff; display:flex; align-items:center; justify-content:space-between;}
-      #dvz-chat-widget .body { padding:10px; height:320px; overflow:auto; background:#f8f9fa; }
-      #dvz-chat-widget .footer { padding:10px; border-top:1px solid #eee; background:#fff; }
-
-      .dvz-msg { margin-bottom:10px; padding:8px 10px; border-radius:10px; max-width:80%; }
-      .dvz-msg.guest { background:#e6f4ff; margin-left:auto; text-align:right; }
-      .dvz-msg.agent { background:#fff4e6; margin-right:auto; text-align:left; }
-
-      @media (max-width: 768px) {
-        .chat-text { display: none; }
-        .chat-btn { border-radius: 50%; width: 55px; height: 55px; justify-content: center; padding: 0; }
-        #dvz-chat-widget { width: calc(100% - 40px); left: 20px; right:20px; bottom: 86px; }
       }
 
-      /* ===== ALERT AUTO-FADE ===== */
-      .dvz-messages .alert {
-        border-radius: 12px;
-        border: none;
-        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+      .chat-btn {
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        justify-content: center;
+        padding: 0;
       }
-    </style>
-  </head>
 
-  <body>
-    <div id="scroll-root">
-      <!-- ===== NAVBAR ===== -->
-      <nav class="navbar navbar-expand-lg">
-        <div class="container">
-          <a class="navbar-brand" href="/">
-            <img
-              src="{% static 'images/devzuno.png' %}"
-              alt="Devzuno Technologies"
-              class="dvz-logo"
-            />
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navMenu"
-            aria-controls="navMenu"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
+      #dvz-chat-widget {
+        width: calc(100% - 40px);
+        left: 20px;
+        right: 20px;
+        bottom: 86px;
+      }
+    }
 
-          <div id="navMenu" class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-              <li class="nav-item">
-                <a
-                  class="nav-link {% if request.path == '/' %}active{% endif %}"
-                  href="/"
-                  >Home</a
-                >
-              </li>
+    /* ===== ALERT AUTO-FADE ===== */
+    .dvz-messages .alert {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+    }
+  </style>
+</head>
 
-              <li class="nav-item">
-                <a class="nav-link" href="/pricing/">Pricing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/portfolio/">Portfolio</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/reviews/">Reviews</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/contact/">Contact</a>
-              </li>
+<body>
+  <div id="scroll-root">
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img src="{% static 'images/devzuno.png' %}" alt="Devzuno Technologies" class="dvz-logo" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+          aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-              {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link" href="/dashboard/">Dashboard</a>
-              </li>
-              <li class="nav-item ms-lg-3">
-                <form action="/client/logout/" method="post" class="d-inline">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-outline-danger btn-sm">
-                    Logout
-                  </button>
-                </form>
-              </li>
-              {% else %}
-              <li class="nav-item ms-lg-3">
-                <a href="/client/login/" class="btn btn-dark btn-sm">Client Area</a>
-              </li>
-              {% endif %}
-            </ul>
+        <div id="navMenu" class="collapse navbar-collapse">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/pricing/">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/portfolio/">Portfolio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/reviews/">Reviews</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contact/">Contact</a>
+            </li>
+
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard/">Dashboard</a>
+            </li>
+            <li class="nav-item ms-lg-3">
+              <form action="/client/logout/" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                  Logout
+                </button>
+              </form>
+            </li>
+            {% else %}
+            <li class="nav-item ms-lg-3">
+              <a href="/client/login/" class="btn btn-dark btn-sm">Client Area</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+      <div class="container">
+        {% if messages %}
+        <div class="dvz-messages mb-3">
+          {% for m in messages %}
+          <div class="alert alert-{{ m.tags|default:'info' }}">{{ m }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      <div class="container">
+        <div class="row text-md-start text-center">
+          <!-- Company Info -->
+          <div class="col-md-4 mb-4">
+            <h5 class="fw-bold mb-3">Devzuno Technologies</h5>
+            <p>
+              Your trusted partner for Web, App, and AI solutions. We help
+              businesses innovate, build, and grow.
+            </p>
+            <div class="d-flex gap-3 mt-3">
+              <a href="https://x.com/DevzunoTech/" target="_blank"><i class="bi bi-twitter fs-5"></i></a>
+              <a href="https://www.instagram.com/devzunotechnologies/" target="_blank"><i
+                  class="bi bi-instagram fs-5"></i></a>
+              <a href="https://www.facebook.com/devzunotechnologies/" target="_blank"><i
+                  class="bi bi-facebook fs-5"></i></a>
+              <a href="https://youtube.com/devzunotechnologies/" target="_blank"><i class="bi bi-youtube fs-5"></i></a>
+              <a href="https://www.linkedin.com/company/devzuno/" target="_blank"><i
+                  class="bi bi-linkedin fs-5"></i></a>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-md-2 mb-4">
+            <h6 class="fw-semibold mb-3">Quick Links</h6>
+            <p><a href="/">Home</a></p>
+            <p><a href="/about/">About</a></p>
+            <p><a href="/pricing/">Pricing</a></p>
+            <p><a href="/portfolio/">Portfolio</a></p>
+            <p><a href="/contact/">Enquiry</a></p>
+          </div>
+
+          <!-- Address -->
+          <div class="col-md-3 mb-4">
+            <h6 class="fw-semibold mb-3">Address</h6>
+            <p><i class="bi bi-geo-alt-fill me-2"></i>Sirpalpur, Post- Akchhor, Robertsganj, Sonbhadra, UP</p>
+            <p><i class="bi bi-envelope me-2"></i>support@devzuno.com</p>
+            <p><i class="bi bi-phone me-2"></i>+919219317352</p>
+          </div>
+
+          <!-- Contact -->
+          <div class="col-md-3 mb-4">
+            <h6 class="fw-semibold mb-3">Contact Us</h6>
+            <p>
+              <a href="https://wa.me/+919219317352" target="_blank"><i class="bi bi-whatsapp me-2"></i>Chat on
+                WhatsApp</a>
+            </p>
+            <p><i class="bi bi-clock me-2"></i>Mon - Sat: 9 AM - 6 PM</p>
           </div>
         </div>
-      </nav>
 
-      <!-- ===== MAIN CONTENT ===== -->
-      <main>
-        <div class="container">
-          {% if messages %}
-          <div class="dvz-messages mb-3">
-            {% for m in messages %}
-            <div class="alert alert-{{ m.tags|default:'info' }}">{{ m }}</div>
-            {% endfor %}
-          </div>
-          {% endif %}
-          {% block content %}{% endblock %}
+        <hr class="opacity-25 my-4" />
+
+        <div class="text-center small">
+          © <span id="year"></span> Devzuno Technologies — All Rights Reserved.
         </div>
-      </main>
-
-      <!-- ===== FOOTER ===== -->
-      <footer>
-        <div class="container">
-          <div class="row text-md-start text-center">
-            <!-- Company Info -->
-            <div class="col-md-4 mb-4">
-              <h5 class="fw-bold mb-3">Devzuno Technologies</h5>
-              <p>
-                Your trusted partner for Web, App, and AI solutions. We help
-                businesses innovate, build, and grow.
-              </p>
-              <div class="d-flex gap-3 mt-3">
-                <a href="https://x.com/DevzunoTech/" target="_blank"
-                  ><i class="bi bi-twitter fs-5"></i
-                ></a>
-                <a href="https://www.instagram.com/devzunotechnologies/" target="_blank"
-                  ><i class="bi bi-instagram fs-5"></i
-                ></a>
-                <a href="https://facebook.com/" target="_blank"
-                  ><i class="bi bi-facebook fs-5"></i
-                ></a>
-                <a href="https://youtube.com/@devzunotechnologies/" target="_blank"
-                  ><i class="bi bi-youtube fs-5"></i
-                ></a>
-                <a href="https://www.linkedin.com/company/devzuno//" target="_blank"
-                  ><i class="bi bi-linkedin fs-5"></i
-                ></a>
-              </div>
-            </div>
-
-            <!-- Quick Links -->
-            <div class="col-md-2 mb-4">
-              <h6 class="fw-semibold mb-3">Quick Links</h6>
-              <p><a href="/">Home</a></p>
-              <p><a href="/about/">About</a></p>
-              <p><a href="/pricing/">Pricing</a></p>
-              <p><a href="/portfolio/">Portfolio</a></p>
-              <p><a href="/contact/">Enquiry</a></p>
-            </div>
-
-            <!-- Address -->
-            <div class="col-md-3 mb-4">
-              <h6 class="fw-semibold mb-3">Address</h6>
-              <p><i class="bi bi-geo-alt-fill me-2"></i>Sirpalpur, Post- Akchhor, Robertsganj, Sonbhadra, UP</p>
-              <p><i class="bi bi-envelope me-2"></i>support@devzuno.com</p>
-              <p><i class="bi bi-phone me-2"></i>+919219317352</p>
-            </div>
-
-            <!-- Contact -->
-            <div class="col-md-3 mb-4">
-              <h6 class="fw-semibold mb-3">Contact Us</h6>
-              <p>
-                <a href="https://wa.me/+919219317352" target="_blank"
-                  ><i class="bi bi-whatsapp me-2"></i>Chat on WhatsApp</a>
-              </p>
-              <p><i class="bi bi-clock me-2"></i>Mon - Sat: 9 AM - 6 PM</p>
-            </div>
-          </div>
-
-          <hr class="opacity-25 my-4" />
-
-          <div class="text-center small">
-            © <span id="year"></span> Devzuno Technologies — All Rights Reserved.
-          </div>
-        </div>
-      </footer>
-    </div> <!-- /#scroll-root -->
+      </div>
+    </footer>
+  </div> <!-- /#scroll-root -->
 
 
 
-    <!-- ===== EXISTING FLOATING WHATSAPP BUTTON (right) ===== -->
-    <a
-      href="https://wa.me/+919219317352"
-      target="_blank"
-      class="chat-btn shadow-lg"
-    >
-      <i class="bi bi-whatsapp fs-3"></i>
-      <span class="chat-text">Let's Chat</span>
-    </a>
+  <!-- ===== EXISTING FLOATING WHATSAPP BUTTON (right) ===== -->
+  <a href="https://wa.me/+919219317352" target="_blank" class="chat-btn shadow-lg">
+    <i class="bi bi-whatsapp fs-3"></i>
+    <span class="chat-text">Let's Chat</span>
+  </a>
 
-    <!-- ===== JS ===== -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      document.getElementById("year").innerText = new Date().getFullYear();
+  <!-- ===== JS ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById("year").innerText = new Date().getFullYear();
 
-      // Alert fade-out
-      document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".alert").forEach((alert) => {
-          setTimeout(() => {
-            alert.style.transition = "opacity .5s ease";
-            alert.style.opacity = "0";
-            setTimeout(() => alert.remove(), 500);
-          }, 4000);
-        });
+    // Alert fade-out
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".alert").forEach((alert) => {
+        setTimeout(() => {
+          alert.style.transition = "opacity .5s ease";
+          alert.style.opacity = "0";
+          setTimeout(() => alert.remove(), 500);
+        }, 4000);
+      });
+    });
+
+    /***** Chat widget JS *****/
+    (function () {
+      // helpers
+      function getCookie(name) { let v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)'); return v ? v.pop() : ''; }
+      function el(id) { return document.getElementById(id); }
+      function showError(msg) { const e = el('dvz-contact-error'); e.innerText = msg; e.style.display = 'block'; }
+      function hideError() { const e = el('dvz-contact-error'); e.innerText = ''; e.style.display = 'none'; }
+
+      // UI refs
+      const launch = el('dvz-chat-launch');
+      const widget = el('dvz-chat-widget');
+      const closeBtn = el('dvz-close');
+      const startBtn = el('dvz-start');
+      const statusEl = el('dvz-status');
+
+      // basic captcha (client-side). For better security implement server-side check.
+      function genCaptcha() {
+        const a = Math.floor(Math.random() * 9) + 1;
+        const b = Math.floor(Math.random() * 9) + 1;
+        window._dvz_captcha_answer = a + b;
+        el('dvz-captcha-label').innerText = `Captcha: ${a} + ${b} = ?`;
+      }
+      genCaptcha();
+
+      // toggle
+      launch.addEventListener('click', () => {
+        widget.style.display = 'block';
+        widget.setAttribute('aria-hidden', 'false');
+      });
+      closeBtn.addEventListener('click', () => {
+        widget.style.display = 'none';
+        widget.setAttribute('aria-hidden', 'true');
       });
 
-      /***** Chat widget JS *****/
-      (function(){
-        // helpers
-        function getCookie(name){ let v=document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)'); return v? v.pop() : ''; }
-        function el(id){ return document.getElementById(id); }
-        function showError(msg){ const e = el('dvz-contact-error'); e.innerText = msg; e.style.display = 'block'; }
-        function hideError(){ const e = el('dvz-contact-error'); e.innerText=''; e.style.display='none'; }
+      // WebSocket variables
+      let socket = null;
+      let convoId = null;
+      let convoToken = null;
+      let sender = null;
 
-        // UI refs
-        const launch = el('dvz-chat-launch');
-        const widget = el('dvz-chat-widget');
-        const closeBtn = el('dvz-close');
-        const startBtn = el('dvz-start');
-        const statusEl = el('dvz-status');
+      // add message to DOM
+      function addMessage(senderLabel, text) {
+        const mroot = el('dvz-messages');
+        const d = document.createElement('div');
+        d.className = 'dvz-msg ' + (senderLabel && senderLabel.startsWith('agent') ? 'agent' : 'guest');
+        d.innerHTML = `<small style="opacity:0.8">${senderLabel}</small><div>${text}</div>`;
+        mroot.appendChild(d);
+        mroot.scrollTop = mroot.scrollHeight;
+      }
 
-        // basic captcha (client-side). For better security implement server-side check.
-        function genCaptcha(){
-          const a = Math.floor(Math.random()*9)+1;
-          const b = Math.floor(Math.random()*9)+1;
-          window._dvz_captcha_answer = a + b;
-          el('dvz-captcha-label').innerText = `Captcha: ${a} + ${b} = ?`;
-        }
-        genCaptcha();
+      // start socket connection
+      function startSocket(id, token, userSender) {
+        convoId = id;
+        convoToken = token;
+        sender = userSender;
+        // UI
+        el('dvz-contact-form').style.display = 'none';
+        el('dvz-chat-area').style.display = 'block';
+        el('dvz-input-area').style.display = 'block';
+        statusEl.innerText = 'connecting...';
 
-        // toggle
-        launch.addEventListener('click', ()=> {
-          widget.style.display = 'block';
-          widget.setAttribute('aria-hidden','false');
-        });
-        closeBtn.addEventListener('click', ()=> {
-          widget.style.display = 'none';
-          widget.setAttribute('aria-hidden','true');
-        });
+        const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
+        const wsUrl = `${protocol}${location.host}/ws/chat/${encodeURIComponent(convoId)}/?token=${encodeURIComponent(convoToken || '')}`;
 
-        // WebSocket variables
-        let socket = null;
-        let convoId = null;
-        let convoToken = null;
-        let sender = null;
-
-        // add message to DOM
-        function addMessage(senderLabel, text){
-          const mroot = el('dvz-messages');
-          const d = document.createElement('div');
-          d.className = 'dvz-msg ' + (senderLabel && senderLabel.startsWith('agent') ? 'agent' : 'guest');
-          d.innerHTML = `<small style="opacity:0.8">${senderLabel}</small><div>${text}</div>`;
-          mroot.appendChild(d);
-          mroot.scrollTop = mroot.scrollHeight;
+        console.log('Client connecting to WS:', wsUrl);
+        try {
+          socket = new WebSocket(wsUrl);
+        } catch (err) {
+          console.error('WS constructor error', err);
+          showError('Unable to create WebSocket.');
+          statusEl.innerText = 'offline';
+          return;
         }
 
-        // start socket connection
-        function startSocket(id, token, userSender){
-          convoId = id;
-          convoToken = token;
-          sender = userSender;
-          // UI
-          el('dvz-contact-form').style.display = 'none';
-          el('dvz-chat-area').style.display = 'block';
-          el('dvz-input-area').style.display = 'block';
-          statusEl.innerText = 'connecting...';
-        
-          const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
-          const wsUrl = `${protocol}${location.host}/ws/chat/${encodeURIComponent(convoId)}/?token=${encodeURIComponent(convoToken || '')}`;
-        
-          console.log('Client connecting to WS:', wsUrl);
+        socket.addEventListener('open', () => {
+          console.log('Client WS open');
+          statusEl.innerText = 'online';
+        });
+        socket.addEventListener('message', (ev) => {
+          console.log('Client WS message raw:', ev.data);
           try {
-            socket = new WebSocket(wsUrl);
-          } catch(err) {
-            console.error('WS constructor error', err);
-            showError('Unable to create WebSocket.');
-            statusEl.innerText = 'offline';
-            return;
+            const data = JSON.parse(ev.data);
+            addMessage(data.sender, data.message);
+          } catch (e) {
+            console.error('Invalid ws message', e, ev.data);
           }
-        
-          socket.addEventListener('open', ()=> {
-            console.log('Client WS open');
-            statusEl.innerText = 'online';
-          });
-          socket.addEventListener('message', (ev)=> {
-            console.log('Client WS message raw:', ev.data);
-            try{
-              const data = JSON.parse(ev.data);
-              addMessage(data.sender, data.message);
-            }catch(e){
-              console.error('Invalid ws message', e, ev.data);
-            }
-          });
-          socket.addEventListener('close', (ev)=> {
-            console.warn('Client WS closed', ev);
-            statusEl.innerText = 'offline';
-          });
-          socket.addEventListener('error', (err)=> {
-            console.error('Client WS error', err);
-            statusEl.innerText = 'offline';
-          });
+        });
+        socket.addEventListener('close', (ev) => {
+          console.warn('Client WS closed', ev);
+          statusEl.innerText = 'offline';
+        });
+        socket.addEventListener('error', (err) => {
+          console.error('Client WS error', err);
+          statusEl.innerText = 'offline';
+        });
+      }
+
+      // send message
+      el('dvz-send').addEventListener('click', () => {
+        const input = el('dvz-input');
+        const text = input.value && input.value.trim();
+
+        if (!text || !socket || socket.readyState !== WebSocket.OPEN) {
+          console.warn('Send blocked, socket not open or empty', { text, state: socket ? socket.readyState : null });
+          return;
         }
-        
-        // send message
-        el('dvz-send').addEventListener('click', ()=> {
-          const input = el('dvz-input');
-          const text = input.value && input.value.trim();
-        
-          if(!text || !socket || socket.readyState !== WebSocket.OPEN) {
-            console.warn('Send blocked, socket not open or empty', {text, state: socket ? socket.readyState : null});
+
+        const payload = {
+          message: text,
+          sender: sender || ('guest:' + (el('dvz-email').value || 'guest'))
+        };
+
+        console.log('Client sending:', payload);
+
+        socket.send(JSON.stringify(payload));
+        addMessage(payload.sender, payload.message);
+
+        input.value = '';
+      });
+
+      // handle Enter key in input
+      el('dvz-input').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); el('dvz-send').click(); }
+      });
+
+      // create conversation via POST
+      startBtn.addEventListener('click', async () => {
+        hideError();
+        const name = el('dvz-name').value.trim();
+        const email = el('dvz-email').value.trim();
+        const phone = el('dvz-phone').value.trim();
+        const captcha = el('dvz-captcha').value.trim();
+
+        if (!email || !phone) {
+          showError('Please enter email and phone.');
+          return;
+        }
+        if (parseInt(captcha) !== window._dvz_captcha_answer) {
+          showError('Captcha incorrect. Try again.');
+          genCaptcha();
+          return;
+        }
+
+        // prepare payload
+        const payload = { name, email, phone };
+
+        try {
+          const resp = await fetch('/chat/api/create_conversation/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!resp.ok) {
+            // server error — try to read json or text for detail
+            let txt;
+            try { txt = await resp.text(); } catch (e) { txt = 'Server error'; }
+            console.error('Create convo error', resp.status, txt);
+            showError('Server error while creating chat. Please try again later.');
             return;
           }
-        
-          const payload = { 
-            message: text, 
-            sender: sender || ('guest:' + (el('dvz-email').value || 'guest')) 
-          };
-        
-          console.log('Client sending:', payload);
-        
-          socket.send(JSON.stringify(payload));
-          addMessage(payload.sender, payload.message);
-        
-          input.value = '';
-        });
 
-        // handle Enter key in input
-        el('dvz-input').addEventListener('keydown', function(e){
-          if(e.key === 'Enter'){ e.preventDefault(); el('dvz-send').click(); }
-        });
-
-        // create conversation via POST
-        startBtn.addEventListener('click', async ()=> {
-          hideError();
-          const name = el('dvz-name').value.trim();
-          const email = el('dvz-email').value.trim();
-          const phone = el('dvz-phone').value.trim();
-          const captcha = el('dvz-captcha').value.trim();
-
-          if(!email || !phone){
-            showError('Please enter email and phone.');
-            return;
+          const data = await resp.json();
+          if (data && data.success) {
+            // data should contain convo_id and optional token
+            const id = data.convo_id;
+            const token = data.token || null;
+            // set sender label for guest
+            const guestLabel = 'guest:' + (email || 'guest');
+            startSocket(id, token, guestLabel);
+          } else {
+            console.warn('Create convo failed', data);
+            showError(data && data.error ? data.error : 'Could not create conversation.');
           }
-          if(parseInt(captcha) !== window._dvz_captcha_answer){
-            showError('Captcha incorrect. Try again.');
-            genCaptcha();
-            return;
-          }
+        } catch (err) {
+          console.error('Network/create error', err);
+          showError('Network error. Please check your connection.');
+        }
+      });
 
-          // prepare payload
-          const payload = { name, email, phone };
+    })();
+  </script>
+</body>
 
-          try {
-            const resp = await fetch('/chat/api/create_conversation/', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-              },
-              body: JSON.stringify(payload)
-            });
-
-            if(!resp.ok){
-              // server error — try to read json or text for detail
-              let txt;
-              try { txt = await resp.text(); } catch(e){ txt = 'Server error'; }
-              console.error('Create convo error', resp.status, txt);
-              showError('Server error while creating chat. Please try again later.');
-              return;
-            }
-
-            const data = await resp.json();
-            if(data && data.success){
-              // data should contain convo_id and optional token
-              const id = data.convo_id;
-              const token = data.token || null;
-              // set sender label for guest
-              const guestLabel = 'guest:' + (email || 'guest');
-              startSocket(id, token, guestLabel);
-            } else {
-              console.warn('Create convo failed', data);
-              showError(data && data.error ? data.error : 'Could not create conversation.');
-            }
-          } catch (err) {
-            console.error('Network/create error', err);
-            showError('Network error. Please check your connection.');
-          }
-        });
-
-      })();
-    </script>
-  </body>
 </html>
