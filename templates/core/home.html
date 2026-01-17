@@ -42,12 +42,11 @@
             <div class="dvz-avatar me-3">
 
               {% if request.user.profile.avatar %}
-                <img src="{{ request.user.profile.avatar.url }}"
-                     class="rounded-circle object-fit-cover">
+              <img src="{{ request.user.profile.avatar.url }}" class="rounded-circle object-fit-cover">
               {% else %}
-                {% with initials=request.user.first_name|default:request.user.username|slice:":2" %}
-                  <div class="dvz-initials">{{ initials|upper }}</div>
-                {% endwith %}
+              {% with initials=request.user.first_name|default:request.user.username|slice:":2" %}
+              <div class="dvz-initials">{{ initials|upper }}</div>
+              {% endwith %}
               {% endif %}
 
             </div>
@@ -68,8 +67,8 @@
             <a href="/client/profile/" class="small text-white-50 text-decoration-none ms-2">Profile</a>
           </div>
 
-        
-           
+
+
 
           <a href="/dashboard/" class="btn btn-sm btn-outline-light">Open Dashboard</a>
         </div>
@@ -106,14 +105,14 @@
     <!-- CARD 1 -->
     <div class="col-md-4">
       <a href="{% if user.is_authenticated %}/dashboard/{% else %}/client/login/?next=/dashboard/{% endif %}"
-         class="text-decoration-none card-click">
+        class="text-decoration-none card-click">
 
         <article class="dvz-feature feature-card h-100 p-4 rounded-4 border position-relative">
           <div class="d-flex align-items-start">
 
             <span class="dvz-icon-circle me-3 icon-glow">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                <path d="M4 13h7V4H4v9zm0 7h7v-5H4v5zm9 0h7V11h-7v9zm0-18v5h7V2h-7z" fill="currentColor"/>
+                <path d="M4 13h7V4H4v9zm0 7h7v-5H4v5zm9 0h7V11h-7v9zm0-18v5h7V2h-7z" fill="currentColor" />
               </svg>
             </span>
 
@@ -122,9 +121,9 @@
               <p class="mb-1 text-secondary">Login, services & project tracking.</p>
 
               {% if user.is_authenticated %}
-                <span class="badge bg-success-soft text-success">Manage your account</span>
+              <span class="badge bg-success-soft text-success">Manage your account</span>
               {% else %}
-                <span class="badge bg-danger-soft text-danger">Login required</span>
+              <span class="badge bg-danger-soft text-danger">Login required</span>
               {% endif %}
             </div>
 
@@ -132,9 +131,9 @@
 
           <div class="mt-3">
             {% if user.is_authenticated %}
-              <a href="/dashboard/" class="btn btn-primary-elev btn-sm w-100">Open Dashboard</a>
+            <a href="/dashboard/" class="btn btn-primary-elev btn-sm w-100">Open Dashboard</a>
             {% else %}
-              <a href="/client/login/?next=/dashboard/" class="btn btn-primary-elev btn-sm w-100">Login to continue</a>
+            <a href="/client/login/?next=/dashboard/" class="btn btn-primary-elev btn-sm w-100">Login to continue</a>
             {% endif %}
           </div>
 
@@ -148,12 +147,12 @@
     <!-- CARD 2 -->
     <div class="col-md-4">
       <a href="{% if user.is_authenticated %}/client/invoices/{% else %}/client/login/?next=/client/invoices/{% endif %}"
-         class="text-decoration-none card-click">
+        class="text-decoration-none card-click">
         <article class="dvz-feature feature-card h-100 p-4 rounded-4 border position-relative">
           <div class="d-flex align-items-start">
             <span class="dvz-icon-circle me-3 icon-glow">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                <path d="M3 6a2 2 0 0 1 2-2h14v16H5a2 2 0 0 1-2-2V6zm4 3h8v2H7V9zm0 4h8v2H7v-2z" fill="currentColor"/>
+                <path d="M3 6a2 2 0 0 1 2-2h14v16H5a2 2 0 0 1-2-2V6zm4 3h8v2H7V9zm0 4h8v2H7v-2z" fill="currentColor" />
               </svg>
             </span>
 
@@ -162,19 +161,19 @@
               <p class="mb-1 text-secondary">Payments & billing history.</p>
 
               {% if user.is_authenticated %}
-                <span class="badge bg-success-soft text-success">View your payments</span>
+              <span class="badge bg-success-soft text-success">View your payments</span>
               {% else %}
-                <span class="badge bg-danger-soft text-danger">Login required</span>
+              <span class="badge bg-danger-soft text-danger">Login required</span>
               {% endif %}
             </div>
           </div>
 
           <div class="mt-3">
             {% if user.is_authenticated %}
-              <a href="/client/invoices/" class="btn btn-primary-elev btn-sm w-100">View Invoices</a>
+            <a href="/client/invoices/" class="btn btn-primary-elev btn-sm w-100">View Invoices</a>
             {% else %}
-              <a href="/client/login/?next=/client/invoices/"
-                 class="btn btn-primary-elev btn-sm w-100">Login to continue</a>
+            <a href="/client/login/?next=/client/invoices/" class="btn btn-primary-elev btn-sm w-100">Login to
+              continue</a>
             {% endif %}
           </div>
         </article>
@@ -186,13 +185,13 @@
     <!-- CARD 3 -->
     <div class="col-md-4">
       <a href="{% if user.is_authenticated %}/client/domains/{% else %}/client/login/?next=/client/domains/{% endif %}"
-         class="text-decoration-none card-click">
+        class="text-decoration-none card-click">
         <article class="dvz-feature feature-card h-100 p-4 rounded-4 border position-relative">
 
           <div class="d-flex align-items-start">
             <span class="dvz-icon-circle me-3 icon-glow">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2z" fill="currentColor"/>
+                <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2z" fill="currentColor" />
               </svg>
             </span>
 
@@ -201,19 +200,19 @@
               <p class="mb-1 text-secondary">Domain tools & support tickets.</p>
 
               {% if user.is_authenticated %}
-                <span class="badge bg-success-soft text-success">Access tools</span>
+              <span class="badge bg-success-soft text-success">Access tools</span>
               {% else %}
-                <span class="badge bg-danger-soft text-danger">Login required</span>
+              <span class="badge bg-danger-soft text-danger">Login required</span>
               {% endif %}
             </div>
           </div>
 
           <div class="mt-3">
             {% if user.is_authenticated %}
-              <a href="/client/domains/" class="btn btn-primary-elev btn-sm w-100">Open Tools</a>
+            <a href="/client/domains/" class="btn btn-primary-elev btn-sm w-100">Open Tools</a>
             {% else %}
-              <a href="/client/login/?next=/client/domains/"
-                 class="btn btn-primary-elev btn-sm w-100">Login to continue</a>
+            <a href="/client/login/?next=/client/domains/" class="btn btn-primary-elev btn-sm w-100">Login to
+              continue</a>
             {% endif %}
           </div>
 
@@ -237,7 +236,7 @@
     <div class="col-md-4">
       <div class="dvz-feature h-100 p-4 text-center">
         {% if s.image %}
-          <img src="{{ s.image.url }}" class="img-fluid mb-3 rounded" style="max-height:120px;">
+        <img src="{{ s.image.url }}" class="img-fluid mb-3 rounded" style="max-height:120px;">
         {% endif %}
         <h5>{{ s.title }}</h5>
         <p class="text-muted small">{{ s.description }}</p>
@@ -255,12 +254,12 @@
       <h3 class="fw-bold">Why Devzuno Technologies?</h3>
       <ul class="text-muted mt-3">
         {% for w in why_points %}
-          <li class="d-flex align-items-center gap-2">
-            {% if w.image %}
-              <img src="{{ w.image.url }}" width="24" height="24">
-            {% endif %}
-            {{ w.point }}
-          </li>
+        <li class="d-flex align-items-center gap-2">
+          {% if w.image %}
+          <img src="{{ w.image.url }}" width="24" height="24">
+          {% endif %}
+          {{ w.point }}
+        </li>
         {% endfor %}
       </ul>
     </div>
@@ -282,13 +281,13 @@
 
   <div class="row g-4 text-center">
     {% for step in work_steps %}
-      <div class="col-md-3">
-        {% if step.image %}
-          <img src="{{ step.image.url }}" class="img-fluid mb-2" style="max-height:80px;">
-        {% endif %}
-        <strong>{{ step.step_number }}.</strong>
-        <p>{{ step.title }}</p>
-      </div>
+    <div class="col-md-3">
+      {% if step.image %}
+      <img src="{{ step.image.url }}" class="img-fluid mb-2" style="max-height:80px;">
+      {% endif %}
+      <strong>{{ step.step_number }}.</strong>
+      <p>{{ step.title }}</p>
+    </div>
     {% endfor %}
   </div>
 </section>
@@ -303,15 +302,15 @@
 
   <div class="row g-4">
     {% for p in portfolio_items %}
-      <div class="col-md-4">
-        <div class="dvz-feature p-3 text-center">
-          {% if p.image %}
-            <img src="{{ p.image.url }}" class="img-fluid mb-2 rounded">
-          {% endif %}
-          <h6>{{ p.title }}</h6>
-          <p class="small text-muted">{{ p.description }}</p>
-        </div>
+    <div class="col-md-4">
+      <div class="dvz-feature p-3 text-center">
+        {% if p.image %}
+        <img src="{{ p.image.url }}" class="img-fluid mb-2 rounded">
+        {% endif %}
+        <h6>{{ p.title }}</h6>
+        <p class="small text-muted">{{ p.description }}</p>
       </div>
+    </div>
     {% endfor %}
   </div>
 </section>
@@ -339,70 +338,85 @@
 
 <!-- ====================== CSS ====================== -->
 <style>
+  /* HERO */
+  .dvz-hero {
+    background: linear-gradient(135deg, #3B4953 100%);
+    color: #fff;
+    padding-bottom: 3rem;
+  }
 
-/* HERO */
-.dvz-hero{
-  background: linear-gradient(135deg, #3B4953 100%);
-  color: #fff;
-  padding-bottom: 3rem;
-}
-.dvz-badge-glass{
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.06);
-  color: #e0edff;
-  backdrop-filter: blur(6px);
-}
+  .dvz-badge-glass {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #e0edff;
+    backdrop-filter: blur(6px);
+  }
 
-/* GLASS BOX */
-.dvz-glass{
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 10px 30px rgba(8,10,20,0.4);
-}
+  /* GLASS BOX */
+  .dvz-glass {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 10px 30px rgba(8, 10, 20, 0.4);
+  }
 
-/* AVATAR + INITIALS */
-.dvz-avatar img{
-  width:56px; height:56px; object-fit:cover;
-  border-radius:50%; border:2px solid rgba(255,255,255,0.06);
-}
-.dvz-initials{
-  width:56px; height:56px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  background: rgba(255,255,255,0.07);
-  color:white; font-weight:700; font-size:20px;
-}
+  /* AVATAR + INITIALS */
+  .dvz-avatar img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.06);
+  }
 
-/* FEATURE CARDS */
-.dvz-feature{
-  background:white;
-  border-radius:14px;
-  box-shadow:0 8px 28px rgba(12,18,45,0.06);
-  transition:.2s;
-}
-.card-click:hover .dvz-feature{
-  transform:translateY(-8px);
-  box-shadow:0 22px 45px rgba(12,18,45,0.12);
-}
-.feature-glow{
-  position:absolute; right:-20px; top:-20px;
-  width:110px; height:110px;
-  background: radial-gradient(circle, rgba(99,102,241,0.18), transparent);
-  filter:blur(12px);
-}
+  .dvz-initials {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.07);
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+  }
 
-/* CTA BG */
-.bg-gradient-soft{
-  background: linear-gradient(90deg, rgba(91,124,250,0.08), rgba(155,91,250,0.03));
-}
-.btn-primary-elev{
-  background: linear-gradient(90deg,#5b7cfa,#9b5bfa);
-  color:white; border:none;
-  font-weight:700;
-  border-radius:8px;
-  box-shadow:0 6px 20px rgba(91,124,250,0.2);
-}
+  /* FEATURE CARDS */
+  .dvz-feature {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(12, 18, 45, 0.06);
+    transition: .2s;
+  }
 
+  .card-click:hover .dvz-feature {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 45px rgba(12, 18, 45, 0.12);
+  }
 
+  .feature-glow {
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.18), transparent);
+    filter: blur(12px);
+  }
+
+  /* CTA BG */
+  .bg-gradient-soft {
+    background: linear-gradient(90deg, rgba(91, 124, 250, 0.08), rgba(155, 91, 250, 0.03));
+  }
+
+  .btn-primary-elev {
+    background: linear-gradient(90deg, #5b7cfa, #9b5bfa);
+    color: white;
+    border: none;
+    font-weight: 700;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(91, 124, 250, 0.2);
+  }
 </style>
 
 {% endblock %}

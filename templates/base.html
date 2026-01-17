@@ -20,18 +20,16 @@
   <style>
     /* ===== GLOBAL / SCROLL BEHAVIOR FIX ===== */
     html,
-    body {
-      height: 100%;
-      margin: 0;
-      overflow: auto;
-      /* root par overscroll off */
-      overscroll-behavior: auto;
-      /* pull-to-refresh disable */
-      background-color: #EBF4DD;
-      /* root bg */
-      color: #b4c9ba;
-      font-family: "Inter", system-ui, -apple-system, sans-serif;
-    }
+     body {
+     height: 100%;
+     margin: 0;
+     overflow: auto;
+     overscroll-behavior: auto;
+     background-color: #EBF4DD;
+     color: #111827; /* ✅ FIX: default text dark */
+     font-family: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
 
     /* Inner scroll container (poori site yahan scroll hogi) */
     #scroll-root {

@@ -7,67 +7,66 @@
 <!-- Category pills -->
 <ul class="nav dvz-cat-pills mb-3 flex-wrap gap-2">
   {% for c in categories %}
-    <li class="nav-item">
-      <a class="nav-link {% if active_cat and active_cat.id == c.id %}active{% endif %}"
-         href="/pricing/?cat={{ c.slug }}">
-        <span class="me-1">{{ c.icon }}</span>{{ c.name }}
-      </a>
-    </li>
+  <li class="nav-item">
+    <a class="nav-link {% if active_cat and active_cat.id == c.id %}active{% endif %}"
+      href="/pricing/?cat={{ c.slug }}">
+      <span class="me-1">{{ c.icon }}</span>{{ c.name }}
+    </a>
+  </li>
   {% endfor %}
   {% if not categories %}
-    <li class="nav-item"><span class="badge text-bg-light">No categories yet</span></li>
+  <li class="nav-item"><span class="badge text-bg-light">No categories yet</span></li>
   {% endif %}
 </ul>
 
 <!-- Active category description -->
 {% if active_cat and active_cat.description %}
-  <div class="alert alert-light border rounded-3 mb-4">
-    <strong>{{ active_cat.name }}</strong> — {{ active_cat.description }}
-  </div>
+<div class="alert alert-light border rounded-3 mb-4">
+  <strong>{{ active_cat.name }}</strong> — {{ active_cat.description }}
+</div>
 {% endif %}
 
 <!-- Plans grid -->
 <div class="row g-4">
   {% for p in plans %}
-    <div class="col-md-6 col-lg-4">
-      <div class="dvz-plan-card h-100 position-relative {% if p.highlight %}dvz-plan--pro{% endif %}">
-        {% if p.highlight %}
-          <div class="dvz-ribbon">Popular</div>
+  <div class="col-md-6 col-lg-4">
+    <div class="dvz-plan-card h-100 position-relative {% if p.highlight %}dvz-plan--pro{% endif %}">
+      {% if p.highlight %}
+      <div class="dvz-ribbon">Popular</div>
+      {% endif %}
+      <div class="dvz-plan-accent"></div>
+
+      <div class="p-4 p-lg-4">
+        <div class="small text-uppercase text-muted">{{ p.name }}</div>
+        <div class="display-6 fw-bold mt-1 dvz-price">{{ p.price_text }}</div>
+
+        <ul class="mt-3 dvz-feature-list">
+          {% for f in p.feature_list %}
+          <li>{{ f }}</li>
+          {% empty %}
+          <li>No features added yet.</li>
+          {% endfor %}
+        </ul>
+
+        {% if request.user.is_authenticated %}
+        <a class="btn w-100 mt-3 {% if p.highlight %}btn-primary{% else %}btn-outline-primary{% endif %}"
+          href="/order/">
+          Choose
+        </a>
+        {% else %}
+        <a class="btn w-100 mt-3 btn-primary" href="/client/login/?next=/order/">
+          Login to Order
+        </a>
         {% endif %}
-        <div class="dvz-plan-accent"></div>
-
-        <div class="p-4 p-lg-4">
-          <div class="small text-uppercase text-muted">{{ p.name }}</div>
-          <div class="display-6 fw-bold mt-1 dvz-price">{{ p.price_text }}</div>
-
-          <ul class="mt-3 dvz-feature-list">
-            {% for f in p.feature_list %}
-              <li>{{ f }}</li>
-            {% empty %}
-              <li>No features added yet.</li>
-            {% endfor %}
-          </ul>
-
-          {% if request.user.is_authenticated %}
-            <a class="btn w-100 mt-3 {% if p.highlight %}btn-primary{% else %}btn-outline-primary{% endif %}"
-               href="/order/">
-              Choose
-            </a>
-          {% else %}
-            <a class="btn w-100 mt-3 btn-primary"
-               href="/client/login/?next=/order/">
-              Login to Order
-            </a>
-          {% endif %}
-        </div>
       </div>
     </div>
+  </div>
   {% empty %}
-    <div class="col-12">
-      <div class="alert alert-light border rounded-3">
-        No plans in this category yet.
-      </div>
+  <div class="col-12">
+    <div class="alert alert-light border rounded-3">
+      No plans in this category yet.
     </div>
+  </div>
   {% endfor %}
 </div>
 
