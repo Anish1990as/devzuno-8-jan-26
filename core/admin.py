@@ -11,29 +11,39 @@ admin.site.site_header = "Devzuno Admin"
 admin.site.site_title  = "Devzuno Admin"
 admin.site.index_title = "Control Panel"
 
-
 @admin.register(HomeService)
 class HomeServiceAdmin(admin.ModelAdmin):
     list_display = ("title", "order", "is_active")
     list_editable = ("order", "is_active")
+    search_fields = ("title",)
+    ordering = ("order",)
 
 
 @admin.register(WhyDevzuno)
 class WhyDevzunoAdmin(admin.ModelAdmin):
     list_display = ("point", "order")
     list_editable = ("order",)
+    search_fields = ("point",)
+    ordering = ("order",)
 
 
 @admin.register(HowWeWork)
 class HowWeWorkAdmin(admin.ModelAdmin):
-    list_display = ("title", "step_number")
+    list_display = ("step_number", "title")
+    list_display_links = ("title",)   # ✅ clickable link will be title
     list_editable = ("step_number",)
+    search_fields = ("title",)
+    ordering = ("step_number",)
+
 
 
 @admin.register(HomePortfolio)
 class HomePortfolioAdmin(admin.ModelAdmin):
     list_display = ("title", "order", "is_active")
     list_editable = ("order", "is_active")
+    search_fields = ("title",)
+    ordering = ("order",)
+
 
 @admin.register(PricingCategory)
 class PricingCategoryAdmin(admin.ModelAdmin):
@@ -46,11 +56,36 @@ class PricingCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(PricingPlan)
 class PricingPlanAdmin(admin.ModelAdmin):
-    list_display = ("name", "price_text", "category", "highlight")
-    list_filter = ("category", "highlight")
-    search_fields = ("name",)
+    list_display = (
+        "name",
+        "slug",
+        "category",
+        "price",
+        "old_price",
+        "highlight",
+        "is_active",
+    )
+    list_editable = ("price", "old_price", "highlight", "is_active")
+    list_filter = ("category", "highlight", "is_active")
+    search_fields = ("name", "slug")
     autocomplete_fields = ("category",)
 
+    prepopulated_fields = {"slug": ("name",)}
+
+    fieldsets = (
+        ("Plan Info", {
+            "fields": ("category", "name", "slug", "highlight", "is_active")
+        }),
+        ("Pricing", {
+            "fields": ("price", "old_price", "price_text")
+        }),
+        ("Details", {
+            "fields": ("delivery_time", "support")
+        }),
+        ("Features (one line per feature)", {
+            "fields": ("features",)
+        }),
+    )
 
 
 @admin.register(PortfolioItem)

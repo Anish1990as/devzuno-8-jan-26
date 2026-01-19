@@ -38,7 +38,29 @@
 
       <div class="p-4 p-lg-4">
         <div class="small text-uppercase text-muted">{{ p.name }}</div>
-        <div class="display-6 fw-bold mt-1 dvz-price">{{ p.price_text }}</div>
+
+        <!-- ✅ Price (Old + Offer) -->
+        {% if p.old_price and p.old_price > p.price %}
+          <div class="mt-2">
+            <div class="small text-muted">
+              <del>₹ {{ p.old_price }}</del>
+              <span class="badge bg-success ms-2">
+                OFFER
+              </span>
+            </div>
+            <div class="display-6 fw-bold mt-1 dvz-price">
+              ₹ {{ p.price }}/-
+            </div>
+          </div>
+        {% else %}
+          <div class="display-6 fw-bold mt-2 dvz-price">
+            {% if p.price_text %}
+              {{ p.price_text }}
+            {% else %}
+              ₹ {{ p.price }}/-
+            {% endif %}
+          </div>
+        {% endif %}
 
         <ul class="mt-3 dvz-feature-list">
           {% for f in p.feature_list %}
@@ -49,14 +71,16 @@
         </ul>
 
         {% if request.user.is_authenticated %}
-        <a class="btn w-100 mt-3 {% if p.highlight %}btn-primary{% else %}btn-outline-primary{% endif %}"
-          href="/order/">
-          Choose
-        </a>
+          <!-- ✅ Choose button (IMPORTANT: plan slug pass) -->
+          <a class="btn w-100 mt-3 {% if p.highlight %}btn-primary{% else %}btn-outline-primary{% endif %}"
+            href="/order/?plan={{ p.slug }}">
+            Choose
+          </a>
         {% else %}
-        <a class="btn w-100 mt-3 btn-primary" href="/client/login/?next=/order/">
-          Login to Order
-        </a>
+          <!-- ✅ Login first, then redirect to selected plan order -->
+          <a class="btn w-100 mt-3 btn-primary" href="/client/login/?next=/order/?plan={{ p.slug }}">
+            Login to Order
+          </a>
         {% endif %}
       </div>
     </div>

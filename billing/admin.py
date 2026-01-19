@@ -1,6 +1,7 @@
 # billing/admin.py
 from django.contrib import admin
 from .models import ServiceCategory, ServicePlan, ServiceSubscription, Order, Invoice
+from .models import Coupon
 
 # -------- ServiceCategory --------
 @admin.register(ServiceCategory)
@@ -93,3 +94,10 @@ class InvoiceAdmin(admin.ModelAdmin):
     def user_display(self, obj):
         return getattr(obj.order.user, "username", str(obj.order.user))
     user_display.short_description = "User"
+
+
+@admin.register(Coupon)
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ('code', 'discount_type', 'discount_value', 'min_order_amount', 'is_active', 'valid_from', 'valid_to')
+    search_fields = ('code',)
+    list_filter = ('is_active', 'discount_type')

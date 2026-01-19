@@ -1,22 +1,18 @@
-
 from django.db import models
 from django.conf import settings
-from django.db import models
 from projects.models import Project
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
-from django.db import models
 
+# ----------------------------
+# HOME PAGE MODELS
+# ----------------------------
 
 class HomeService(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(
-        upload_to="home/services/",
-        blank=True,
-        null=True
-    )
+    image = models.ImageField(upload_to="home/services/", blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
@@ -31,11 +27,7 @@ class HomeService(models.Model):
 
 class WhyDevzuno(models.Model):
     point = models.CharField(max_length=200)
-    image = models.ImageField(
-        upload_to="home/why/",
-        blank=True,
-        null=True
-    )
+    image = models.ImageField(upload_to="home/why/", blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
@@ -50,11 +42,7 @@ class WhyDevzuno(models.Model):
 class HowWeWork(models.Model):
     step_number = models.PositiveIntegerField()
     title = models.CharField(max_length=100)
-    image = models.ImageField(
-        upload_to="home/how/",
-        blank=True,
-        null=True
-    )
+    image = models.ImageField(upload_to="home/how/", blank=True, null=True)
 
     class Meta:
         ordering = ["step_number"]
@@ -68,11 +56,7 @@ class HowWeWork(models.Model):
 class HomePortfolio(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(
-        upload_to="home/portfolio/",
-        blank=True,
-        null=True
-    )
+    image = models.ImageField(upload_to="home/portfolio/", blank=True, null=True)
     order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
@@ -85,12 +69,19 @@ class HomePortfolio(models.Model):
         return self.title
 
 
+# ----------------------------
+# PRICING MODELS ✅ (UPDATED)
+# ----------------------------
 
 class PricingCategory(models.Model):
     name = models.CharField(max_length=80, unique=True)
     slug = models.SlugField(max_length=80, unique=True)
     description = models.TextField(blank=True)
-    icon = models.CharField(max_length=40, blank=True, help_text="Emoji ya small text e.g. 📝, 🏢, 📱, 🧩")
+    icon = models.CharField(
+        max_length=40,
+        blank=True,
+        help_text="Emoji ya small text e.g. 📝, 🏢, 📱, 🧩"
+    )
     sort_order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
@@ -100,24 +91,56 @@ class PricingCategory(models.Model):
     def __str__(self):
         return self.name
 
-class PricingPlan(models.Model):
-    name = models.CharField(max_length=50)
-    price_text = models.CharField(max_length=50)
-    features = models.TextField(help_text='One per line')
-    highlight = models.BooleanField(default=False)
 
+class PricingPlan(models.Model):
     category = models.ForeignKey(
         PricingCategory,
         on_delete=models.SET_NULL,
-        null=True, blank=True,
+        null=True,
+        blank=True,
         related_name="plans"
     )
+
+    name = models.CharField(max_length=60)
+
+    # ✅ NEW: slug for "Choose" button routing
+    slug = models.SlugField(
+        max_length=80,
+        unique=True,
+        null=True,
+        blank=True
+    )
+
+    # ✅ NEW: numeric pricing for calculations
+    price = models.PositiveIntegerField(default=0)
+    old_price = models.PositiveIntegerField(default=0)
+
+    # ✅ for text display if you want like ₹ 5499/-
+    price_text = models.CharField(max_length=50, blank=True)
+
+    features = models.TextField(help_text="Write one feature per line")
+
+    highlight = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    delivery_time = models.CharField(max_length=50, default="2-3 Days")
+    support = models.CharField(max_length=100, default="7 Days Free Support")
+
+
+
+
+    class Meta:
+        ordering = ["-highlight", "price"]
 
     def feature_list(self):
         return [f.strip() for f in self.features.splitlines() if f.strip()]
 
     def save(self, *args, **kwargs):
-        # 🔥 CORE LOGIC: only ONE popular plan per category
+        # ✅ Auto set price_text if blank
+        if not self.price_text and self.price:
+            self.price_text = f"₹ {self.price}/-"
+
+        # ✅ only ONE popular/highlight plan per category
         if self.highlight and self.category:
             PricingPlan.objects.filter(
                 category=self.category,
@@ -127,27 +150,33 @@ class PricingPlan(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.category.name if self.category else 'No Category'})"
 
+
+# ----------------------------
+# PORTFOLIO MODELS
+# ----------------------------
 
 class PortfolioItem(models.Model):
     title = models.CharField(max_length=120)
-
-    # NEW: file upload (stores under /media/portfolio/)
     image = models.ImageField(upload_to='portfolio/', blank=True, null=True)
-
-    # Old (optional fallback; remove later if not needed)
     image_url = models.URLField(blank=True, null=True)
-
     project_link = models.URLField(blank=True, null=True, help_text="Optional: link to live site or demo")
 
     def __str__(self):
         return self.title
 
+
+# ----------------------------
+# TESTIMONIAL / REVIEWS
+# ----------------------------
+
 class Testimonial(models.Model):
     author = models.CharField(max_length=120)
     quote = models.TextField()
-    def __str__(self): return f"{self.author}"
+
+    def __str__(self):
+        return f"{self.author}"
 
 
 class Review(models.Model):
@@ -157,7 +186,7 @@ class Review(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="reviews")
     rating = models.IntegerField(choices=RATING_CHOICES)
     comment = models.TextField(blank=True)
-    is_approved = models.BooleanField(default=True)  # moderation chahiye to default False kar do
+    is_approved = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -170,9 +199,11 @@ class Review(models.Model):
     @property
     def stars(self):
         return "★" * self.rating + "☆" * (5 - self.rating)
-    
 
-  
+
+# ----------------------------
+# CONTACT MODELS
+# ----------------------------
 
 class ContactMessage(models.Model):
     WEBSITE_TYPES = [
@@ -192,12 +223,11 @@ class ContactMessage(models.Model):
         ("ta", "Tamil"),
         ("kn", "Kannada"),
         ("ml", "Malayalam"),
-      ]
+    ]
 
     name = models.CharField(max_length=120)
     email = models.EmailField()
 
-    # Country code selector + local number; full_phone auto-computed
     country_code = models.CharField(
         max_length=6,
         help_text=_("E.164 country code like +91, +1, +44"),
@@ -222,14 +252,10 @@ class ContactMessage(models.Model):
 
     website_type = models.CharField(max_length=20, choices=WEBSITE_TYPES)
 
-    # Multi-select world languages (store codes list)
     languages = models.JSONField(default=list, blank=True)
-
-    # Optional single support language (backward compat)
     support_language = models.CharField(max_length=20, choices=SUPPORT_LANG, blank=True)
 
     message = models.TextField()
-
     created_at = models.DateTimeField(auto_now_add=True)
     resolved = models.BooleanField(default=False)
 
@@ -240,7 +266,6 @@ class ContactMessage(models.Model):
         return f"{self.name} - {self.website_type} ({self.created_at:%Y-%m-%d})"
 
     def save(self, *args, **kwargs):
-        """Build full_phone like '+91 5941954999' automatically"""
         cc = (self.country_code or "").strip()
         num = (self.phone or "").strip().replace(" ", "")
         if cc and not cc.startswith("+"):
@@ -249,24 +274,23 @@ class ContactMessage(models.Model):
         super().save(*args, **kwargs)
 
 
-
+# ----------------------------
+# USER PROFILE
+# ----------------------------
 
 class Profile(models.Model):
-    user         = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     country_code = models.CharField(max_length=6, blank=True)
-    phone        = models.CharField(max_length=30, blank=True)
-    whatsapp     = models.CharField(max_length=30, blank=True)
-    address      = models.CharField(max_length=255, blank=True)
-    city         = models.CharField(max_length=100, blank=True)
-    state        = models.CharField(max_length=100, blank=True)
-    country      = models.CharField(max_length=100, blank=True)
-    pincode      = models.CharField(max_length=12, blank=True)
-    company      = models.CharField(max_length=160, blank=True)
-    tax_id       = models.CharField(max_length=50, blank=True)
-    avatar       = models.ImageField(upload_to="avatars/", blank=True, null=True)
+    phone = models.CharField(max_length=30, blank=True)
+    whatsapp = models.CharField(max_length=30, blank=True)
+    address = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    country = models.CharField(max_length=100, blank=True)
+    pincode = models.CharField(max_length=12, blank=True)
+    company = models.CharField(max_length=160, blank=True)
+    tax_id = models.CharField(max_length=50, blank=True)
+    avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.username} profile"
-    
- 
- 
