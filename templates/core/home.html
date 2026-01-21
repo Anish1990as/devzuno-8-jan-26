@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 
-
 <!-- HERO -->
 <section class="dvz-hero position-relative overflow-hidden rounded-4 mb-4">
   <div class="dvz-hero__bg"></div>
@@ -40,7 +39,6 @@
 
             <!-- AVATAR -->
             <div class="dvz-avatar me-3">
-
               {% if request.user.profile.avatar %}
               <img src="{{ request.user.profile.avatar.url }}" class="rounded-circle object-fit-cover">
               {% else %}
@@ -48,7 +46,6 @@
               <div class="dvz-initials">{{ initials|upper }}</div>
               {% endwith %}
               {% endif %}
-
             </div>
 
             <!-- NAME + SUBTEXT -->
@@ -91,8 +88,6 @@
 
   <div class="dvz-shape-blur"></div>
 </section>
-
-
 
 
 <!-- ===================== FEATURE CARDS ====================== -->
@@ -139,8 +134,6 @@
       </a>
     </div>
 
-
-
     <!-- CARD 2 -->
     <div class="col-md-4">
       <a href="{% if user.is_authenticated %}/client/invoices/{% else %}/client/login/?next=/client/invoices/{% endif %}"
@@ -175,8 +168,6 @@
         </article>
       </a>
     </div>
-
-
 
     <!-- CARD 3 -->
     <div class="col-md-4">
@@ -219,7 +210,6 @@
 </section>
 
 
-
 <!-- ===================== STATIC: SERVICES + WHY + WORK + PORTFOLIO ===================== -->
 <section class="mt-5">
 
@@ -231,7 +221,7 @@
 
   <div class="row g-4">
     <div class="col-md-4">
-      <div class="dvz-feature h-100 p-4 text-center">
+      <div class="dvz-feature h-100 p-4 text-center overflow-hidden">
         <img src="{% static 'images/service-web.png' %}" class="dvz-service-icon" alt="Web Development">
         <h5>Website Development</h5>
         <p class="text-muted small">Modern business websites with fast speed and premium UI.</p>
@@ -239,7 +229,7 @@
     </div>
 
     <div class="col-md-4">
-      <div class="dvz-feature h-100 p-4 text-center">
+      <div class="dvz-feature h-100 p-4 text-center overflow-hidden">
         <img src="{% static 'images/service-app.png' %}" class="dvz-service-icon" alt="App Development">
         <h5>App Development</h5>
         <p class="text-muted small">Android apps with clean design, smooth experience and scalable backend.</p>
@@ -247,7 +237,7 @@
     </div>
 
     <div class="col-md-4">
-      <div class="dvz-feature h-100 p-4 text-center">
+      <div class="dvz-feature h-100 p-4 text-center overflow-hidden">
         <img src="{% static 'images/service-ai.png' %}" class="dvz-service-icon" alt="AI Solutions">
         <h5>AI Solutions</h5>
         <p class="text-muted small">Automation, AI tools and smart integrations to grow your business.</p>
@@ -264,19 +254,19 @@
 
         <ul class="text-muted mt-3 dvz-why-list">
           <li>
-            <img src="{% static 'images/why-1.png' %}" width="120" height="120" alt="">
+            <img src="{% static 'images/why-1.png' %}" class="dvz-why-icon" alt="">
             Fast delivery & professional design
           </li>
           <li>
-            <img src="{% static 'images/why-2.png' %}" width="120" height="120" alt="">
+            <img src="{% static 'images/why-2.png' %}" class="dvz-why-icon" alt="">
             Mobile-friendly & SEO optimized
           </li>
           <li>
-            <img src="{% static 'images/why-3.png' %}" width="120" height="120" alt="">
+            <img src="{% static 'images/why-3.png' %}" class="dvz-why-icon" alt="">
             Secure coding & scalable architecture
           </li>
           <li>
-            <img src="{% static 'images/why-4.png' %}" width="120" height="120" alt="">
+            <img src="{% static 'images/why-4.png' %}" class="dvz-why-icon" alt="">
             Lifetime support & quick response
           </li>
         </ul>
@@ -300,25 +290,25 @@
     <div class="row g-4 text-center">
       <div class="col-md-3">
         <strong>1.</strong>
-        <img src="{% static 'images/step-1.png' %}" class="img-fluid mb-2" style="max-height:150px;" alt="">
+        <img src="{% static 'images/step-1.png' %}" class="dvz-step-icon" alt="">
         <p>Requirement Discussion</p>
       </div>
 
       <div class="col-md-3">
         <strong>2.</strong>
-        <img src="{% static 'images/step-2.png' %}" class="img-fluid mb-2" style="max-height:150px;" alt="">
+        <img src="{% static 'images/step-2.png' %}" class="dvz-step-icon" alt="">
         <p>Design & UI Planning</p>
       </div>
 
       <div class="col-md-3">
         <strong>3.</strong>
-        <img src="{% static 'images/step-3.png' %}" class="img-fluid mb-2" style="max-height:150px;" alt="">
+        <img src="{% static 'images/step-3.png' %}" class="dvz-step-icon" alt="">
         <p>Development & Testing</p>
       </div>
 
       <div class="col-md-3">
         <strong>4.</strong>
-        <img src="{% static 'images/step-4.png' %}" class="img-fluid mb-2" style="max-height:150px;" alt="">
+        <img src="{% static 'images/step-4.png' %}" class="dvz-step-icon" alt="">
         <p>Delivery & Support</p>
       </div>
     </div>
@@ -333,39 +323,44 @@
 
     <div class="row g-4">
       <div class="col-md-4">
-        <div class="dvz-feature p-3 text-center h-100">
-          <img src="{% static 'images/work-1.png' %}" class="img-fluid mb-2 rounded" alt="">
+        <div class="dvz-feature p-3 text-center h-100 overflow-hidden">
+          <img src="{% static 'images/work-1.png' %}" class="dvz-work-img" alt="">
           <h6>Business Website</h6>
-          <p class="small text-muted">Clean, modern and fast-loading business website with premium UI design, mobile responsive layout,
-  and SEO-friendly structure. Perfect for startups and businesses to build trust, attract customers,
-  and generate more leads online.</p>
+          <p class="small text-muted">
+            Clean, modern and fast-loading business website with premium UI design, mobile responsive layout,
+            and SEO-friendly structure. Perfect for startups and businesses to build trust, attract customers,
+            and generate more leads online.
+          </p>
         </div>
       </div>
 
       <div class="col-md-4">
-        <div class="dvz-feature p-3 text-center h-100">
-          <img src="{% static 'images/work-2.png' %}" class="img-fluid mb-2 rounded" alt="">
+        <div class="dvz-feature p-3 text-center h-100 overflow-hidden">
+          <img src="{% static 'images/work-2.png' %}" class="dvz-work-img" alt="">
           <h6>E-Commerce Store</h6>
-          <p class="small text-muted">Professional online store with smooth product management, secure payment integration and
-  user-friendly checkout experience. Designed to boost conversions, manage orders easily,
-  and grow your business with a premium shopping experience.</p>
+          <p class="small text-muted">
+            Professional online store with smooth product management, secure payment integration and
+            user-friendly checkout experience. Designed to boost conversions, manage orders easily,
+            and grow your business with a premium shopping experience.
+          </p>
         </div>
       </div>
 
       <div class="col-md-4">
-        <div class="dvz-feature p-3 text-center h-100">
-          <img src="{% static 'images/work-3.png' %}" class="img-fluid mb-2 rounded" alt="">
+        <div class="dvz-feature p-3 text-center h-100 overflow-hidden">
+          <img src="{% static 'images/work-3.png' %}" class="dvz-work-img" alt="">
           <h6>Mobile Application</h6>
-          <p class="small text-muted">Feature-rich Android & iOS application with clean UI, smooth performance and secure login system.
-  Includes dashboard, API integration and scalable backend setup — ideal for business apps,
-  services platforms and customer engagement.</p>
+          <p class="small text-muted">
+            Feature-rich Android & iOS application with clean UI, smooth performance and secure login system.
+            Includes dashboard, API integration and scalable backend setup — ideal for business apps,
+            services platforms and customer engagement.
+          </p>
         </div>
       </div>
     </div>
   </div>
 
 </section>
-
 
 
 <!-- CTA SECTION -->
@@ -383,8 +378,6 @@
     </div>
   </div>
 </section>
-
-
 
 
 <!-- ====================== CSS ====================== -->
@@ -479,17 +472,45 @@
   .dvz-why-list li {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 6px 0;
+    gap: 12px;
+    padding: 10px 0;
   }
 
   /* ✅ SERVICE ICON SIZE FIX */
   .dvz-service-icon{
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    max-width: 180px;
+    height: 140px;
     object-fit: contain;
     display: block;
     margin: 0 auto 14px auto;
+  }
+
+  /* ✅ WHY ICON SIZE FIX */
+  .dvz-why-icon{
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
+
+  /* ✅ STEP ICON SIZE FIX */
+  .dvz-step-icon{
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+    display: block;
+    margin: 10px auto 10px auto;
+  }
+
+  /* ✅ WORK IMAGE FIX */
+  .dvz-work-img{
+    width: 100%;
+    max-width: 240px;
+    height: 160px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 12px auto;
   }
 </style>
 
