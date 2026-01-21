@@ -1,7 +1,8 @@
 # accounts/views.py
-import random
+from datetime import timedelta
+
 from django.apps import apps
-from django.contrib.auth import get_user_model, login, update_session_auth_hash
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
@@ -58,7 +59,6 @@ def register(request):
                 pass
 
             messages.success(request, "Account created successfully. Please login.")
-            # use named URL 'accounts:login' (ensure accounts/urls.py defines it)
             return redirect("accounts:login")
     else:
         form = RegisterForm()
@@ -185,7 +185,7 @@ def service_buy(request, plan_slug):
         billing_period=period,
         status="active",
         started_at=timezone.now(),
-        renews_at=timezone.now() + timezone.timedelta(days=365 if period == "yearly" else 30),
+        renews_at=timezone.now() + timedelta(days=365 if period == "yearly" else 30),
     )
     messages.success(request, f"Subscribed to {plan.name} ({period}).")
     return redirect(reverse("accounts:services"))
@@ -195,12 +195,13 @@ def service_buy(request, plan_slug):
 def service_cancel(request, pk):
     ServiceSubscription = apps.get_model("billing", "ServiceSubscription")
     sub = get_object_or_404(ServiceSubscription, pk=pk, user=request.user)
-    if sub.status != "active":
+
+    if getattr(sub, "status", "") != "active":
         messages.warning(request, "This subscription is not active.")
         return redirect("accounts:services")
 
     sub.cancel_at_period_end = True
-    sub.save()
+    sub.save(update_fields=["cancel_at_period_end"])
     messages.success(request, "Subscription will cancel at the end of the current period.")
     return redirect("accounts:services")
 
@@ -209,12 +210,13 @@ def service_cancel(request, pk):
 def service_resume(request, pk):
     ServiceSubscription = apps.get_model("billing", "ServiceSubscription")
     sub = get_object_or_404(ServiceSubscription, pk=pk, user=request.user)
-    if sub.status != "active":
+
+    if getattr(sub, "status", "") != "active":
         messages.warning(request, "This subscription is not active.")
         return redirect("accounts:services")
 
     sub.cancel_at_period_end = False
-    sub.save()
+    sub.save(update_fields=["cancel_at_period_end"])
     messages.success(request, "Auto-renew has been resumed.")
     return redirect("accounts:services")
 
@@ -230,6 +232,7 @@ def service_change_plan(request, pk):
     if request.method == "POST":
         new_slug = request.POST.get("plan")
         new_period = request.POST.get("period") or sub.billing_period
+
         try:
             new_plan = siblings.get(slug=new_slug)
         except ServicePlan.DoesNotExist:
@@ -238,9 +241,10 @@ def service_change_plan(request, pk):
 
         sub.plan = new_plan
         sub.billing_period = new_period if new_period in ("monthly", "yearly") else sub.billing_period
-        sub.renews_at = timezone.now() + timezone.timedelta(days=365 if sub.billing_period == "yearly" else 30)
+        sub.renews_at = timezone.now() + timedelta(days=365 if sub.billing_period == "yearly" else 30)
         sub.cancel_at_period_end = False
         sub.save()
+
         messages.success(request, f"Plan changed to {new_plan.name}.")
         return redirect("accounts:services")
 
@@ -255,7 +259,6 @@ def invoices(request):
     data = []
     try:
         Invoice = apps.get_model("billing", "Invoice")
-        # try common relations
         if hasattr(Invoice, "objects"):
             try:
                 data = Invoice.objects.filter(order__user=request.user).order_by("-created_at")
@@ -325,7 +328,7 @@ def ticket_detail(request, pk):
     # Close via query param
     if request.method == "GET" and request.GET.get("action") == "close":
         ticket.status = "closed"
-        ticket.save(update_fields=["status", "updated_at"])
+        ticket.save(update_fields=["status"])
         messages.success(request, "Ticket closed.")
         return redirect("accounts:ticket_detail", pk)
 
@@ -333,63 +336,73 @@ def ticket_detail(request, pk):
     if request.method == "POST" and request.POST.get("form_kind") == "reply":
         text = (request.POST.get("message") or "").strip()
         attachment = request.FILES.get("attachment")
+
         if not text:
             messages.error(request, "Message cannot be empty.")
             return redirect("accounts:ticket_detail", pk)
 
-        # Flexible creation to support different TicketMessage field names across projects
+        # Try save via instance (flexible)
         tm = TicketMessage()
-        # set known/suspected fields safely
+
+        # ticket
         if hasattr(tm, "ticket"):
-            setattr(tm, "ticket", ticket)
+            tm.ticket = ticket
         elif hasattr(tm, "ticket_id"):
-            setattr(tm, "ticket_id", ticket.id)
+            tm.ticket_id = ticket.id
 
-        # prefer 'author' or 'user'
+        # author/user
         if hasattr(tm, "author"):
-            setattr(tm, "author", request.user)
+            tm.author = request.user
         elif hasattr(tm, "user"):
-            setattr(tm, "user", request.user)
+            tm.user = request.user
 
-        # message field
+        # message/body
         if hasattr(tm, "message"):
-            setattr(tm, "message", text)
+            tm.message = text
         elif hasattr(tm, "body"):
-            setattr(tm, "body", text)
+            tm.body = text
 
-        # staff-flag field
+        # flags
         if hasattr(tm, "is_staff_reply"):
-            setattr(tm, "is_staff_reply", False)
+            tm.is_staff_reply = False
         elif hasattr(tm, "is_staff"):
-            setattr(tm, "is_staff", False)
+            tm.is_staff = False
         elif hasattr(tm, "is_client"):
-            # some schemas use inverse flag
-            setattr(tm, "is_client", True)
+            tm.is_client = True
 
-        # attachment if exists
         if attachment and hasattr(tm, "attachment"):
-            setattr(tm, "attachment", attachment)
+            tm.attachment = attachment
 
-        # Finally save (will raise if required fields missing)
         try:
             tm.save()
         except Exception:
-            # fallback: try creating via .objects.create with common kwargs
-            create_kwargs = {"ticket": ticket, "message": text}
-            if hasattr(TicketMessage, "_meta"):
-                # prefer user/author if present on model fields
-                if "author" in [f.name for f in TicketMessage._meta.fields]:
-                    create_kwargs["author"] = request.user
-                elif "user" in [f.name for f in TicketMessage._meta.fields]:
-                    create_kwargs["user"] = request.user
-            if attachment:
+            # fallback create
+            create_kwargs = {}
+
+            if "ticket" in [f.name for f in TicketMessage._meta.fields]:
+                create_kwargs["ticket"] = ticket
+            elif "ticket_id" in [f.name for f in TicketMessage._meta.fields]:
+                create_kwargs["ticket_id"] = ticket.id
+
+            if "author" in [f.name for f in TicketMessage._meta.fields]:
+                create_kwargs["author"] = request.user
+            elif "user" in [f.name for f in TicketMessage._meta.fields]:
+                create_kwargs["user"] = request.user
+
+            if "message" in [f.name for f in TicketMessage._meta.fields]:
+                create_kwargs["message"] = text
+            elif "body" in [f.name for f in TicketMessage._meta.fields]:
+                create_kwargs["body"] = text
+
+            if attachment and "attachment" in [f.name for f in TicketMessage._meta.fields]:
                 create_kwargs["attachment"] = attachment
+
             TicketMessage.objects.create(**create_kwargs)
 
         # If it was answered/pending, mark as open for client reply
         if ticket.status in ("answered", "pending"):
             ticket.status = "open"
-            ticket.save(update_fields=["status", "updated_at"])
+            ticket.save(update_fields=["status"])
 
         messages.success(request, "Reply posted.")
         return redirect("accounts:ticket_detail", pk)

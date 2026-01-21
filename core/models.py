@@ -219,10 +219,6 @@ class ContactMessage(models.Model):
     SUPPORT_LANG = [
         ("hi", "Hindi"),
         ("en", "English"),
-        ("bn", "Bengali"),
-        ("ta", "Tamil"),
-        ("kn", "Kannada"),
-        ("ml", "Malayalam"),
     ]
 
     name = models.CharField(max_length=120)

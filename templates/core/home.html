@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 
@@ -28,7 +29,6 @@
 
       <!-- RIGHT COLUMN (Dashboard Preview Box) -->
       <div class="col-lg-5 mt-4 mt-lg-0">
-
 
         {% if request.user.is_authenticated %}
 
@@ -66,9 +66,6 @@
 
             <a href="/client/profile/" class="small text-white-50 text-decoration-none ms-2">Profile</a>
           </div>
-
-
-
 
           <a href="/dashboard/" class="btn btn-sm btn-outline-light">Open Dashboard</a>
         </div>
@@ -172,8 +169,7 @@
             {% if user.is_authenticated %}
             <a href="/client/invoices/" class="btn btn-primary-elev btn-sm w-100">View Invoices</a>
             {% else %}
-            <a href="/client/login/?next=/client/invoices/" class="btn btn-primary-elev btn-sm w-100">Login to
-              continue</a>
+            <a href="/client/login/?next=/client/invoices/" class="btn btn-primary-elev btn-sm w-100">Login to continue</a>
             {% endif %}
           </div>
         </article>
@@ -211,8 +207,7 @@
             {% if user.is_authenticated %}
             <a href="/client/domains/" class="btn btn-primary-elev btn-sm w-100">Open Tools</a>
             {% else %}
-            <a href="/client/login/?next=/client/domains/" class="btn btn-primary-elev btn-sm w-100">Login to
-              continue</a>
+            <a href="/client/login/?next=/client/domains/" class="btn btn-primary-elev btn-sm w-100">Login to continue</a>
             {% endif %}
           </div>
 
@@ -224,95 +219,151 @@
 </section>
 
 
-<!-- ===================== SERVICES (ADMIN) ===================== -->
+
+<!-- ===================== STATIC: SERVICES + WHY + WORK + PORTFOLIO ===================== -->
 <section class="mt-5">
+
+  <!-- OUR SERVICES -->
   <div class="text-center mb-4">
     <h2 class="fw-bold">Our Services</h2>
     <p class="text-muted">AI-driven solutions & scalable digital products</p>
   </div>
 
   <div class="row g-4">
-    {% for s in services %}
     <div class="col-md-4">
       <div class="dvz-feature h-100 p-4 text-center">
-        {% if s.image %}
-        <img src="{{ s.image.url }}" class="img-fluid mb-3 rounded" style="max-height:120px;">
-        {% endif %}
-        <h5>{{ s.title }}</h5>
-        <p class="text-muted small">{{ s.description }}</p>
+        <img src="{% static 'images/service-web.png' %}" class="dvz-service-icon" alt="Web Development">
+        <h5>Website Development</h5>
+        <p class="text-muted small">Modern business websites with fast speed and premium UI.</p>
       </div>
     </div>
-    {% endfor %}
-  </div>
-</section>
 
-
-<!-- ===================== WHY DEVZUNO (ADMIN) ===================== -->
-<section class="mt-5 bg-light rounded-4 p-4 p-lg-5">
-  <div class="row align-items-center">
-    <div class="col-lg-6">
-      <h3 class="fw-bold">Why Devzuno Technologies?</h3>
-      <ul class="text-muted mt-3">
-        {% for w in why_points %}
-        <li class="d-flex align-items-center gap-2">
-          {% if w.image %}
-          <img src="{{ w.image.url }}" width="24" height="24">
-          {% endif %}
-          {{ w.point }}
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-
-    <div class="col-lg-6 text-center">
-      <strong class="display-6 text-primary">100+</strong>
-      <p class="text-muted">Projects & Experiments Delivered</p>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===================== HOW WE WORK (ADMIN) ===================== -->
-<section class="mt-5">
-  <div class="text-center mb-4">
-    <h2 class="fw-bold">How We Work</h2>
-    <p class="text-muted">Simple, transparent & result-driven process</p>
-  </div>
-
-  <div class="row g-4 text-center">
-    {% for step in work_steps %}
-    <div class="col-md-3">
-      {% if step.image %}
-      <img src="{{ step.image.url }}" class="img-fluid mb-2" style="max-height:80px;">
-      {% endif %}
-      <strong>{{ step.step_number }}.</strong>
-      <p>{{ step.title }}</p>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-
-
-<!-- ===================== OUR WORK (ADMIN) ===================== -->
-<section class="mt-5">
-  <div class="text-center mb-4">
-    <h2 class="fw-bold">Our Work</h2>
-    <p class="text-muted">Some of our recent builds</p>
-  </div>
-
-  <div class="row g-4">
-    {% for p in portfolio_items %}
     <div class="col-md-4">
-      <div class="dvz-feature p-3 text-center">
-        {% if p.image %}
-        <img src="{{ p.image.url }}" class="img-fluid mb-2 rounded">
-        {% endif %}
-        <h6>{{ p.title }}</h6>
-        <p class="small text-muted">{{ p.description }}</p>
+      <div class="dvz-feature h-100 p-4 text-center">
+        <img src="{% static 'images/service-app.png' %}" class="dvz-service-icon" alt="App Development">
+        <h5>App Development</h5>
+        <p class="text-muted small">Android apps with clean design, smooth experience and scalable backend.</p>
       </div>
     </div>
-    {% endfor %}
+
+    <div class="col-md-4">
+      <div class="dvz-feature h-100 p-4 text-center">
+        <img src="{% static 'images/service-ai.png' %}" class="dvz-service-icon" alt="AI Solutions">
+        <h5>AI Solutions</h5>
+        <p class="text-muted small">Automation, AI tools and smart integrations to grow your business.</p>
+      </div>
+    </div>
   </div>
+
+  <!-- WHY DEVZUNO -->
+  <div class="mt-5 bg-light rounded-4 p-4 p-lg-5">
+    <div class="row align-items-center">
+
+      <div class="col-lg-6">
+        <h3 class="fw-bold">Why Devzuno Technologies?</h3>
+
+        <ul class="text-muted mt-3 dvz-why-list">
+          <li>
+            <img src="{% static 'images/why-1.png' %}" width="120" height="120" alt="">
+            Fast delivery & professional design
+          </li>
+          <li>
+            <img src="{% static 'images/why-2.png' %}" width="120" height="120" alt="">
+            Mobile-friendly & SEO optimized
+          </li>
+          <li>
+            <img src="{% static 'images/why-3.png' %}" width="120" height="120" alt="">
+            Secure coding & scalable architecture
+          </li>
+          <li>
+            <img src="{% static 'images/why-4.png' %}" width="120" height="120" alt="">
+            Lifetime support & quick response
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-lg-6 text-center">
+        <strong class="display-6 text-primary">Quick Delivery</strong>
+        <p class="text-muted">Premium UI • Clean Code • Full Support</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HOW WE WORK -->
+  <div class="mt-5">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">How We Work</h2>
+      <p class="text-muted">Simple, transparent & result-driven process</p>
+    </div>
+
+    <div class="row g-4 text-center">
+      <div class="col-md-3">
+        <strong>1.</strong>
+        <img src="{% static 'images/step-1.png' %}" class="img-fluid mb-2" style="max-height:150px;" alt="">
+        <p>Requirement Discussion</p>
+      </div>
+
+      <div class="col-md-3">
+        <strong>2.</strong>
+        <img src="{% static 'images/step-2.png' %}" class="img-fluid mb-2" style="max-height:150px;" alt="">
+        <p>Design & UI Planning</p>
+      </div>
+
+      <div class="col-md-3">
+        <strong>3.</strong>
+        <img src="{% static 'images/step-3.png' %}" class="img-fluid mb-2" style="max-height:150px;" alt="">
+        <p>Development & Testing</p>
+      </div>
+
+      <div class="col-md-3">
+        <strong>4.</strong>
+        <img src="{% static 'images/step-4.png' %}" class="img-fluid mb-2" style="max-height:150px;" alt="">
+        <p>Delivery & Support</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUR WORK -->
+  <div class="mt-5">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">Our Work</h2>
+      <p class="text-muted">Some of our recent builds</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="dvz-feature p-3 text-center h-100">
+          <img src="{% static 'images/work-1.png' %}" class="img-fluid mb-2 rounded" alt="">
+          <h6>Business Website</h6>
+          <p class="small text-muted">Clean, modern and fast-loading business website with premium UI design, mobile responsive layout,
+  and SEO-friendly structure. Perfect for startups and businesses to build trust, attract customers,
+  and generate more leads online.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="dvz-feature p-3 text-center h-100">
+          <img src="{% static 'images/work-2.png' %}" class="img-fluid mb-2 rounded" alt="">
+          <h6>E-Commerce Store</h6>
+          <p class="small text-muted">Professional online store with smooth product management, secure payment integration and
+  user-friendly checkout experience. Designed to boost conversions, manage orders easily,
+  and grow your business with a premium shopping experience.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="dvz-feature p-3 text-center h-100">
+          <img src="{% static 'images/work-3.png' %}" class="img-fluid mb-2 rounded" alt="">
+          <h6>Mobile Application</h6>
+          <p class="small text-muted">Feature-rich Android & iOS application with clean UI, smooth performance and secure login system.
+  Includes dashboard, API integration and scalable backend setup — ideal for business apps,
+  services platforms and customer engagement.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 
@@ -416,6 +467,29 @@
     font-weight: 700;
     border-radius: 8px;
     box-shadow: 0 6px 20px rgba(91, 124, 250, 0.2);
+  }
+
+  /* WHY LIST STYLE */
+  .dvz-why-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+
+  .dvz-why-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  /* ✅ SERVICE ICON SIZE FIX */
+  .dvz-service-icon{
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 14px auto;
   }
 </style>
 

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<section class="py-5 contact-page" style="background: linear-gradient(135deg, #eef2ff 0%, #faf8ff 100%);">
+<section class="py-5 contact-page">
   <div class="container">
 
     <!-- Header -->
@@ -9,27 +9,31 @@
       <h2 class="fw-bold display-6 contact-heading">Contact Us</h2>
       <p class="text-muted fs-5">We'd love to hear from you — let's build something amazing together!</p>
       <div class="small text-muted mt-3">
-        <div>📧 Email: <strong>{{ SITE.support_email|default:'support@devzuno.com' }}</strong></div>
+        <div>📧 Email: <strong>{{ SITE.support_email|default:'devzunotechnologies@gmail.com' }}</strong></div>
         <div>📞 Sales: <strong>{{ SITE.sales_phone|default:'+919219317352' }}</strong></div>
       </div>
     </div>
 
     <!-- Form -->
-    <form method="post" class="rounded-4 shadow-lg bg-white p-4 p-md-5" id="contactForm">
+    <form method="post" class="rounded-4 shadow-lg bg-white p-4 p-md-5 contact-card" id="contactForm">
       {% csrf_token %}
       {{ form.country_code }}
 
       <div class="row g-4">
         <!-- Name -->
         <div class="col-md-6">
-          <label class="form-label fw-semibold text-primary">Full Name <span class="text-danger">*</span></label>
+          <label class="form-label fw-semibold text-primary">
+            Full Name <span class="text-danger">*</span>
+          </label>
           {{ form.name }}
           {% if form.name.errors %}<div class="text-danger small">{{ form.name.errors|striptags }}</div>{% endif %}
         </div>
 
         <!-- Phone -->
         <div class="col-md-6">
-          <label class="form-label fw-semibold text-primary">Phone Number <span class="text-danger">*</span></label>
+          <label class="form-label fw-semibold text-primary">
+            Phone Number <span class="text-danger">*</span>
+          </label>
           {{ form.phone }}
           <div class="form-text">Select country flag and enter your number.</div>
           {% if form.phone.errors %}<div class="text-danger small">{{ form.phone.errors|striptags }}</div>{% endif %}
@@ -37,44 +41,77 @@
 
         <!-- Email -->
         <div class="col-md-6">
-          <label class="form-label fw-semibold text-primary">Email Address <span class="text-danger">*</span></label>
+          <label class="form-label fw-semibold text-primary">
+            Email Address <span class="text-danger">*</span>
+          </label>
           {{ form.email }}
           {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors|striptags }}</div>{% endif %}
         </div>
 
         <!-- Location -->
         <div class="col-md-6">
-          <label class="form-label fw-semibold text-primary">Location</label>
+          <label class="form-label fw-semibold text-primary">
+            Location <span class="text-danger">*</span>
+          </label>
           {{ form.location }}
           {% if form.location.errors %}<div class="text-danger small">{{ form.location.errors|striptags }}</div>{% endif %}
         </div>
 
         <!-- Pincode -->
         <div class="col-md-6">
-          <label class="form-label fw-semibold text-primary">Pincode / Postal Code</label>
+          <label class="form-label fw-semibold text-primary">
+            Pincode / Postal Code <span class="text-danger">*</span>
+          </label>
           {{ form.pincode }}
           {% if form.pincode.errors %}<div class="text-danger small">{{ form.pincode.errors|striptags }}</div>{% endif %}
         </div>
 
         <!-- Website Type -->
         <div class="col-md-6">
-          <label class="form-label fw-semibold text-primary">Website Type <span class="text-danger">*</span></label>
+          <label class="form-label fw-semibold text-primary">
+            Website Type <span class="text-danger">*</span>
+          </label>
           {{ form.website_type }}
           {% if form.website_type.errors %}<div class="text-danger small">{{ form.website_type.errors|striptags }}</div>{% endif %}
         </div>
 
         <!-- Support Language -->
         <div class="col-md-6">
-          <label class="form-label fw-semibold text-primary">Support Language <span class="text-danger">*</span></label>
+          <label class="form-label fw-semibold text-primary">
+            Support Language <span class="text-danger">*</span>
+          </label>
           {{ form.support_language }}
           {% if form.support_language.errors %}<div class="text-danger small">{{ form.support_language.errors|striptags }}</div>{% endif %}
         </div>
 
         <!-- Message -->
         <div class="col-12">
-          <label class="form-label fw-semibold text-primary">Message / Requirements</label>
+          <label class="form-label fw-semibold text-primary">
+            Message / Requirements <span class="text-danger">*</span>
+          </label>
           {{ form.message }}
           {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors|striptags }}</div>{% endif %}
+        </div>
+      </div>
+
+      <!-- ✅ CAPTCHA -->
+      <div class="mt-4">
+        <label class="form-label fw-semibold text-primary">
+          Verify Captcha <span class="text-danger">*</span>
+        </label>
+
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+          <div id="captchaText" class="captcha-box"></div>
+
+          <button type="button" class="btn btn-outline-primary btn-sm px-3" id="refreshCaptchaBtn">
+            Refresh
+          </button>
+        </div>
+
+        <input type="text" id="captchaInput" class="form-control dvz-input mt-2" placeholder="Enter Captcha" required>
+
+        <div id="captchaError" class="text-danger small mt-1" style="display:none;">
+          Captcha is incorrect. Please try again.
         </div>
       </div>
 
@@ -93,34 +130,93 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+  /* ✅ Make all fields required (frontend) */
+  function setRequired(id){
+    const el = document.getElementById(id);
+    if(el) el.setAttribute("required", "required");
+  }
+
+  setRequired("id_name");
+  setRequired("id_email");
+  setRequired("id_location");
+  setRequired("id_pincode");
+  setRequired("id_website_type");
+  setRequired("id_support_language");
+  setRequired("id_message");
+
+  /* ✅ Phone input + country code */
   const phoneInput = document.getElementById('id_phone_visible');
   const ccHidden = document.getElementById('id_country_code_hidden');
 
   if (phoneInput) {
+    phoneInput.setAttribute("required","required");
+
     const iti = window.intlTelInput(phoneInput, {
       initialCountry: "in",
       separateDialCode: true,
       nationalMode: true,
       utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/utils.js",
     });
+
     function updateCC() {
       const d = iti.getSelectedCountryData();
-      if (d && d.dialCode) ccHidden.value = "+" + d.dialCode;
+      if (d && d.dialCode && ccHidden) ccHidden.value = "+" + d.dialCode;
     }
+
     phoneInput.addEventListener('countrychange', updateCC);
     updateCC();
 
-    document.getElementById('contactForm').addEventListener('submit', function (e) {
+    document.getElementById('contactForm').addEventListener('submit', function () {
       updateCC();
       phoneInput.value = phoneInput.value.replace(/\s+/g, '');
-      if (!phoneInput.value.trim()) { e.preventDefault(); phoneInput.focus(); }
     });
   }
+
+  /* ✅ Captcha */
+  let captchaValue = "";
+
+  function genCaptcha() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let out = "";
+    for (let i = 0; i < 6; i++) out += chars[Math.floor(Math.random() * chars.length)];
+    captchaValue = out;
+
+    const captchaEl = document.getElementById("captchaText");
+    if (captchaEl) captchaEl.innerText = captchaValue;
+
+    const err = document.getElementById("captchaError");
+    if (err) err.style.display = "none";
+
+    const input = document.getElementById("captchaInput");
+    if (input) input.value = "";
+  }
+
+  const refreshBtn = document.getElementById("refreshCaptchaBtn");
+  if (refreshBtn) refreshBtn.addEventListener("click", genCaptcha);
+
+  genCaptcha();
+
+  /* ✅ Captcha validation */
+  const form = document.getElementById("contactForm");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      const userCaptcha = (document.getElementById("captchaInput")?.value || "").trim().toUpperCase();
+      if (userCaptcha !== captchaValue) {
+        e.preventDefault();
+        const err = document.getElementById("captchaError");
+        if (err) err.style.display = "block";
+        genCaptcha();
+        document.getElementById("captchaInput")?.focus();
+        return;
+      }
+    });
+  }
+
 });
 </script>
 
 <style>
-  /* Unique modern Devzuno colors & animations */
   .contact-page {
     background: linear-gradient(135deg, #eef2ff 0%, #faf8ff 100%);
     min-height: 100vh;
@@ -128,26 +224,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
   .contact-heading {
     background: linear-gradient(90deg, #5b7cfa, #9b5bfa);
-    background-clip: text; 
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  .form-control, .form-select {
-    border-radius: 10px;
-    height: 50px;
+  .contact-card{
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .dvz-input,
+  .form-control,
+  .form-select {
+    border-radius: 12px;
+    height: 52px;
     border: 1px solid #e1e4f2;
-    padding: .6rem .9rem;
+    padding: .75rem 1rem;
+    font-size: 16px;
     transition: all 0.25s ease;
   }
+
   .form-control:focus, .form-select:focus {
     border-color: #7a5bfa;
-    box-shadow: 0 0 0 0.25rem rgba(91,124,250,.2);
+    box-shadow: 0 0 0 0.25rem rgba(91,124,250,.18);
   }
 
   textarea.form-control {
-    height: auto;
-    min-height: 120px;
+    height: auto !important;
+    min-height: 160px;
+    resize: vertical;
   }
 
   .btn-gradient {
@@ -156,6 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
     border: none;
     transition: all .3s ease;
   }
+
   .btn-gradient:hover {
     background: linear-gradient(135deg, #4a63ff, #8b4aff);
     transform: translateY(-2px);
@@ -166,8 +273,28 @@ document.addEventListener('DOMContentLoaded', function () {
     width: 100%;
   }
 
+  .iti--separate-dial-code .iti__selected-flag{
+    height: 52px;
+    border-radius: 12px 0 0 12px;
+  }
+
   .shadow-lg {
     box-shadow: 0 8px 25px rgba(91,124,250,.08) !important;
+  }
+
+  .captcha-box{
+    min-width: 160px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    border: 1px solid #e1e4f2;
+    background: #f8fafc;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 4px;
+    user-select: none;
   }
 </style>
 
