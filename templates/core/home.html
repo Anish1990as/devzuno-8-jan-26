@@ -210,6 +210,143 @@
 </section>
 
 
+<!-- ✅ COUPON / OFFER BAR START -->
+<section class="container mt-4">
+  <div class="p-4 rounded-4 shadow-sm d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between gap-3"
+       style="background: linear-gradient(90deg, #0f172a, #1e293b); border: 1px solid rgba(255,255,255,0.08);">
+
+    <div>
+      <span class="badge rounded-pill px-3 py-2" style="background:#22c55e;">Limited Time Offer</span>
+      <h4 class="fw-bold text-white mt-2 mb-1">Get Flat <span style="color:#22c55e;">2000 OFF</span> on Website & App Development</h4>
+      <p class="text-white-50 mb-0">Use coupon code below during enquiry. Offer valid this week only.</p>
+    </div>
+
+    <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2">
+      <div class="px-3 py-2 rounded-3 text-white fw-semibold"
+           style="background: rgba(34,197,94,0.15); border: 1px dashed rgba(34,197,94,0.7);">
+        Coupon Code: <span style="color:#22c55e;">DEVZUNOFIRST</span>
+      </div>
+
+      <a href="{% url 'contact' %}" class="btn btn-success fw-semibold px-4">
+        Claim Offer
+      </a>
+    </div>
+
+  </div>
+</section>
+<!-- ✅ COUPON / OFFER BAR END -->
+
+<!-- ✅ MODERN SERVICES SLIDER START -->
+<section class="container my-4">
+  <div id="modernSlider" class="carousel slide rounded-4 overflow-hidden shadow-sm"
+       data-bs-ride="carousel" data-bs-interval="3500">
+
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#modernSlider" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#modernSlider" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#modernSlider" data-bs-slide-to="2"></button>
+    </div>
+
+    <div class="carousel-inner">
+
+      <!-- ✅ Slide 1 -->
+      <div class="carousel-item active">
+        <div class="p-5 text-white"
+             style="min-height: 280px; background: linear-gradient(135deg,#0ea5e9,#1e3a8a,#0f172a);">
+          <span class="badge rounded-pill px-3 py-2"
+                style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);">
+            Premium Websites
+          </span>
+
+          <h2 class="fw-bold mt-3 mb-2">Modern Website Development 🚀</h2>
+          <p class="mb-4" style="max-width: 650px; opacity: 0.85;">
+            Fast loading, mobile-friendly, SEO optimized website with modern UI, security and best performance.
+          </p>
+
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            <span class="badge rounded-pill text-bg-light">Fast</span>
+            <span class="badge rounded-pill text-bg-light">Secure</span>
+            <span class="badge rounded-pill text-bg-light">Mobile Friendly</span>
+            <span class="badge rounded-pill text-bg-light">SEO Ready</span>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'pricing' %}" class="btn btn-light fw-semibold px-4">View Pricing</a>
+            <a href="{% url 'contact' %}" class="btn btn-outline-light fw-semibold px-4">Get Free Quote</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ Slide 2 -->
+      <div class="carousel-item">
+        <div class="p-5 text-white"
+             style="min-height: 280px; background: linear-gradient(135deg,#14b8a6,#0f766e,#0f172a);">
+          <span class="badge rounded-pill px-3 py-2"
+                style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);">
+            Mobile Apps
+          </span>
+
+          <h2 class="fw-bold mt-3 mb-2">Android & iOS App Development 📱</h2>
+          <p class="mb-4" style="max-width: 650px; opacity: 0.85;">
+            Convert your business into an app with modern design, admin panel, API integration and smooth performance.
+          </p>
+
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            <span class="badge rounded-pill text-bg-light">Admin Panel</span>
+            <span class="badge rounded-pill text-bg-light">Payment Integration</span>
+            <span class="badge rounded-pill text-bg-light">Live Tracking</span>
+            <span class="badge rounded-pill text-bg-light">Push Notifications</span>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'contact' %}" class="btn btn-light fw-semibold px-4">Contact Sales</a>
+            <a href="{% url 'portfolio' %}" class="btn btn-outline-light fw-semibold px-4">See Projects</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ Slide 3 -->
+      <div class="carousel-item">
+        <div class="p-5 text-white"
+             style="min-height: 280px; background: linear-gradient(135deg,#6366f1,#4338ca,#0f172a);">
+          <span class="badge rounded-pill px-3 py-2"
+                style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);">
+            Support & Growth
+          </span>
+
+          <h2 class="fw-bold mt-3 mb-2">Maintenance, Hosting & Support 💼</h2>
+          <p class="mb-4" style="max-width: 650px; opacity: 0.85;">
+            Get complete support for your website/app with fast hosting, security updates, backups and priority help.
+          </p>
+
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            <span class="badge rounded-pill text-bg-light">Cloud Hosting</span>
+            <span class="badge rounded-pill text-bg-light">Security</span>
+            <span class="badge rounded-pill text-bg-light">Backup</span>
+            <span class="badge rounded-pill text-bg-light">24/7 Support</span>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'contact' %}" class="btn btn-light fw-semibold px-4">Talk to Expert</a>
+            <a href="{% url 'pricing' %}" class="btn btn-outline-light fw-semibold px-4">Choose Plan</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Controls (Removed Arrows) -->
+    <!--
+    <button class="carousel-control-prev" type="button" data-bs-target="#modernSlider" data-bs-slide="prev"></button>
+    <button class="carousel-control-next" type="button" data-bs-target="#modernSlider" data-bs-slide="next"></button>
+    -->
+
+  </div>
+</section>
+<!-- ✅ MODERN SERVICES SLIDER END -->
+
+
 <!-- ===================== STATIC: SERVICES + WHY + WORK + PORTFOLIO ===================== -->
 <section class="mt-5">
 
