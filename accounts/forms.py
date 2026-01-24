@@ -6,41 +6,26 @@ from phonenumbers import geocoder
 
 
 def country_flag_emoji(country_code: str) -> str:
-    """
-    ✅ Convert ISO code like 'IN' -> 🇮🇳
-    """
     return "".join(chr(127397 + ord(char)) for char in country_code.upper())
 
 
 def get_country_code_choices():
-    """
-    ✅ Returns choices like:
-    🇮🇳 India (+91)
-    🇺🇸 United States (+1)
-    🇬🇧 United Kingdom (+44)
-    (ALL countries included)
-    """
     choices = set()
 
     for region in phonenumbers.SUPPORTED_REGIONS:
         code = phonenumbers.country_code_for_region(region)
         flag = country_flag_emoji(region)
 
-        # ✅ Get proper country name
         try:
-            # dummy number for geocoder
             dummy_number = phonenumbers.parse(f"+{code}000000000", region)
             country_name = geocoder.description_for_number(dummy_number, "en")
-        except:
+        except Exception:
             country_name = region
 
-        # Example: ("+91", "🇮🇳 India (+91)")
         choices.add((f"+{code}", f"{flag} {country_name} (+{code})"))
 
-    # ✅ sort by numeric calling code
     choices = list(choices)
     choices.sort(key=lambda x: int(x[0].replace("+", "")))
-
     return choices
 
 
@@ -71,22 +56,25 @@ class RegisterForm(UserCreationForm):
     phone = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={
-            "placeholder": "9876543210",
+            "placeholder": "8008008001",
             "class": "form-control",
         })
     )
 
+    # ✅ Sirf yahi use karo (default fields)
     password1 = forms.CharField(
+        label="Password",
         widget=forms.PasswordInput(attrs={
             "placeholder": "Create Password",
-            "class": "form-control"
+            "class": "form-control",
         })
     )
 
     password2 = forms.CharField(
+        label="Confirm password",
         widget=forms.PasswordInput(attrs={
             "placeholder": "Confirm Password",
-            "class": "form-control"
+            "class": "form-control",
         })
     )
 
@@ -106,4 +94,5 @@ class RegisterForm(UserCreationForm):
         if email and User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError("This email is already registered.")
         return email
+
 
