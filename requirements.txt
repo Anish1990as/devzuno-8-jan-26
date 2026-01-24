@@ -10,3 +10,5 @@ whitenoise[brotli]
 dj-database-url
 django-widget-tweaks
 Pillow
+phonenumbers
+

@@ -2,8 +2,8 @@
 {% block content %}
 
 <div class="d-flex justify-content-center mt-5">
-  <div class="card shadow-sm rounded-4 p-4" style="max-width: 400px; width: 100%; background-color: #f3e8ff;">
-    <h2 class="text-center mb-4 fw-bold" style="color: #3a2f5a;">Create Account</h2>
+  <div class="card shadow-sm rounded-4 p-4 register-card">
+    <h2 class="text-center mb-4 fw-bold register-title">Create Account</h2>
 
     <form method="post" novalidate>
       {% csrf_token %}
@@ -11,11 +11,12 @@
 
       {% for field in form %}
         <div class="mb-3">
-          <label for="{{ field.id_for_label }}" class="form-label fw-semibold" style="color: #3a2f5a;">
+          <label for="{{ field.id_for_label }}" class="form-label fw-semibold register-label">
             {{ field.label }}
           </label>
 
           {% if field.field.widget.input_type == "password" %}
+            <!-- ✅ Password field with show/hide -->
             <div class="password-field">
               {{ field }}
               <button type="button" class="toggle-btn" onclick="togglePassword('{{ field.id_for_label }}', this)">
@@ -45,6 +46,22 @@
 </div>
 
 <style>
+  /* ✅ Card Styling */
+  .register-card{
+    max-width: 400px;
+    width: 100%;
+    background-color: #f3e8ff;
+  }
+
+  .register-title{
+    color: #3a2f5a;
+  }
+
+  .register-label{
+    color: #3a2f5a;
+  }
+
+  /* ✅ Inputs + Select + Textarea */
   form input, form select, form textarea {
     border-radius: 0.5rem !important;
     border: 1.5px solid #c6b7ff !important;
@@ -59,6 +76,12 @@
     outline: none !important;
   }
 
+  /* ✅ Flag emoji support for dropdown */
+  select, option {
+    font-family: "Segoe UI Emoji", "Segoe UI", "Noto Color Emoji", sans-serif !important;
+  }
+
+  /* ✅ Register Button */
   .btn-unique {
     background: linear-gradient(135deg, #8a4fff, #d63aff);
     border: none;
@@ -78,7 +101,7 @@
   }
 
   .password-field input {
-    padding-right: 70px !important;
+    padding-right: 72px !important;
   }
 
   .toggle-btn {
@@ -115,7 +138,7 @@
 
 <script>
   function togglePassword(fieldId, btn) {
-    let input = document.getElementById(fieldId);
+    const input = document.getElementById(fieldId);
     if (!input) return;
 
     if (input.type === "password") {
