@@ -1,6 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<style>
+  /* ✅ Light Green Premium Button */
+  .dvz-btn-green{
+    background: #bbf7d0 !important;   /* light green */
+    color: #065f46 !important;        /* dark green text */
+    border: 1px solid #86efac !important;
+    font-weight: 800;
+    border-radius: 14px;
+    padding: 12px 14px;
+    transition: all 0.25s ease;
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.18);
+  }
+
+  /* ✅ Touch / Hover highlight effect */
+  .dvz-btn-green:hover,
+  .dvz-btn-green:focus,
+  .dvz-btn-green:active{
+    background: #86efac !important;  /* darker on hover */
+    color: #064e3b !important;
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(34, 197, 94, 0.28);
+    border-color: #22c55e !important;
+  }
+
+  /* ✅ Mobile touch highlight */
+  .dvz-btn-green:active{
+    transform: translateY(0px) scale(0.98);
+  }
+
+  /* ✅ Remove default focus outline */
+  .dvz-btn-green:focus{
+    outline: none !important;
+  }
+</style>
+
 <h2 class="mb-2">Choose What You Need</h2>
 <p class="text-muted">Pick a category below</p>
 
@@ -71,16 +106,23 @@
         </ul>
 
         {% if request.user.is_authenticated %}
-          <!-- ✅ Choose button (IMPORTANT: plan slug pass) -->
-          <a class="btn w-100 mt-3 {% if p.highlight %}btn-primary{% else %}btn-outline-primary{% endif %}"
-            href="/order/?plan={{ p.slug }}">
-            Choose
-          </a>
+          <!-- ✅ Choose button Center + Short Width -->
+          <div class="text-center mt-3">
+            <a class="btn dvz-btn-green px-5"
+               style="width:220px;"
+               href="/order/?plan={{ p.slug }}">
+              Choose
+            </a>
+          </div>
         {% else %}
           <!-- ✅ Login first, then redirect to selected plan order -->
-          <a class="btn w-100 mt-3 btn-primary" href="/client/login/?next=/order/?plan={{ p.slug }}">
-            Login to Order
-          </a>
+          <div class="text-center mt-3">
+            <a class="btn btn-primary px-5"
+               style="width:220px;"
+               href="/client/login/?next=/order/?plan={{ p.slug }}">
+              Login to Order
+            </a>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -95,3 +137,4 @@
 </div>
 
 {% endblock %}
+
