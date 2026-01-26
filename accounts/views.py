@@ -1,6 +1,6 @@
 # accounts/views.py
 from datetime import timedelta
-
+import socket
 from django.apps import apps
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -421,4 +421,65 @@ def projects(request):
 
 @login_required
 def domains(request):
-    return render(request, "accounts/domains.html")
+    result = None
+
+    if request.method == "POST":
+        domain = request.POST.get("domain", "").strip()
+        domain = domain.replace("http://", "").replace("https://", "").replace("/", "")
+
+        try:
+            ip = socket.gethostbyname(domain)
+            result = {
+                "domain": domain,
+                "status": "✅ Active / Valid",
+                "message": "Domain is resolving correctly.",
+                "ip": ip
+            }
+        except socket.gaierror:
+            result = {
+                "domain": domain,
+                "status": "❌ Not Valid / Not Working",
+                "message": "Domain not found or DNS not resolving.",
+                "ip": None
+            }
+
+    return render(request, "accounts/domains.html", {"result": result})
+
+
+def domain_suggestions(request):
+    results = []
+    keyword = ""
+
+    extensions = [
+        ".com", ".in", ".net", ".org", ".co",
+        ".io", ".tech", ".ai", ".info", ".xyz"
+    ]
+
+    if request.method == "POST":
+        keyword = request.POST.get("keyword", "").strip().lower()
+
+        keyword = keyword.replace("http://", "").replace("https://", "")
+        keyword = keyword.replace("www.", "").split("/")[0]
+        keyword = keyword.split(".")[0]
+
+        for ext in extensions:
+            domain = keyword + ext
+
+            try:
+                socket.gethostbyname(domain)
+                available = False
+                status = "❌ Not Available (Already Registered)"
+            except socket.gaierror:
+                available = True
+                status = "✅ Available (Buy Now)"
+
+            results.append({
+                "domain": domain,
+                "available": available,
+                "status": status
+            })
+
+    return render(request, "accounts/domains.html", {
+        "results": results,
+        "keyword": keyword
+    })
