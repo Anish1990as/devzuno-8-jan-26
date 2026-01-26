@@ -16,7 +16,6 @@ urlpatterns = [
     path('reviews/new/<int:project_id>/', core_views.review_new, name='review_new'),
     path('contact/', core_views.contact, name='contact'),
     path('order/', core_views.order, name='order'),
-    path('domains/check/', core_views.domain_check, name='domain_check'),
     path('about/', core_views.about, name='about'),
     path("privacy_policy/", core_views.privacy_policy, name="privacy_policy"),
 

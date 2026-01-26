@@ -51,6 +51,10 @@ def pricing(request):
     else:
         plans = PricingPlan.objects.filter(category__isnull=True, is_active=True).order_by("-highlight", "price")
 
+    # ✅ CUSTOM PLAN LAST (slug = Custom)
+    plans = list(plans)
+    plans = sorted(plans, key=lambda p: (p.slug.lower() == "custom"))
+
     return render(request, "core/pricing.html", {
         "categories": categories,
         "active_cat": active_cat,
@@ -160,20 +164,6 @@ def contact(request):
     return render(request, "core/contact.html", {"form": form})
 
 
-# -----------------------------
-# DOMAIN CHECK (Demo)
-# -----------------------------
-def domain_check(request):
-    q = request.GET.get("q", "").strip()
-
-    # Fake availability for demo
-    import random
-    available = bool(random.getrandbits(1))
-
-    return JsonResponse({
-        "domain": q,
-        "available": available
-    })
 
 
 # -----------------------------
