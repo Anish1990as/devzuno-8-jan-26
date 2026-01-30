@@ -20,7 +20,7 @@
       "name": "Devzuno Technologies",
       "alternateName": "Devzuno",
       "url": "https://devzuno.com/",
-      "logo": "https://devzuno.com/static/images/devzuno.png"
+      "logo": "https://devzuno.com/static/images/devzuno1.png"
     }
   </script>
 
@@ -51,8 +51,8 @@
 
     /* Inner scroll container (poori site yahan scroll hogi) */
     #scroll-root {
-      height: 100vh;
-      overflow: auto;
+      min-height: 100vh;
+      overflow: visible;
       overscroll-behavior: auto;
       -webkit-overflow-scrolling: touch;
       display: flex;
@@ -92,6 +92,21 @@
       background: var(--dvz-nav-bg);
       box-shadow: 0 4px 20px rgba(28, 47, 111, 0.6);
       border: 1px solid var(--dvz-nav-border);
+
+      /* Desktop par proper fixed navbar (no pull down) */
+      @media (min-width: 992px) {
+      .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    main {
+      padding-top: var(--dvz-nav-height);
+  }
+}
+
 
       /* Top gap band—rounded corners hata do */
       border-top-left-radius: 0;
