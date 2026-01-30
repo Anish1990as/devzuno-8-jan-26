@@ -4,12 +4,26 @@ from django.urls import path, include
 from core import views as core_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
+from django.contrib.sitemaps.views import sitemap
+from core.sitemaps import StaticViewSitemap
+
+
+def robots_txt(request):               # 👈 IMPORTANT
+    return HttpResponse(
+        "User-agent: *\nAllow: /\n\nSitemap: https://www.devzuno.com/sitemap.xml",
+        content_type="text/plain"
+    )
+
+sitemaps = {
+    'static': StaticViewSitemap,
+}
 
 
 urlpatterns = [
     path('anishshesh/', admin.site.urls),
     path('', core_views.home, name='home'),
-    path("", include("accounts.urls")),
+  #  path("", include("accounts.urls")),
     path('pricing/', core_views.pricing, name='pricing'),
     path('portfolio/', core_views.portfolio, name='portfolio'),
     path('reviews/', core_views.reviews, name='reviews'),
@@ -25,10 +39,10 @@ urlpatterns = [
     path('dashboard/', core_views.dashboard, name='dashboard'),
     path('client/', include(("accounts.urls", "accounts"), namespace="accounts")),
     path('client/', include('django.contrib.auth.urls')),
- 
+    path("robots.txt", robots_txt),
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}),
 
 ]
-
 
 # Add this at the end:
 
