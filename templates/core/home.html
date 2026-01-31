@@ -364,37 +364,73 @@ Devzuno Technologies provides professional website development, mobile app devel
 <!-- ===================== STATIC: SERVICES + WHY + WORK + PORTFOLIO ===================== -->
 <section class="mt-5">
 
-  <!-- OUR SERVICES -->
-  <div class="text-center mb-4">
-    <h2 class="fw-bold">Our Services</h2>
-    <p class="text-muted">AI-driven solutions & scalable digital products</p>
-  </div>
+  <!-- OUR SERVICES (HOME – PREMIUM like services.html) -->
+<div class="text-center mb-4">
+  <h2 class="fw-bold">Our Services</h2>
+  <p class="text-muted">Website, App Development & Digital Marketing</p>
+</div>
 
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="dvz-feature h-100 p-4 text-center overflow-hidden">
-        <img src="{% static 'images/service-web.png' %}" class="dvz-service-icon" alt="Web Development">
-        <h5>Website Development</h5>
-        <p class="text-muted small">Modern business websites with fast speed and premium UI.</p>
-      </div>
-    </div>
+<div class="row g-4">
 
-    <div class="col-md-4">
-      <div class="dvz-feature h-100 p-4 text-center overflow-hidden">
-        <img src="{% static 'images/service-app.png' %}" class="dvz-service-icon" alt="App Development">
-        <h5>App Development</h5>
-        <p class="text-muted small">Android apps with clean design, smooth experience and scalable backend.</p>
-      </div>
-    </div>
+  <!-- Website -->
+  <div class="col-md-4">
+    <div class="home-service-premium-card">
 
-    <div class="col-md-4">
-      <div class="dvz-feature h-100 p-4 text-center overflow-hidden">
-        <img src="{% static 'images/service-ai.png' %}" class="dvz-service-icon" alt="AI Solutions">
-        <h5>AI Solutions</h5>
-        <p class="text-muted small">Automation, AI tools and smart integrations to grow your business.</p>
-      </div>
+      <img src="{% static 'images/service-web.png' %}"
+           class="home-service-icon"
+           alt="Website Development">
+
+      <h5>Website Development</h5>
+      <p class="text-muted small">
+        Modern business websites with fast speed and premium UI.
+      </p>
+
     </div>
   </div>
+
+  <!-- App -->
+  <div class="col-md-4">
+    <div class="home-service-premium-card">
+
+      <img src="{% static 'images/service-app.png' %}"
+           class="home-service-icon"
+           alt="App Development">
+
+      <h5>App Development</h5>
+      <p class="text-muted small">
+        Android apps with clean design, smooth experience and scalable backend.
+      </p>
+
+
+    </div>
+  </div>
+
+  <!-- AI -->
+  <div class="col-md-4">
+    <div class="home-service-premium-card">
+
+      <img src="{% static 'images/service-ai.png' %}"
+           class="home-service-icon"
+           alt="AI Solutions">
+
+      <h5>AI Solutions</h5>
+      <p class="text-muted small">
+        Automation, AI tools and smart integrations to grow your business.
+      </p>
+
+
+    </div>
+  </div>
+
+  <div class="text-end mt-2">
+  <a href="/services/" class="home-services-view-more">
+    View more →
+  </a>
+</div>
+
+
+</div>
+
 
   <!-- WHY DEVZUNO -->
   <div class="mt-5 bg-light rounded-4 p-4 p-lg-5">
@@ -435,7 +471,7 @@ Devzuno Technologies provides professional website development, mobile app devel
   <div class="mt-5">
     <div class="text-center mb-4">
       <h2 class="fw-bold">How We Work</h2>
-      <p class="text-muted">Simple, transparent & result-driven process</p>
+      <p class="text-muted">Our Development & Delivery Process</p>
     </div>
 
     <div class="row g-4 text-center">
@@ -469,7 +505,7 @@ Devzuno Technologies provides professional website development, mobile app devel
   <div class="mt-5">
     <div class="text-center mb-4">
       <h2 class="fw-bold">Our Work</h2>
-      <p class="text-muted">Some of our recent builds</p>
+      <p class="text-muted">Our Website & App Development Projects</p>
     </div>
 
     <div class="row g-4">
@@ -628,15 +664,110 @@ Devzuno Technologies provides professional website development, mobile app devel
     padding: 10px 0;
   }
 
-  /* ✅ SERVICE ICON SIZE FIX */
-  .dvz-service-icon{
-    width: 100%;
-    max-width: 180px;
-    height: 140px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 14px auto;
-  }
+  /* HOME – services like premium cards */
+
+.home-service-premium-card{
+  position: relative;
+  height: 100%;
+  background: linear-gradient(180deg,#ffffff,#f8fafc);
+  border-radius: 22px;
+
+  /* banner ke liye space */
+  padding: 54px 26px 52px;
+
+  text-align: center;
+  box-shadow: 0 18px 45px rgba(15,23,42,.08);
+  transition: all .35s cubic-bezier(.2,.8,.2,1);
+  overflow: hidden;
+}
+
+/* 🔷 TOP PREMIUM COLOR STRIP */
+.home-service-premium-card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:70px;
+  border-top-left-radius:22px;
+  border-top-right-radius:22px;
+  background: linear-gradient(135deg,#4f46e5,#06b6d4,#22c55e);
+  z-index:0;
+}
+
+/* glow like services.html */
+.home-service-premium-card::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#4f46e5,#06b6d4,#22c55e);
+  opacity:0;
+  filter: blur(18px);
+  transition:.4s;
+  z-index:-1;
+}
+
+.home-service-premium-card:hover{
+  transform: translateY(-8px);
+  box-shadow: 0 30px 65px rgba(15,23,42,.12);
+}
+
+.home-service-premium-card:hover::after{
+  opacity:.35;
+}
+
+/* sab content banner ke upar rahe */
+.home-service-premium-card > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* image icon – bigger + floating look */
+.home-service-icon{
+  max-width:200px;
+  height:160px;
+  object-fit:contain;
+
+  margin-top:-34px;      /* banner ke upar float */
+  margin-bottom:22px;
+
+  background:#ffffff;
+  padding:10px;
+  border-radius:18px;
+
+  box-shadow:0 12px 28px rgba(15,23,42,.18);
+  transition: transform .2s;
+}
+
+
+/* vibration animation like services.html */
+.home-service-premium-card:hover .home-service-icon{
+  animation: dvz-vibrate .35s linear both;
+}
+
+/* view more */
+.home-services-view-more{
+  font-weight:700;
+  font-size:14px;
+  text-decoration:none;
+  background: linear-gradient(90deg,#4f46e5,#22c55e);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  display:inline-block;
+}
+
+
+/* vibration keyframes */
+@keyframes dvz-vibrate {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
 
   /* ✅ WHY ICON SIZE FIX */
   .dvz-why-icon{

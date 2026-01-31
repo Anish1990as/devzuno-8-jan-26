@@ -41,6 +41,8 @@ urlpatterns = [
     path('client/', include('django.contrib.auth.urls')),
     path("robots.txt", robots_txt),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}),
+    path("services/", core_views.services, name="services"),
+
 
 ]
 

@@ -183,3 +183,7 @@ def about(request):
 
 def privacy_policy(request):
     return render(request, "core/privacy_policy.html")
+
+
+def services(request):
+    return render(request, "core/services.html")
