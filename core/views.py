@@ -11,6 +11,7 @@ from .models import (
 
 from projects.models import Project
 from .forms import ContactForm
+from .utils import get_country_from_request
 
 
 # -----------------------------
@@ -34,53 +35,104 @@ def home(request):
 # PRICING (Category wise)
 # URL: /pricing/?cat=blog
 # -----------------------------
+
+
 def pricing(request):
     cat_slug = request.GET.get("cat")
 
     categories = PricingCategory.objects.filter(is_active=True).order_by("sort_order", "name")
 
-    # pick active category
     if cat_slug:
         active_cat = categories.filter(slug=cat_slug).first()
     else:
         active_cat = categories.first()
 
-    # plans filter by category
     if active_cat:
-        plans = PricingPlan.objects.filter(category=active_cat, is_active=True).order_by("-highlight", "price")
+        plans_qs = PricingPlan.objects.filter(
+            category=active_cat, is_active=True
+        ).order_by("-highlight", "price")
     else:
-        plans = PricingPlan.objects.filter(category__isnull=True, is_active=True).order_by("-highlight", "price")
+        plans_qs = PricingPlan.objects.filter(
+            category__isnull=True, is_active=True
+        ).order_by("-highlight", "price")
 
-    # ✅ CUSTOM PLAN LAST (slug = Custom)
-    plans = list(plans)
+    plans = list(plans_qs)
     plans = sorted(plans, key=lambda p: (p.slug.lower() == "custom"))
+
+    # ✅ country detect
+    country = get_country_from_request(request)
+
+    # ✅ attach display prices on each plan
+
+    MARKUP = 1.50  # 10% extra for other countries
+
+    for p in plans:
+        if country == "IN":
+            p.currency = "INR"
+            p.currency_symbol = "₹"
+            p.display_price = p.price
+            p.display_old_price = p.old_price
+        else:
+            p.currency = "USD"
+            p.currency_symbol = "$"
+
+
+            p.display_price = round((p.price / 83) * MARKUP, 2)
+
+            if p.old_price:
+                p.display_old_price = round((p.old_price / 83) * MARKUP, 2)
+
+            else:
+                p.display_old_price = None
 
     return render(request, "core/pricing.html", {
         "categories": categories,
         "active_cat": active_cat,
-        "plans": plans
+        "plans": plans,
     })
 
 
-# -----------------------------
-# ORDER PAGE ✅
-# URL: /order/?plan=<slug>
-# -----------------------------
 @login_required(login_url='/client/login/')
 def order(request):
     plan_slug = request.GET.get("plan")
 
     plan = None
     if plan_slug:
-        plan = PricingPlan.objects.filter(slug=plan_slug, is_active=True).select_related("category").first()
+        plan = PricingPlan.objects.filter(
+            slug=plan_slug,
+            is_active=True
+        ).select_related("category").first()
 
-    # If plan not found, show message
     if plan_slug and not plan:
         messages.error(request, "Plan not found or inactive. Please choose a valid plan.")
         return redirect("/pricing/")
 
+    country = get_country_from_request(request)
+
+    MARKUP = 1.50   # ✅ 10% extra for non-India users
+
+    if country == "IN":
+        currency = "INR"
+        currency_symbol = "₹"
+        display_price = plan.price if plan else 0
+        display_old_price = plan.old_price if plan and plan.old_price else None
+    else:
+        currency = "USD"
+        currency_symbol = "$"
+
+        display_price = round((plan.price / 83) * MARKUP, 2) if plan else 0
+
+        if plan and plan.old_price:
+            display_old_price = round((plan.old_price / 83) * MARKUP, 2)
+        else:
+            display_old_price = None
+
     return render(request, "core/order.html", {
-        "plan": plan
+        "plan": plan,
+        "currency": currency,
+        "currency_symbol": currency_symbol,
+        "display_price": display_price,
+        "display_old_price": display_old_price
     })
 
 
@@ -187,3 +239,5 @@ def privacy_policy(request):
 
 def services(request):
     return render(request, "core/services.html")
+
+

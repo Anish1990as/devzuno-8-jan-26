@@ -8,14 +8,12 @@ Pricing – Website & App Development Plans | Devzuno Technologies
 Check affordable website development, app development and digital marketing pricing plans by Devzuno Technologies.
 {% endblock %}
 
-
 {% block content %}
 
 <style>
-  /* ✅ Light Green Premium Button */
   .dvz-btn-green{
-    background: #bbf7d0 !important;   /* light green */
-    color: #065f46 !important;        /* dark green text */
+    background: #bbf7d0 !important;
+    color: #065f46 !important;
     border: 1px solid #86efac !important;
     font-weight: 800;
     border-radius: 14px;
@@ -24,23 +22,20 @@ Check affordable website development, app development and digital marketing pric
     box-shadow: 0 10px 25px rgba(34, 197, 94, 0.18);
   }
 
-  /* ✅ Touch / Hover highlight effect */
   .dvz-btn-green:hover,
   .dvz-btn-green:focus,
   .dvz-btn-green:active{
-    background: #86efac !important;  /* darker on hover */
+    background: #86efac !important;
     color: #064e3b !important;
     transform: translateY(-2px);
     box-shadow: 0 18px 40px rgba(34, 197, 94, 0.28);
     border-color: #22c55e !important;
   }
 
-  /* ✅ Mobile touch highlight */
   .dvz-btn-green:active{
     transform: translateY(0px) scale(0.98);
   }
 
-  /* ✅ Remove default focus outline */
   .dvz-btn-green:focus{
     outline: none !important;
   }
@@ -49,29 +44,23 @@ Check affordable website development, app development and digital marketing pric
 <h2 class="mb-2">Choose What You Need</h2>
 <p class="text-muted">Pick a category below</p>
 
-<!-- Category pills -->
 <ul class="nav dvz-cat-pills mb-3 flex-wrap gap-2">
   {% for c in categories %}
   <li class="nav-item">
     <a class="nav-link {% if active_cat and active_cat.id == c.id %}active{% endif %}"
-      href="/pricing/?cat={{ c.slug }}">
+       href="/pricing/?cat={{ c.slug }}">
       <span class="me-1">{{ c.icon }}</span>{{ c.name }}
     </a>
   </li>
   {% endfor %}
-  {% if not categories %}
-  <li class="nav-item"><span class="badge text-bg-light">No categories yet</span></li>
-  {% endif %}
 </ul>
 
-<!-- Active category description -->
 {% if active_cat and active_cat.description %}
 <div class="alert alert-light border rounded-3 mb-4">
   <strong>{{ active_cat.name }}</strong> — {{ active_cat.description }}
 </div>
 {% endif %}
 
-<!-- Plans grid -->
 <div class="row g-4">
   {% for p in plans %}
   <div class="col-md-6 col-lg-4">
@@ -79,44 +68,49 @@ Check affordable website development, app development and digital marketing pric
       {% if p.highlight %}
       <div class="dvz-ribbon">Popular</div>
       {% endif %}
-      <div class="dvz-plan-accent"></div>
 
-      <div class="p-4 p-lg-4">
+      <div class="p-4">
+
         <div class="small text-uppercase text-muted">{{ p.name }}</div>
 
-        <!-- ✅ Price (Old + Offer) -->
-        {% if p.old_price and p.old_price > p.price %}
+        <!-- ✅ PRICE BLOCK (FIXED) -->
+        {% if p.display_old_price and p.display_old_price > p.display_price %}
           <div class="mt-2">
+
             <div class="small text-muted">
-              <del>₹ {{ p.old_price }}</del>
+              <del>
+                {{ p.currency_symbol }} {{ p.display_old_price }}
+              </del>
+
               <span class="badge bg-success ms-2">
                 OFFER PRICE
               </span>
             </div>
+
             <div class="display-6 fw-bold mt-1 dvz-price">
-              ₹ {{ p.price }}/-
+              {{ p.currency_symbol }} {{ p.display_price }}/-
             </div>
+
           </div>
         {% else %}
           <div class="display-6 fw-bold mt-2 dvz-price">
             {% if p.price_text %}
               {{ p.price_text }}
             {% else %}
-              ₹ {{ p.price }}/-
+              {{ p.currency_symbol }} {{ p.display_price }}/-
             {% endif %}
           </div>
         {% endif %}
 
         <ul class="mt-3 dvz-feature-list">
           {% for f in p.feature_list %}
-          <li>{{ f }}</li>
+            <li>{{ f }}</li>
           {% empty %}
-          <li>No features added yet.</li>
+            <li>No features added yet.</li>
           {% endfor %}
         </ul>
 
         {% if request.user.is_authenticated %}
-          <!-- ✅ Choose button Center + Short Width -->
           <div class="text-center mt-3">
             <a class="btn dvz-btn-green px-5"
                style="width:220px;"
@@ -125,7 +119,6 @@ Check affordable website development, app development and digital marketing pric
             </a>
           </div>
         {% else %}
-          <!-- ✅ Login first, then redirect to selected plan order -->
           <div class="text-center mt-3">
             <a class="btn btn-primary px-5"
                style="width:220px;"
@@ -134,6 +127,7 @@ Check affordable website development, app development and digital marketing pric
             </a>
           </div>
         {% endif %}
+
       </div>
     </div>
   </div>
@@ -147,4 +141,6 @@ Check affordable website development, app development and digital marketing pric
 </div>
 
 {% endblock %}
+
+
 

@@ -241,7 +241,7 @@ Devzuno Technologies provides professional website development, mobile app devel
         Coupon Code: <span style="color:#22c55e;">DEVZUNOFIRST</span>
       </div>
 
-      <a href="{% url 'contact' %}" class="btn btn-success fw-semibold px-4">
+      <a href="{% url 'pricing' %}" class="btn btn-success fw-semibold px-4">
         Claim Offer
       </a>
     </div>
@@ -468,7 +468,7 @@ Devzuno Technologies provides professional website development, mobile app devel
   </div>
 
   <!-- HOW WE WORK -->
-  <div class="mt-5">
+  <div class="modern-section mt-5">
     <div class="text-center mb-4">
       <h2 class="fw-bold">How We Work</h2>
       <p class="text-muted">Our Development & Delivery Process</p>
@@ -502,7 +502,7 @@ Devzuno Technologies provides professional website development, mobile app devel
   </div>
 
   <!-- OUR WORK -->
-  <div class="mt-5">
+  <div class="modern-section mt-5">
     <div class="text-center mb-4">
       <h2 class="fw-bold">Our Work</h2>
       <p class="text-muted">Our Website & App Development Projects</p>
@@ -786,15 +786,126 @@ Devzuno Technologies provides professional website development, mobile app devel
     margin: 10px auto 10px auto;
   }
 
-  /* ✅ WORK IMAGE FIX */
-  .dvz-work-img{
-    width: 100%;
-    max-width: 240px;
-    height: 160px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 12px auto;
-  }
+
+/* ===============================
+   HOW WE WORK – step number left side
+================================ */
+
+.dvz-step-icon{
+  margin-left: 28px;
+}
+
+/* HOW WE WORK – keep content centered, number on left */
+
+.modern-section .row.g-4 .col-md-3{
+  position: relative;
+  text-align: center;
+}
+
+/* number on left only */
+.modern-section .row.g-4 .col-md-3 > strong{
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  font-weight: 800;
+  color: #22c55e;
+}
+
+/* icon perfectly center */
+.modern-section .row.g-4 .col-md-3 img{
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+}
+
+.mt-5 .row.g-4.text-center .col-md-3 > strong{
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  font-weight: 800;
+  color: #22c55e;
+}
+
+
+/* ===============================
+   WORK IMAGE FIX
+================================ */
+
+.dvz-work-img{
+  width: 100%;
+  max-width: 240px;
+  height: 160px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 12px auto;
+}
+
+
+/* ===============================
+   Modern banner section
+   (How We Work & Our Work)
+================================ */
+
+.modern-section{
+  position: relative;
+  padding: 70px 30px 80px;
+  border-radius: 28px;
+  background:
+    radial-gradient(900px 260px at top center, #dcfce7 0%, transparent 60%),
+    linear-gradient(135deg, #ecfdf5, #f0fdf4);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+.modern-section::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:85%;
+  height:1px;
+  background:linear-gradient(to right, transparent, #22c55e, transparent);
+  opacity:.45;
+}
+
+.modern-section h2{
+  font-weight:800;
+  letter-spacing:-0.4px;
+}
+
+  /* How We Work – hover card feel */
+
+.modern-section .row.g-4 .col-md-3{
+  transition: all .35s ease;
+  border-radius: 18px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.modern-section .row.g-4 .col-md-3:hover{
+  background: linear-gradient(135deg,#22c55e22,#06b6d422);
+  box-shadow: 0 14px 38px rgba(34,197,94,.18);
+  transform: translateY(-6px);
+}
+
+/* text color on hover */
+.modern-section .row.g-4 .col-md-3:hover p{
+  color:#064e3b;
+  font-weight:600;
+}
+
+/* icon vibrate */
+.modern-section .row.g-4 .col-md-3:hover img{
+  animation: dvz-vibrate .35s linear both;
+}
+
+
 </style>
 
 {% endblock %}

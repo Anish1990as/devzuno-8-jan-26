@@ -2,15 +2,14 @@
 
 {% block content %}
 <style>
-  /* ✅ Website Theme Match (Mint + Glass Dark Card) */
   .dz-order-bg {
-    background: #eef7e6; /* light mint */
+    background: #eef7e6;
     min-height: 100vh;
     padding: 50px 0;
   }
 
   .dz-order-card {
-    background: rgba(25, 35, 45, 0.92); /* dark glass */
+    background: rgba(25, 35, 45, 0.92);
     border-radius: 18px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
@@ -77,7 +76,6 @@
     color: #ffffff;
   }
 
-  /* ✅ Primary Purple Button (Website style) */
   .dz-btn-primary {
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     border: none;
@@ -133,7 +131,6 @@
 
         <div class="dz-order-card p-4 text-light">
 
-          <!-- ✅ Header -->
           <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="mb-0">{{ plan.name }}</h5>
             {% if plan.highlight %}
@@ -148,7 +145,6 @@
             </b>
           </p>
 
-          <!-- ✅ Features -->
           <div class="mb-3">
             <h6 class="mb-2">Plan Includes ✅</h6>
             <ul class="small dz-muted dz-list mb-0">
@@ -162,7 +158,6 @@
 
           <hr class="border-light border-opacity-25 my-3">
 
-          <!-- ✅ User Details -->
           <div class="mb-3">
             <label class="form-label dz-label">Full name</label>
             <input type="text" class="form-control dz-input" id="fullName" placeholder="Your name">
@@ -173,17 +168,26 @@
             <input type="email" class="form-control dz-input" id="email" placeholder="you@gmail.com">
           </div>
 
-          <!-- ✅ Price Summary -->
           <div class="dz-price-box mb-3">
+
             <div class="d-flex justify-content-between align-items-center">
               <span class="small dz-muted">Old Price</span>
-              <span class="dz-old-price">₹ <span id="oldPriceText">{{ plan.old_price|default_if_none:0 }}</span></span>
+
+              {% if display_old_price %}
+              <span class="dz-old-price">
+                {{ currency_symbol }} <span id="oldPriceText">{{ display_old_price }}</span>
+              </span>
+              {% else %}
+              <span class="dz-old-price" style="visibility:hidden;">0</span>
+              {% endif %}
             </div>
 
             <div class="d-flex justify-content-between align-items-center mt-2">
               <span class="small dz-muted">Offer Price</span>
               <div class="d-flex align-items-center gap-2">
-                <span class="fw-bold">₹ <span id="basePriceText">{{ plan.price|default_if_none:0 }}</span></span>
+                <span class="fw-bold">
+                  {{ currency_symbol }} <span id="basePriceText">{{ display_price|default_if_none:0 }}</span>
+                </span>
                 <span class="dz-offer-badge" id="offerBadge">OFFER</span>
               </div>
             </div>
@@ -192,12 +196,16 @@
 
             <div class="d-flex justify-content-between align-items-center">
               <span class="small dz-muted">Coupon Discount</span>
-              <span class="fw-bold text-success">- ₹ <span id="discountAmount">0</span></span>
+              <span class="fw-bold text-success">
+                - {{ currency_symbol }} <span id="discountAmount">0</span>
+              </span>
             </div>
 
             <div class="d-flex justify-content-between align-items-center mt-2">
               <span class="small dz-muted">Final Amount</span>
-              <span class="dz-final-amount">₹ <span id="finalAmountText">{{ plan.price|default_if_none:0 }}</span></span>
+              <span class="dz-final-amount">
+                {{ currency_symbol }} <span id="finalAmountText">{{ display_price|default_if_none:0 }}</span>
+              </span>
             </div>
 
             <p id="couponMsg" class="small dz-muted mb-0 mt-2">
@@ -205,7 +213,6 @@
             </p>
           </div>
 
-          <!-- ✅ Coupon -->
           <div class="mb-3">
             <label class="form-label dz-label">Apply Coupon</label>
             <div class="input-group">
@@ -214,7 +221,6 @@
             </div>
           </div>
 
-          <!-- ✅ Confirm -->
           <div class="d-grid gap-2">
             <button class="dz-btn-primary" type="button" id="placeOrderBtn">
               Confirm Order ✅
@@ -246,86 +252,98 @@
 </div>
 
 <script>
-  function getCSRFToken() {
-    const name = "csrftoken";
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-      const c = cookies[i].trim();
-      if (c.startsWith(name + "=")) return c.substring(name.length + 1);
-    }
-    return "";
+function getCSRFToken() {
+  const name = "csrftoken";
+  const cookies = document.cookie.split(";");
+  for (let i = 0; i < cookies.length; i++) {
+    const c = cookies[i].trim();
+    if (c.startsWith(name + "=")) return c.substring(name.length + 1);
+  }
+  return "";
+}
+
+{% if plan %}
+
+const ORDER_CURRENCY = "{{ currency }}";
+const ORDER_SYMBOL   = "{{ currency_symbol }}";
+
+const basePrice = Number("{{ display_price|default_if_none:0 }}") || 0;
+const oldPrice  = Number("{{ display_old_price|default_if_none:0 }}") || 0;
+
+const badge = document.getElementById("offerBadge");
+
+if (oldPrice > basePrice && oldPrice > 0) {
+  const off = Math.round(((oldPrice - basePrice) / oldPrice) * 100);
+  badge.innerText = off + "% OFF";
+} else {
+  badge.innerText = "OFFER";
+}
+
+document.getElementById("applyCouponBtn").addEventListener("click", function () {
+
+  const msg  = document.getElementById("couponMsg");
+  const code = document.getElementById("couponCode").value.trim();
+
+  if (!code) {
+    msg.innerHTML = "<span style='color:#f87171; font-weight:800;'>Enter coupon code!</span>";
+    return;
   }
 
-  {% if plan %}
-    const basePrice = Number("{{ plan.price|default_if_none:0 }}") || 0;
-    const oldPrice  = Number("{{ plan.old_price|default_if_none:0 }}") || 0;
+  msg.innerHTML = "Applying coupon...";
 
-    document.getElementById("finalAmountText").innerText = basePrice;
+  const formData = new FormData();
+  formData.append("code", code);
+  formData.append("amount", basePrice);
+  formData.append("currency", ORDER_CURRENCY);
 
-    const badge = document.getElementById("offerBadge");
-    if (oldPrice > basePrice && oldPrice > 0) {
-      const off = Math.round(((oldPrice - basePrice) / oldPrice) * 100);
-      badge.innerText = off + "% OFF";
+  fetch("/billing/apply-coupon/", {
+    method: "POST",
+    headers: { "X-CSRFToken": getCSRFToken() },
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    if (data.success) {
+      document.getElementById("discountAmount").innerText = data.discount;
+      document.getElementById("finalAmountText").innerText = data.final_amount;
+      msg.innerHTML = "<span style='color:#22c55e; font-weight:900;'>" + data.message + "</span>";
     } else {
-      badge.innerText = "OFFER";
+      document.getElementById("discountAmount").innerText = 0;
+      document.getElementById("finalAmountText").innerText = basePrice;
+      msg.innerHTML = "<span style='color:#f87171; font-weight:900;'>" + data.message + "</span>";
     }
 
-    document.getElementById("applyCouponBtn").addEventListener("click", function () {
-      const msg = document.getElementById("couponMsg");
-      const code = document.getElementById("couponCode").value.trim();
+  })
+  .catch(() => {
+    msg.innerHTML = "<span style='color:#f87171; font-weight:900;'>Something went wrong!</span>";
+  });
 
-      if (!code) {
-        msg.innerHTML = "<span style='color:#f87171; font-weight:800;'>Enter coupon code!</span>";
-        return;
-      }
+});
 
-      msg.innerHTML = "Applying coupon...";
+document.getElementById("placeOrderBtn").addEventListener("click", function () {
 
-      const formData = new FormData();
-      formData.append("code", code);
-      formData.append("amount", basePrice);
+  const name  = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const finalAmount = document.getElementById("finalAmountText").innerText;
 
-      fetch("/billing/apply-coupon/", {
-        method: "POST",
-        headers: { "X-CSRFToken": getCSRFToken() },
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          document.getElementById("discountAmount").innerText = data.discount;
-          document.getElementById("finalAmountText").innerText = data.final_amount;
-          msg.innerHTML = "<span style='color:#22c55e; font-weight:900;'>" + data.message + "</span>";
-        } else {
-          document.getElementById("discountAmount").innerText = 0;
-          document.getElementById("finalAmountText").innerText = basePrice;
-          msg.innerHTML = "<span style='color:#f87171; font-weight:900;'>" + data.message + "</span>";
-        }
-      })
-      .catch(() => {
-        msg.innerHTML = "<span style='color:#f87171; font-weight:900;'>Something went wrong!</span>";
-      });
-    });
+  if (!name || !email) {
+    alert("⚠️ Please fill Name and Email.");
+    return;
+  }
 
-    document.getElementById("placeOrderBtn").addEventListener("click", function () {
-      const name = document.getElementById("fullName").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const finalAmount = document.getElementById("finalAmountText").innerText;
+  alert(
+    "✅ Order Confirmed!\n\n" +
+    "Plan: {{ plan.name }}\n" +
+    "Final Amount: " + ORDER_SYMBOL + finalAmount + "\n\n" +
+    "Next Step: Payment / WhatsApp"
+  );
 
-      if (!name || !email) {
-        alert("⚠️ Please fill Name and Email.");
-        return;
-      }
+});
 
-      alert(
-        "✅ Order Confirmed!\n\n" +
-        "Plan: {{ plan.name }}\n" +
-        "Final Amount: ₹" + finalAmount + "\n\n" +
-        "Next Step: Payment / WhatsApp"
-      );
-    });
-  {% endif %}
+{% endif %}
 </script>
 
 {% endblock %}
+
 
