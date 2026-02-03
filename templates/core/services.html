@@ -11,8 +11,6 @@ Explore Devzuno Technologies services including website development, mobile app 
 
 {% block content %}
 
-<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
-
 <style>
 :root{
   --p1:#4f46e5;
@@ -51,7 +49,7 @@ Explore Devzuno Technologies services including website development, mobile app 
 .service-card{
   background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.95));
   border-radius:26px;
-  padding:2.6rem 2rem;
+  padding:2rem 2rem 2.4rem;
   text-align:center;
   position:relative;
   overflow:hidden;
@@ -63,7 +61,7 @@ Explore Devzuno Technologies services including website development, mobile app 
   transition:all .7s cubic-bezier(.25,.46,.45,.94);
 }
 
-/* 👉 touch / hover background color change */
+/* hover bg */
 .service-card:hover,
 .service-card.touch-active{
   background:linear-gradient(
@@ -109,27 +107,51 @@ Explore Devzuno Technologies services including website development, mobile app 
   filter:blur(18px);
 }
 
-/* icon */
-.service-icon{
-  width:78px;
-  height:78px;
-  border-radius:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 1.4rem;
-  font-size:2.1rem;
-  color:#fff;
-  background:linear-gradient(135deg,var(--p1),var(--p2));
-  box-shadow:0 18px 35px rgba(79,70,229,.35);
-  transition:.45s cubic-bezier(.2,.8,.2,1);
+/* ===== image + shaded title ===== */
+
+.service-image{
+  position:relative;
+  width:100%;
+  height:190px;
+  border-radius:18px;
+  overflow:hidden;
+  margin-bottom:1.4rem;
+  box-shadow:0 18px 40px rgba(15,23,42,.15);
 }
 
-.service-card:hover .service-icon,
-.service-card.touch-active .service-icon{
-  transform:translateY(-4px) scale(1.08) rotate(4deg);
-  background:linear-gradient(135deg,var(--p2),var(--p3));
-  box-shadow:0 28px 55px rgba(6,182,212,.55);
+.service-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.service-overlay{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:14px;
+  background:linear-gradient(
+    to top,
+    rgba(15,23,42,.85),
+    rgba(15,23,42,.55),
+    rgba(15,23,42,0)
+  );
+  text-align:center;
+}
+
+.service-overlay h4{
+  margin:0;
+  color:#fff;
+  font-weight:800;
+  font-size:1.05rem;
+}
+
+.service-overlay span{
+  display:block;
+  font-size:.8rem;
+  color:#e5e7eb;
 }
 
 /* title + text */
@@ -201,15 +223,12 @@ Explore Devzuno Technologies services including website development, mobile app 
   }
 
   .service-card{
-    padding:1.9rem 1.4rem;
+    padding:1.4rem 1.2rem 1.8rem;
     border-radius:20px;
   }
 
-  .service-icon{
-    width:62px;
-    height:62px;
-    font-size:1.6rem;
-    border-radius:16px;
+  .service-image{
+    height:170px;
   }
 
   .service-card h3{font-size:1.15rem;}
@@ -221,6 +240,7 @@ Explore Devzuno Technologies services including website development, mobile app 
   }
 }
 </style>
+
 
 <section class="services-banner">
   <h1 class="animate-up">Our Digital Services</h1>
@@ -235,8 +255,18 @@ Explore Devzuno Technologies services including website development, mobile app 
 
   <div class="services-grid">
 
+    <!-- Website -->
     <div class="service-card" data-delay="0">
-      <div class="service-icon"><i class="ri-code-line"></i></div>
+
+      <div class="service-image">
+        <img src="{% static 'images/services/website-development.png' %}" alt="Website Development">
+
+        <div class="service-overlay">
+          <h4>Website Development</h4>
+          <span>Devzuno Technologies</span>
+        </div>
+      </div>
+
       <h3>Website Development Services</h3>
       <p>
         We design and develop modern, fast and scalable websites for businesses across different industries.
@@ -245,8 +275,19 @@ Explore Devzuno Technologies services including website development, mobile app 
       </p>
     </div>
 
+
+    <!-- Mobile App -->
     <div class="service-card" data-delay="0.1">
-      <div class="service-icon"><i class="ri-smartphone-line"></i></div>
+
+      <div class="service-image">
+        <img src="{% static 'images/services/mobile-app-development.png' %}" alt="Mobile App Development">
+
+        <div class="service-overlay">
+          <h4>Mobile App Development</h4>
+          <span>Devzuno Technologies</span>
+        </div>
+      </div>
+
       <h3>Mobile App Development Services</h3>
       <p>
         Devzuno Technologies offers professional Android and iOS mobile application development services.
@@ -255,8 +296,19 @@ Explore Devzuno Technologies services including website development, mobile app 
       </p>
     </div>
 
+
+    <!-- Digital Marketing -->
     <div class="service-card" data-delay="0.2">
-      <div class="service-icon"><i class="ri-search-line"></i></div>
+
+      <div class="service-image">
+        <img src="{% static 'images/services/digital-marketing.png' %}" alt="Digital Marketing">
+
+        <div class="service-overlay">
+          <h4>Digital Marketing / SEO</h4>
+          <span>Devzuno Technologies</span>
+        </div>
+      </div>
+
       <h3>SEO & Digital Marketing Services</h3>
       <p>
         Our SEO and digital marketing services help businesses grow their online visibility and generate
@@ -265,8 +317,19 @@ Explore Devzuno Technologies services including website development, mobile app 
       </p>
     </div>
 
+
+    <!-- AI -->
     <div class="service-card" data-delay="0.3">
-      <div class="service-icon"><i class="ri-robot-line"></i></div>
+
+      <div class="service-image">
+        <img src="{% static 'images/services/ai-automation.png' %}" alt="AI Automation">
+
+        <div class="service-overlay">
+          <h4>AI & Automation</h4>
+          <span>Devzuno Technologies</span>
+        </div>
+      </div>
+
       <h3>AI & Automation Solutions</h3>
       <p>
         We deliver AI-powered automation solutions to improve business operations, reduce manual work
@@ -305,7 +368,6 @@ document.addEventListener('DOMContentLoaded', function () {
     observer.observe(card);
   });
 
-  /* mobile touch animation */
   cards.forEach(function(card){
 
     card.addEventListener('touchstart', function(){
@@ -324,4 +386,3 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 {% endblock %}
-
