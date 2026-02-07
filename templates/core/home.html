@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{# ================= SEO BLOCKS (NEW – ADDED) ================= #}
 {% block title %}
 Devzuno Technologies – Website, App Development, Digital Advertisement & IT Solutions Company
 {% endblock %}
@@ -9,8 +8,6 @@ Devzuno Technologies – Website, App Development, Digital Advertisement & IT So
 {% block meta_description %}
 Devzuno Technologies provides professional website development, mobile app development, SEO and digital advertisement services for startups and businesses worldwide. Scalable, secure and high-performance digital solutions.
 {% endblock %}
-
-{# ============================================================ #}
 
 {% block content %}
 
@@ -25,7 +22,10 @@ Devzuno Technologies provides professional website development, mobile app devel
       <!-- LEFT CONTENT -->
       <div class="col-lg-7">
         <span class="badge dvz-badge-glass px-3 py-2 mb-3 rounded-pill">Devzuno Technologies</span>
-        <h1 class="display-6 fw-bold text-white lh-tight">{{ SITE.hero_title }}</h1>
+        <h1 class="display-6 fw-bold text-white lh-tight">
+          Website & App Development Company – Devzuno Technologies
+        </h1>
+
         <p class="text-white-50 mt-2">{{ SITE.hero_subtitle }}</p>
 
         <div class="d-flex flex-wrap gap-2 mt-4">
@@ -441,19 +441,19 @@ Devzuno Technologies provides professional website development, mobile app devel
 
         <ul class="text-muted mt-3 dvz-why-list">
           <li>
-            <img src="{% static 'images/why-1.png' %}" class="dvz-why-icon" alt="">
+            <img src="{% static 'images/why-1.png' %}" class="dvz-why-icon" alt="Fast delivery and professional web design services">
             Fast delivery & professional design
           </li>
           <li>
-            <img src="{% static 'images/why-2.png' %}" class="dvz-why-icon" alt="">
+            <img src="{% static 'images/why-2.png' %}" class="dvz-why-icon" alt="Mobile friendly and SEO optimized websites">
             Mobile-friendly & SEO optimized
           </li>
           <li>
-            <img src="{% static 'images/why-3.png' %}" class="dvz-why-icon" alt="">
+            <img src="{% static 'images/why-3.png' %}" class="dvz-why-icon" alt="Secure and scalable website development">
             Secure coding & scalable architecture
           </li>
           <li>
-            <img src="{% static 'images/why-4.png' %}" class="dvz-why-icon" alt="">
+            <img src="{% static 'images/why-4.png' %}" class="dvz-why-icon" alt="Lifetime support for websites and mobile apps">
             Lifetime support & quick response
           </li>
         </ul>
@@ -477,25 +477,25 @@ Devzuno Technologies provides professional website development, mobile app devel
     <div class="row g-4 text-center">
       <div class="col-md-3">
         <strong>1.</strong>
-        <img src="{% static 'images/step-1.png' %}" class="dvz-step-icon" alt="">
+        <img src="{% static 'images/step-1.png' %}" class="dvz-step-icon" alt="Requirement discussion for website and app development">
         <p>Requirement Discussion</p>
       </div>
 
       <div class="col-md-3">
         <strong>2.</strong>
-        <img src="{% static 'images/step-2.png' %}" class="dvz-step-icon" alt="">
+        <img src="{% static 'images/step-2.png' %}" class="dvz-step-icon" alt="UI and design planning for digital projects">
         <p>Design & UI Planning</p>
       </div>
 
       <div class="col-md-3">
         <strong>3.</strong>
-        <img src="{% static 'images/step-3.png' %}" class="dvz-step-icon" alt="">
+        <img src="{% static 'images/step-3.png' %}" class="dvz-step-icon" alt="Website and mobile app development and testing">
         <p>Development & Testing</p>
       </div>
 
       <div class="col-md-3">
         <strong>4.</strong>
-        <img src="{% static 'images/step-4.png' %}" class="dvz-step-icon" alt="">
+        <img src="{% static 'images/step-4.png' %}" class="dvz-step-icon" alt="Project delivery and technical support">
         <p>Delivery & Support</p>
       </div>
     </div>
@@ -511,7 +511,8 @@ Devzuno Technologies provides professional website development, mobile app devel
     <div class="row g-4">
       <div class="col-md-4">
         <div class="dvz-feature p-3 text-center h-100 overflow-hidden">
-          <img src="{% static 'images/work-1.png' %}" class="dvz-work-img" alt="">
+          <img src="{% static 'images/work-1.png' %}" class="dvz-work-img"
+               alt="Business website design and development project by Devzuno Technologies">
           <h6>Business Website</h6>
           <p class="small text-muted">
             Clean, modern and fast-loading business website with premium UI design, mobile responsive layout,
@@ -523,7 +524,8 @@ Devzuno Technologies provides professional website development, mobile app devel
 
       <div class="col-md-4">
         <div class="dvz-feature p-3 text-center h-100 overflow-hidden">
-          <img src="{% static 'images/work-2.png' %}" class="dvz-work-img" alt="">
+          <img src="{% static 'images/work-2.png' %}" class="dvz-work-img"
+               alt="E commerce website development project with online payment system">
           <h6>E-Commerce Store</h6>
           <p class="small text-muted">
             Professional online store with smooth product management, secure payment integration and
@@ -535,7 +537,8 @@ Devzuno Technologies provides professional website development, mobile app devel
 
       <div class="col-md-4">
         <div class="dvz-feature p-3 text-center h-100 overflow-hidden">
-          <img src="{% static 'images/work-3.png' %}" class="dvz-work-img" alt="">
+          <img src="{% static 'images/work-3.png' %}" class="dvz-work-img"
+               alt="Mobile application development project for Android and iOS platforms">
           <h6>Mobile Application</h6>
           <p class="small text-muted">
             Feature-rich Android & iOS application with clean UI, smooth performance and secure login system.

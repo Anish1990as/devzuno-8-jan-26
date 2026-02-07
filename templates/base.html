@@ -11,18 +11,32 @@
     {% endblock %}
   </title>
 
-  <meta name="description" content="{% block meta_description %}Devzuno Technologies – Website, App Development, SEO and Digital Solutions in India.{% endblock %}">
+  <meta name="description" content="{% block meta_description %}
+  Devzuno Technologies | Website, App Development, SEO and Digital Solutions in India.
+  {% endblock %}">
+
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+  <meta property="og:title" content="{{ SITE.company_name|default:'Devzuno Technologies' }}">
+  <meta property="og:image" content="https://devzuno.com/static/images/devzuno1.png">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
 
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
+      "@type": "Organization",
       "name": "Devzuno Technologies",
-      "alternateName": "Devzuno",
       "url": "https://devzuno.com/",
-      "logo": "https://devzuno.com/static/images/devzuno1.png"
+      "logo": "https://devzuno.com/static/images/devzuno1.png",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "27"
+      }
     }
   </script>
+
 
 
   <!-- BOOTSTRAP CSS -->
